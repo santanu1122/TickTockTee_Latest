@@ -147,39 +147,39 @@
     
     [self.view addSubview:ReviewListview];
     
-    [UIView animateWithDuration:0.2
-     
-                          delay:0.0
-     
-                        options: UIViewAnimationOptionTransitionFlipFromBottom
-     
-                     animations:^
-     
-     {
-         
-         CGRect frame = commentView.frame;
-         
-         frame.origin.y = 0;
-         
-         frame.origin.x = 0;
-         
-         ReviewListview.frame = frame;
-         
-     }
-     
-                     completion:^(BOOL finished)
-     
-     {
-         
-         
-         
-         
-         
-     }];
+//    [UIView animateWithDuration:0.2
+//     
+//                          delay:0.0
+//     
+//                        options: UIViewAnimationOptionTransitionFlipFromBottom
+//     
+//                     animations:^
+//     
+//     {
+//         
+//         CGRect frame = commentView.frame;
+//         
+//         frame.origin.y = 0;
+//         
+//         frame.origin.x = 0;
+//         
+//         ReviewListview.frame = frame;
+//         
+//     }
+//     
+//                     completion:^(BOOL finished)
+//     
+//     {
+//         
+//         
+//         
+//         
+//         
+//     }];
     
   
     [SVProgressHUD show];
-    NSInvocationOperation *EventOperation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(LoadActivitycomment:) object:[ActivityDic objectForKey:@"ActivityCommentId"]];
+  //  NSInvocationOperation *EventOperation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(LoadActivitycomment:) object:[ActivityDic objectForKey:@"ActivityCommentId"]];
    // [ addOperation:EventOperation];
 }
 
