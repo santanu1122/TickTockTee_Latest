@@ -91,10 +91,11 @@
      ISShowMoreCaption=FALSE;
      Method=[[TTTGlobalMethods alloc]init];
      SeeMoreButton.titleLabel.font=[UIFont fontWithName:MYRIARDPROSAMIBOLT size:11.0f];
-    
-     [self PrepareScreen];
+     IsInLandScapemode=FALSE;
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+     [self PrepareScreen];
+    
     
     
 }
@@ -288,13 +289,14 @@
     }
      else
       {
+          NSLog(@"Print the else part");
       if (IsIphone5)
        {
-        imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 568, 320)];
+        imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 568)];
        }
       else
       {
-        imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 480, 320)];
+        imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 480)];
       }
     }
     NSURLRequest *request_img4 = [NSURLRequest requestWithURL:[NSURL URLWithString:MyImageContent]];
@@ -447,8 +449,9 @@
         TotalteeLbl.hidden=YES;
         TeetxtLbl.hidden=YES;
     }
-    if (!IsInLandScapemode)
+    if (IsInLandScapemode)
     {
+        
         if (IsIphone5)
         {
             [MainScrollVire setContentOffset:CGPointMake(320*[ClickphotoId integerValue], 568)];
@@ -465,13 +468,13 @@
     {
         if (IsIphone5)
         {
-            [MainScrollVire setContentOffset:CGPointMake(320*[ClickphotoId integerValue], 568)];
-            [MainScrollVire setContentSize:CGSizeMake(320*[ParamPhotoArry count], 568)];
+            [MainScrollVire setContentOffset:CGPointMake(568*[ClickphotoId integerValue], 320)];
+            [MainScrollVire setContentSize:CGSizeMake(568*[ParamPhotoArry count], 320)];
         }
         else
         {
-            [MainScrollVire setContentOffset:CGPointMake(320*[ClickphotoId integerValue], 480)];
-            [MainScrollVire setContentSize:CGSizeMake(320*[ParamPhotoArry count], 480)];
+            [MainScrollVire setContentOffset:CGPointMake(480*[ClickphotoId integerValue], 320)];
+            [MainScrollVire setContentSize:CGSizeMake(480*[ParamPhotoArry count], 320)];
         }
 
     }
@@ -643,7 +646,7 @@
     PreSentPhotoArry=[ParamPhotoArry objectAtIndex:position];
     NSString *MyImageContent=[PreSentPhotoArry valueForKey:@"original"];
     UIImageView *imageview;
-    if (IsInLandScapemode)
+    if (!IsInLandScapemode)
     {
         if (IsIphone5)
         {
@@ -658,11 +661,11 @@
     {
         if (IsIphone5)
         {
-            imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 568, 320)];
+            imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 568)];
         }
         else
         {
-            imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 480, 320)];
+            imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 480)];
         }
     }
     
