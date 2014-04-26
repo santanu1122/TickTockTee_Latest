@@ -1,0 +1,152 @@
+//
+// Prefix header for all source files of the 'Ticktocktee' target in the 'Ticktocktee' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_4_0
+#warning "This project uses features only available in iOS SDK 4.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <Security/Security.h>
+#endif
+
+#define UIColorFromRGB(rgbValue) [UIColor \
+colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+#define  IsIphone5 (([[UIScreen mainScreen] bounds].size.height)>500)?true:false
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+#ifdef DEBUG
+#define IMFAPPPRINT(__fmt, ...) NSLog(@"%s: "__fmt, __PRETTY_FUNCTION__, ##__VA_ARGS__)
+#else
+#define IMFAPPPRINT(__fmt, ...) ((void)0)
+#endif // #ifdef DEBUG
+    
+    
+#ifdef DEBUG
+#define IMFAPPASSERT(__value) { if ( !(__value) ) { NSLog(@"%s: *ASSERT(%s)", __PRETTY_FUNCTION__, #__value); } } ((void)0)
+#else
+#define IMFAPPASSERT(__value) ((void)0)
+#endif // #ifdef DEBUG
+    
+    
+#ifdef DEBUG
+#define IMFAPPERROR(__info) NSLog(@"%s: *ERROR(%@)", __PRETTY_FUNCTION__, __info)
+#else
+#define IMFAPPERROR(__info) ((void)0)
+#endif // #ifdef DEBUG
+    
+    
+#ifdef DEBUG
+#define IMFAPPPRINTMETHOD() NSLog(@"%s", __PRETTY_FUNCTION__)
+#else
+#define IMFAPPPRINTMETHOD() ((void)0)
+#endif // #ifdef DEBUG
+    
+    
+#ifdef DEBUG
+#define IMFAPPTESTVALUE(__value, __info) { id __result = (__value) ? @"YES" : @"NO"; NSLog(@"%s: %@ is %@", __PRETTY_FUNCTION__, __info, __result); }
+#else
+#define IMFAPPTESTVALUE(__value, __info) ((void)0)
+#endif // #ifdef DEBUG
+    
+    
+#ifdef __cplusplus
+}
+#endif
+
+#define NoImageIcon [UIImage imageNamed:@"no-image-found.png"]
+
+#define  IsIphone5 (([[UIScreen mainScreen] bounds].size.height)>500)?true:false
+
+#define DeviceId [UIDevice currentDevice].identifierForVendor.UUIDString
+
+#define HeightOfEachFilterMenu 49.0f
+#define GapBetweenActivities 5.0f
+#define HANDICAPINDEX @"handicapIndex"
+#define TOTALPOINT @"Point"
+#define SESSION_ID @"TickTockTeeUserId"
+#define SESSION_USERNAME @"TickTockTeeUserName"
+#define SESSION_PASSWORD @"TickTockTeePassword"
+#define SESSION_DEVICETOKEN @"TickTockTeeCurrentDeviceToken"
+#define SESSION_LOGGERNAME @"TickTockTeeLoggerFullName"
+#define SESSION_LOGGERIMAGEURL @"TickTockTeeAppFullImageURL"
+#define SESSION_LOGGERIMAGEDATA @"TickTockTeeAppFullImageData"
+#define SESSION_HANDICAPINDEX @"TickTockTeeAHANdicapIndex"
+#define SESSION_POINTS @"TickTockPointsdicapIndex"
+#define SESSION_MATCHCREATEPARAMETES @"TickTockTeeAppMatchCreatingParmaters"
+#define SESSION_USERLOCAION @"TttTapasSedionghlUserLocn84jf"
+
+#define PARAM_MATCH_NAME @"TTTMatchCreationName"
+#define PARAM_MATCH_DESCRIPTION @"TTTMatchDescripton"
+#define PARAM_COURSE_LOCATION @"TTTCourseLocation"
+#define PARAM_COURSE_NAME @"TTTMCourseName"
+#define PARAM_START_TIME @"TTTMStartNameTime"
+#define PARAM_END_TIME @"TTTMCEndNaTime"
+#define PARAM_COURSE_ID @"TTTSElectedCourceID"
+#define PARAM_TEEBOX_NAME @"TTTColorBoxName"
+#define PARAM_TEEBOX_ID @"TTTColorBoxIDsName"
+#define PARAM_TEEBOX_COLOR @"tttColor"
+#define PARAM_SELECTED_FRIENDS @"tttCSELECTEDFriendSr"
+#define PARAM_MATCH_IMAGE_URL @"TTTPreviouslyUploadedMatchImageURL"
+#define GraphAPI @"https://graph.facebook.com/"
+
+//#define API @"http://ingnomics.com/ticktockteeV2/IOS/"
+//#define BASEURL @"http://ingnomics.com/ticktockteeV2/"
+
+#define KEYFORDEVICETOCKEN @"devicetocken"
+#define API @"http://www.esolzdemos.com/lab3/ttt/ticktockteeV2/IOS/"
+#define BASEURL @"http://www.esolzdemos.com/lab3/ttt/ticktockteeV2/"
+#define COURSE_ID @"course_id"
+#define COURSE_NAME @"course_name"
+#define MYRIARDPROLIGHT @"MyriadProLight"
+#define MYRIARDPROSAMIBOLT @"MyriadPro-Semibold"
+#define MYREADPROREGULAR @"MyriadPro-Regular"
+#define SEGIOUI @"SegoeUI-Light"
+
+
+#ifdef DEBUG
+#define IMFAPPPRINTMETHOD() NSLog(@"%s", __PRETTY_FUNCTION__)
+#else
+#define IMFAPPPRINTMETHOD() ((void)0)
+#endif // #ifdef DEBUG
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+#ifdef DEBUG
+#define IMFAPPPRINT(__fmt, ...) NSLog(@"%s: "__fmt, __PRETTY_FUNCTION__, ##__VA_ARGS__)
+#else
+#define IMFAPPPRINT(__fmt, ...) ((void)0)
+#endif // #ifdef DEBUG
+    
+    
+#ifdef DEBUG
+#define IMFAPPASSERT(__value) { if ( !(__value) ) { NSLog(@"%s: *ASSERT(%s)", __PRETTY_FUNCTION__, #__value); } } ((void)0)
+#else
+#define IMFAPPASSERT(__value) ((void)0)
+#endif // #ifdef DEBUG
+    
+    
+#ifdef DEBUG
+#define IMFAPPERROR(__info) NSLog(@"%s: *ERROR(%@)", __PRETTY_FUNCTION__, __info)
+#else
+#define IMFAPPERROR(__info) ((void)0)
+#endif // #ifdef DEBUG
+    
+    
+#ifdef DEBUG
+#define IMFAPPPRINTMETHOD() NSLog(@"%s", __PRETTY_FUNCTION__)
+#else
+#define IMFAPPPRINTMETHOD() ((void)0)
+#endif // #ifdef DEBUG
+
