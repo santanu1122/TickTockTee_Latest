@@ -326,6 +326,7 @@
                          [self PushViewController:ScrobordView TransitationFrom:kCATransitionFade];
                      }
                      completion:nil];
+    
     self.arrowImage.hidden=NO;
     
 }
