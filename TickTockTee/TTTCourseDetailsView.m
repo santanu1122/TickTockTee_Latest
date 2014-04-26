@@ -83,7 +83,7 @@
 @end
 
 @implementation TTTCourseDetailsView
-@synthesize ParamViewerid,CourseID,ChatSliderView,FooterBackgroundimage;
+@synthesize ParamViewerid,CourseID,ChatSliderView,FooterBackgroundimage,writereview;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -762,6 +762,8 @@
     
    // UIView *FooterView=(UIView *)[AddNewReviewView viewWithTag:403];
   // UIButton *Cancelbutton=(UIButton *)
+    
+  
  
 }
 -(void)backtoreviewdetils
@@ -799,6 +801,103 @@
     
  
 }
+
+//---------------------- Add Review ----------//
+/*-(void)postreview
+{
+    if([[writereview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0){
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self clearrating];
+            [SVProgressHUD showErrorWithStatus:@"Please write a review"];
+        });
+    }
+    else if (!rating >0)
+    {
+        [SVProgressHUD showErrorWithStatus:@"Please add rating"];
+    }
+    
+    else
+    {
+        
+        if ([self isConnectedToInternet])
+        {
+            NSError *Error;
+            @try
+            {
+                NSString *URL=[NSString stringWithFormat:@"%@user.php?mode=course_review&userid=%@&courseid=%@&msg=%@&rating=%d", API,viewerID,reviewCourseID,[[writereview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],rating];
+                NSLog(@"%@", URL);
+                
+                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URL]];
+                if([data length]>0)
+                {
+                    NSDictionary * OutputDic=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&Error];
+                    
+                    if ([OutputDic isKindOfClass:[NSDictionary class]]){
+                        NSDictionary *extraparam=[OutputDic valueForKey:@"extraparam"];
+                        if ([extraparam isKindOfClass:[NSDictionary class]]){
+                            if([[extraparam valueForKey:@"response"] isEqualToString:@"success"])
+                            {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    
+                                    
+                                    [self clearrating];
+                                    [SVProgressHUD showSuccessWithStatus:[extraparam valueForKey:@"message"]];
+                                    TTTCourseReviewViewController *courseReview=[[TTTCourseReviewViewController alloc]init];
+                                    courseReview.reviewarraylist=[AllReviews copy];
+                                    courseReview.courseid=reviewCourseID;
+                                    [self PushViewController:courseReview TransitationFrom:kCATransitionFade];
+                                    
+                                    
+                                });
+                            }else
+                            {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    
+                                    [SVProgressHUD showErrorWithStatus:[extraparam valueForKey:@"message"]];
+                                });
+                                
+                                
+                            }
+                        }
+                        else
+                        {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                
+                                [SVProgressHUD showErrorWithStatus:@"Unexpected error occured."];
+                                
+                            });
+                        }
+                    }
+                    else
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            
+                            [SVProgressHUD showErrorWithStatus:@"Unexpected error occured."];
+                            
+                        });
+                    }
+                }
+                
+            }@catch (NSException *exception) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [SVProgressHUD showErrorWithStatus:@"Unexpected error occured."];
+                    
+                });
+                
+                NSLog(@" %s exception %@",__PRETTY_FUNCTION__,exception);
+            }
+            
+        }else
+        {
+            [SVProgressHUD showErrorWithStatus:@"No internet connection"];
+        }
+    }
+    
+}*/
+
 
 
 
