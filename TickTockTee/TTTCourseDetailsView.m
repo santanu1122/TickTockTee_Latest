@@ -760,7 +760,7 @@
     UIButton *backButton=(UIButton *)[topView viewWithTag:1001];
     [backButton addTarget:self action:@selector(backtoreviewdetils) forControlEvents:UIControlEventTouchUpInside];
     
-    UIView *FooterView=(UIView *)[AddNewReviewView viewWithTag:403];
+   // UIView *FooterView=(UIView *)[AddNewReviewView viewWithTag:403];
   // UIButton *Cancelbutton=(UIButton *)
  
 }
