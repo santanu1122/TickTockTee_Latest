@@ -209,17 +209,17 @@
                         
                         
                         
-                        NSString *eventid = [loop objectForKey:@"eventid"];
+                        NSString *eventid = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"eventid"]];
                         
-                        NSString *matchtitle = [loop objectForKey:@"matchtitle"];
+                        NSString *matchtitle = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"matchtitle"]];
                         
-                        NSString *Location = [loop objectForKey:@"Location"];
+                        NSString *Location = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"Location"]];
                         
-                        NSString *CourseName = [loop objectForKey:@"CourseName"];
+                        NSString *CourseName = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"CourseName"]];
                         
-                        NSString *NetScore = [loop objectForKey:@"NetScore"];
+                        NSString *NetScore = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"NetScore"]];
                         
-                        NSString *MatchCreated = [loop objectForKey:@"MatchCreated"];
+                        NSString *MatchCreated = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"MatchCreated"]];
                         
                         
                         
@@ -559,13 +559,14 @@
     _activesincelabel.font = [UIFont fontWithName:MYRIARDPROLIGHT size:14.0];
     
     [SVProgressHUD dismiss];
-    
+    [_roundlist setHidden:NO];
     [_roundlist reloadData];
     
 }
 
 - (IBAction)manuSlideropen:(id)sender
 {
+    [self keyboardhide];
     self.MenuBarView.hidden=NO;
     self.chatBoxView.hidden=YES;
     IsLeftMenuBoxOpen=[self PerformMenuSlider:_ScreenView withMenuArea:_MenuBarView IsOpen:IsLeftMenuBoxOpen];
@@ -658,7 +659,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         self.MenuBarView.hidden=NO;
         self.chatBoxView.hidden=YES;
@@ -817,5 +818,106 @@
     NSLog(@"PerformChatSliderOperation %@",IsChatMenuBoxOpen?@"YES":@"NO");
     
 }
+
+
+-(void)keyboardhide{
+    
+    [SVProgressHUD dismiss];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=122;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
+
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    
+    
+    
+    
+    
+    [textField resignFirstResponder];
+    
+    
+    
+    
+    
+    if ([self.manuSearchtxt.text length]<1)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=122;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+        
+        
+    }
+    
+    
+    
+    return YES;
+    
+}
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    CGRect frame=[self.Scarchicon frame];
+    
+    frame.origin.x=9;
+    
+    [UIView animateWithDuration:.3f animations:^{
+        
+        self.Scarchicon.frame=frame;
+        
+    }];
+    
+}
+
+
 
 @end

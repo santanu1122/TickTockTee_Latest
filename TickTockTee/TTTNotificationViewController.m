@@ -107,10 +107,7 @@
                                 [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"id"]]forKey:@"id"];
                                 [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"type"]]forKey:@"type"];
                                 
-                                if([[loop objectForKey:@"type"] isEqualToString:@"event"]){
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"eventid"]] forKey:@"eventid"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"thumb"]] forKey:@"thumb"];
-                                }
+                                
                                 
                                 
                                 [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"messageheader"]] forKey:@"messageheader"];
@@ -121,8 +118,7 @@
                                 [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"invitedbythumb"]] forKey:@"invitedbythumb"];
                                 [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"action"]] forKey:@"action"];
                                 
-                                
-                                if([[loop objectForKey:@"type"] isEqualToString:@"photos"]){
+                               
                                     [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"photoid"]] forKey:@"photo_id"];
                                     [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"photourl"]] forKey:@"photourl"];
                                     [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"albumid"]]forKey:@"albumid"];
@@ -140,28 +136,8 @@
                                     [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"ActivityCommentCount"]] forKey:@"commentcount"];
                                     
                                     [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"ActivityUserLiked"]] forKey:@"isUserLiked"];
-                                }
                                 
                                 
-                                if([[loop objectForKey:@"type"] isEqualToString:@"videos"]){
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"photoid"]] forKey:@"photo_id"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"photourl"]] forKey:@"photourl"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"albumid"]]forKey:@"albumid"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"caption"]] forKey:@"caption"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"location"]] forKey:@"location"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"datetime"]] forKey:@"datetime"];
-                                    
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"original"]] forKey:@"original"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"likePermission"]] forKey:@"likePermission"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"commentPermission"]] forKey:@"commentPermission"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"sharePermission"]] forKey:@"sharePermission"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"tagPermission"]] forKey:@"tagPermission"];
-                                    
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"ActivityLikeCount"]] forKey:@"likecount"];
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"ActivityCommentCount"]] forKey:@"commentcount"];
-                                    
-                                    [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop valueForKey:@"ActivityUserLiked"]] forKey:@"isUserLiked"];
-                                }
                                 
                                 [notificationarray addObject:dicForAll];
                                 
@@ -252,13 +228,13 @@
     [self setRoundBorderToImageView:profileImage];
     UIActivityIndicatorView *spinner=(UIActivityIndicatorView *)[scroll viewWithTag:200];
     NSString *BackgroundImageStgring;
-    if([[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"type"] isEqualToString:@"event"]){
-        BackgroundImageStgring=[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"thumb"];
-    }else if([[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"type"] isEqualToString:@"photos"] || [[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"type"] isEqualToString:@"videos"] ){
+//    if([[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"type"] isEqualToString:@"event"]){
+//        BackgroundImageStgring=[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"thumb"];
+//    }else if([[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"type"] isEqualToString:@"photos"] || [[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"type"] isEqualToString:@"videos"] ){
         BackgroundImageStgring=[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"photourl"];
-    }
+//    }
     
-    
+    NSLog(@"BackgroundImageStgring %@",BackgroundImageStgring);
     
     NSURLRequest *request_img = [NSURLRequest requestWithURL:[NSURL URLWithString:BackgroundImageStgring]];
     AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:request_img
@@ -274,7 +250,8 @@
                                                                                            }
                                                                                            failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                                                                                NSLog(@"Error %@",error);
-                                                                                               
+                                                                         [spinner stopAnimating];
+                                                                         [spinner setHidden:YES];
                                                                                                
                                                                                                
                                                                                            }];
@@ -523,7 +500,32 @@
         [self presentViewController:PhotoDetais animated:YES completion:^{
             
         }];
+    }else if([[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"type"] isEqualToString:@"events.wall"])
+    {
+        NSMutableArray *mutPhotoarry=[[NSMutableArray alloc]init];
+        [mutPhotoarry addObject:[notificationarray objectAtIndex:indexPath.row]];
+        
+        TTTPhotodetailsViewController *PhotoDetais=[[TTTPhotodetailsViewController alloc]init];
+        PhotoDetais.ParamPhotoArry=mutPhotoarry;
+        NSString *TouchviewTag=@"0";
+        PhotoDetais.ClickphotoId=TouchviewTag;
+        [self presentViewController:PhotoDetais animated:YES completion:^{
+            
+        }];
     }
+//    else if([[[notificationarray objectAtIndex:indexPath.row]valueForKey:@"type"] isEqualToString:@"videos"])
+//    {
+//        NSMutableArray *mutPhotoarry=[[NSMutableArray alloc]init];
+//        [mutPhotoarry addObject:[notificationarray objectAtIndex:indexPath.row]];
+//        
+//        TTTWebVideoViewController *PhotoDetais=[[TTTWebVideoViewController alloc]init];
+//        PhotoDetais.ParamPhotoArry=mutPhotoarry;
+//        NSString *TouchviewTag=@"0";
+//        PhotoDetais.ClickphotoId=TouchviewTag;
+//        [self presentViewController:PhotoDetais animated:YES completion:^{
+//            
+//        }];
+//    }
     
 }
 -(void)viewWillDisappear:(BOOL)animated

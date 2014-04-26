@@ -9,7 +9,6 @@
                 <outlet property="MenuBarView" destination="4ap-fB-m1T" id="77o-lz-Cwx"/>
                 <outlet property="ScreenView" destination="SLP-LE-2I5" id="JnR-0D-uec"/>
                 <outlet property="achievementbtn" destination="Juw-0a-jRb" id="2XK-pT-QYA"/>
-                <outlet property="avtivity" destination="oCt-p1-5Nx" id="Lxa-A4-zww"/>
                 <outlet property="datestatics" destination="1Qm-nK-UpL" id="Qsc-NN-LD1"/>
                 <outlet property="dropDownView1" destination="WAF-Wi-Ntt" id="v2L-JN-wQA"/>
                 <outlet property="footerView" destination="lWu-9L-rUN" id="Cke-rD-ALr"/>
@@ -110,10 +109,6 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="oCt-p1-5Nx">
-                            <rect key="frame" x="150" y="254" width="20" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>

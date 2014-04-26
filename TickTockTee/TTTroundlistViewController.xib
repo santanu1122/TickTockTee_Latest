@@ -227,6 +227,10 @@
                         <action selector="Showhandicap:" destination="-1" eventType="touchUpInside" id="jwr-oq-rhK"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropdownFrontlogo" id="76M-7D-mhk">
+                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -237,6 +241,7 @@
         <image name="back-button" width="90" height="90"/>
         <image name="background_2.png" width="640" height="1136"/>
         <image name="dropdown" width="80" height="30"/>
+        <image name="dropdownFrontlogo" width="37" height="17"/>
         <image name="menu-iconForActivitt" width="90" height="90"/>
         <image name="topbar" width="640" height="128"/>
     </resources>

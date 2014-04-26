@@ -69,14 +69,14 @@
     _profilePlace.font=[UIFont fontWithName:MYREADPROREGULAR size:12];
     
     _loggedInUserid=[self LoggedId];
-    _MainLabel.text=[NSString stringWithFormat:@"%@'s Profile",_mainLabelString];
+  //  _MainLabel.text=[NSString stringWithFormat:@"%@'s Profile",_mainLabelString];
     ParamprofileViewerId=([ParamprofileViewerId length]>0)?ParamprofileViewerId:[self LoggedId];
     [self initializeDict];
     
     if([_loggedInUserid isEqualToString:ParamprofileViewerId])
     {
-        _unflowButton.hidden=NO;
-        _messagebutton.hidden=NO;
+        _unflowButton.hidden=YES;
+        _messagebutton.hidden=YES;
         _plusButton.hidden=YES;
         self.menu.hidden=NO;
         self.BackButtonClick.hidden=YES;
@@ -85,9 +85,10 @@
         
     }
     else{
-        _unflowButton.hidden=YES;
-        _messagebutton.hidden=YES;
-        _plusButton.hidden=NO;
+        
+        _unflowButton.hidden=NO;
+        _messagebutton.hidden=NO;
+        _plusButton.hidden=YES;
         self.menu.hidden=YES;
         self.BackButtonClick.hidden=NO;
     }
@@ -329,7 +330,7 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         }
-        _MainLabel.text=[_dict objectForKey:@"username"];
+        _MainLabel.text=[NSString stringWithFormat:@"%@'s Profile",[_dict objectForKey:@"username"]];
     }
     else
     {

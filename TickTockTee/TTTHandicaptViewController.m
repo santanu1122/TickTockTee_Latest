@@ -12,6 +12,7 @@
 #import "TTTHandicaptViewController.h"
 #import "TTTAchievementStatisticViewController.h"
 #import "TTTHandicapDetails.h"
+#import "SVProgressHUD.h"
 #import "TTTroundlistViewController.h"
 @interface TTTHandicaptViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -20,6 +21,13 @@
     BOOL isopened;
     NSString *ViewID;
      BOOL IsLeftMenuBoxOpen,isFastLocation,islastlocation,IsChatMenuBoxOpen;
+    BOOL isScroll,isLoadMode,IfMoreDataAvalable;
+    UIActivityIndicatorView *progress;
+    UIView *viewonfooter;
+    NSInteger numborofarray;
+    NSOperationQueue *OperationQ;
+    NSString *lastID;
+    NSString *profile,*activesince;
 }
 @property (strong, nonatomic) IBOutlet UIButton *overviewbtn;
 @property (strong, nonatomic) IBOutlet UIButton *achievementbtn;
@@ -38,7 +46,7 @@
 @synthesize page_title=_page_title;
 @synthesize statistics=_statistics;
 @synthesize datestatics=_datestatics;
-@synthesize avtivity=_avtivity;
+
 @synthesize dropDownView1=_dropDownView1;
 @synthesize paramviewID;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -56,14 +64,16 @@
 {
     [super viewDidLoad];
     arrayContent=[[NSMutableArray alloc]init];
-    
+     _page_title.text=@"Handicap Details";
+    _page_title.font = [UIFont fontWithName:@"MyriadPro-regular" size:19.0];
+    OperationQ=[[NSOperationQueue alloc]init];
+    arrayContent = [[NSMutableArray alloc] init];
+    lastID=@"0";
+    IfMoreDataAvalable=TRUE;
     // Do any additional setup after loading the view from its nib.
     [_footerView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bottom-bar2"]]];
     
     ViewID=(paramviewID.length>0)?paramviewID:[self LoggedId];
-    
-    
-    
     
     (!IsIphone5)?[_footerView setFrame:CGRectMake(0, (480 - _footerView.frame.size.height), _footerView.frame.size.width, _footerView.frame.size.height)]:[_footerView setFrame:CGRectMake(0, (568 - _footerView.frame.size.height), _footerView.frame.size.width, _footerView.frame.size.height)];
     [self.view bringSubviewToFront:_footerView];
@@ -79,100 +89,260 @@
     }
     
     [_ScreenView addSubview:_nameview];
-    [_handcaplist setFrame:CGRectMake(0, _nameview.layer.frame.size.height+_nameview.layer.frame.origin.y,_handcaplist.layer.frame.size.width, _handcaplist.layer.frame.size.height+10)];
+    [_handcaplist setFrame:CGRectMake(0, _nameview.layer.frame.size.height+_nameview.layer.frame.origin.y,_handcaplist.layer.frame.size.width, _handcaplist.layer.frame.size.height)];
     _handcaplist.backgroundColor=[UIColor clearColor];
     [_ScreenView addSubview:_handcaplist];
     [self.view addSubview:_dropDownView1];
+    [_handcaplist setDelegate:self];
+    [_handcaplist setDataSource:self];
+    [_handcaplist setHidden:YES];
+   // [_ScreenView bringSubviewToFront:_handcaplist];
+    
     _dropDownView1.hidden=YES;
+    [SVProgressHUD show];
+    [self Domywork];
 }
+
+
+-(void)Domywork
+
+{
+    
+    NSInvocationOperation *operation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(getTheData:) object:lastID];
+    
+    [OperationQ addOperation:operation];
+    
+}
+
+
 -(void)viewDidAppear:(BOOL)animated{
     isopened=NO;
     
     [super viewDidAppear:YES];
-    _page_title.text=@"Handicap Details";
-    [self getTheData];
+   
+    
     
     
     
 }
--(void)getTheData
+-(void)getTheData:(NSString *)lastidforloadmore
+
 {
-    i=0;
-    if ([self isConnectedToInternet])
-    {
-        __block NSString *str_url=[NSString stringWithFormat:@"%@user.php?mode=handicaplist&userid=%@&loggedin_userid=%@",API,ViewID,[self LoggedId]];
+    NSError *error=nil;
+    
+    @try{
         
-        NSLog(@"str_url ----- %@",str_url);
-        
-        NSURL *fire_url=[NSURL URLWithString:str_url];
-        
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-            NSError *err=nil;
-            NSData* data = [NSData dataWithContentsOfURL:fire_url options:0 error:&err];
+        if ([self isConnectedToInternet])
+            
+        {
+            
+            NSString *stringurl = [NSString stringWithFormat:@"%@user.php?mode=handicaplist&userid=%@&loggedin_userid=%@&lastid=%@", API,ViewID,[self LoggedId],lastidforloadmore];
             
             
-            dispatch_async(dispatch_get_main_queue(), ^(void)
+            
+            NSLog(@"urlllllllllll %@", stringurl);
+            
+            NSURL *requestURL2 = [NSURL URLWithString:stringurl];
+            
+            NSData *signeddataURL2 =  [NSData dataWithContentsOfURL:requestURL2 options:NSDataReadingUncached error:&error];
+            
+            NSMutableDictionary *Output = [NSJSONSerialization
+                                           
+                                           JSONObjectWithData:signeddataURL2
+                                           
+                                           
+                                           
+                                           options:kNilOptions
+                                           
+                                           error:&error];
+            
+            
+            
+            
+            
+            if ([[Output valueForKey:@"extraparam"] isKindOfClass:[NSDictionary class]])
+                
             {
                 
+                NSDictionary *Extraparam=[Output valueForKey:@"extraparam"];
                 
+                NSString *loadMoredata=[Extraparam valueForKey:@"moredata"];
                 
-                
-                NSDictionary *dict=[NSJSONSerialization JSONObjectWithData:data  options:kNilOptions error:nil];
-                
-                arrayContent = [[NSMutableArray alloc] init];
-                
-                
-                _statistics.font=[UIFont fontWithName:MYRIARDPROSAMIBOLT size:16];
-                _datestatics.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14];
-                [_statistics setText:[NSString stringWithFormat:@"%@'s statistics",[dict objectForKey:@"Profile"]]];
-                [_datestatics setText:[NSString stringWithFormat:@"Since %@",[dict objectForKey:@"Activesince"]]];
-                
-                
-                
-                
-                
-                if ([[dict objectForKey:@"handicaplist"] count] > 0)
+                if ([loadMoredata integerValue]==0)
+                    
                 {
                     
-                    for (NSDictionary *Datadic in [dict objectForKey:@"handicaplist"]) {
-                        
-                        NSLog(@"Datadic --- %@",Datadic);
-                        
-                        [arrayContent insertObject:Datadic atIndex:i];
-                        i++;
-                        
-                    }
-                    [_avtivity stopAnimating];
+                    IfMoreDataAvalable=FALSE;
                     
-                    [_handcaplist setDelegate:self];
-                    [_handcaplist setDataSource:self];
-                    [_ScreenView bringSubviewToFront:_handcaplist];
-                    [_handcaplist reloadData];
-                }
-                else
-                {
-                    [_avtivity stopAnimating];
                 }
                 
+                lastID=[Extraparam valueForKey:@"lastid"];
                 
-            });
-        });
-
-    }
-    else
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [SVProgressHUD showErrorWithStatus:@"No internet connection"];
+            }
             
-        });
+            
+            
+            profile=[Output valueForKey:@"Profile"];
+            
+            activesince=[Output valueForKey:@"Activesince"];
+            
+            if ([[Output objectForKey:@"handicaplist"] isKindOfClass:[NSArray class]])
+                
+            {
+                
+                NSArray *arr=[Output objectForKey:@"handicaplist"];
+                
+                if ([arr count]>0)
+                    
+                {
+                    
+                    for(NSMutableDictionary *loop in arr)
+                        
+                    {
+                        NSMutableDictionary *dicForAll = [[NSMutableDictionary alloc]init];
+                        
+                        [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"MatchId"]] forKey:@"MatchId"];
+                        
+                        [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"MatchName"]] forKey:@"MatchName"];
+                        
+                        [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"Location"]] forKey:@"Location"];
+                        
+                        [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"CourseName"]] forKey:@"CourseName"];
+                        
+                        [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"Matchdate"]] forKey:@"Matchdate"];
+                        
+                        [dicForAll setValue:[self RemoveNullandreplaceWithSpace:[loop objectForKey:@"TttHandicapIndex"]] forKey:@"TttHandicapIndex"];
+                        
+                         [arrayContent addObject:dicForAll];
+                        
+                        
+                        
+                        if(isLoadMode==TRUE){
+                            [self performSelectorOnMainThread:@selector(inserthandicaplistintotable) withObject:nil waitUntilDone:YES];
+                        }
+                    }
+                    
+                    if(isLoadMode==FALSE){
+                        [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+                    }
+                    
+                    
+                    
+                    
+                }
+                
+                else
+                    
+                {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        
+                        [SVProgressHUD dismiss];
+                        
+                        [SVProgressHUD showErrorWithStatus:@"No handicap list found"];
+                        
+                    });
+                    
+                }
+                
+            }
+            
+            else
+                
+            {
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void)
+                               
+                               {
+                                   
+                                   [SVProgressHUD dismiss];
+                                   
+                                   [SVProgressHUD showErrorWithStatus:@"Unexpected error occur."];
+                                   
+                               });
+                
+            }
+            
+            
+        }
+        
+        else
+            
+        {
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void)
+                           
+                           {
+                               
+                               [SVProgressHUD dismiss];
+                               
+                               [SVProgressHUD showErrorWithStatus:@"No internet connection available!"];
+                               
+                               [[self view] setUserInteractionEnabled:YES];
+                               
+                           });
+            
+        }
+        
+        
+        
+        
+        
+    }@catch (NSException *exception)
+    
+    {
+        
+        
+        
+        NSLog(@"Reporting exception from handicap details : %@", exception);
+        
     }
+    
+    
     
 }
 
 
 
+-(void)ReloadTable
+
+{
+  
+    _statistics.text=[[NSString stringWithFormat:@"%@'S STATISTICS",profile] uppercaseString];
+    
+    _datestatics.text=[NSString stringWithFormat:@"Since %@",activesince];
+    
+    _statistics.font = [UIFont fontWithName:MYRIARDPROSAMIBOLT size:16.0];
+    
+    _datestatics.font = [UIFont fontWithName:MYRIARDPROLIGHT size:14.0];
+    
+    [SVProgressHUD dismiss];
+    [_handcaplist setHidden:NO];
+    [_handcaplist reloadData];
+    
+}
+
+
+-(void)inserthandicaplistintotable
+{
+    numborofarray=[arrayContent count]-1;
+  
+    [_handcaplist beginUpdates];
+    NSIndexPath *Indexpath=[NSIndexPath indexPathForRow:numborofarray inSection:0];
+    [_handcaplist insertRowsAtIndexPaths:[[NSArray alloc] initWithObjects:Indexpath, nil] withRowAnimation:UITableViewRowAnimationFade];
+    [_handcaplist endUpdates];
+    [SVProgressHUD dismiss];
+    [progress stopAnimating];
+    [progress hidesWhenStopped];
+    [viewonfooter removeFromSuperview];
+    [self footer];
+    isScroll=FALSE;
+    
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSLog(@"TableView count in handicapp count = %d",[arrayContent count]);
+  
     return [arrayContent count];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -184,8 +354,7 @@
     
     NSMutableDictionary *dict=[arrayContent objectAtIndex:indexPath.row];
     
-    
-    NSLog(@"Values are %@ %@ %@ %@ ",[dict objectForKey:@"MatchName"],[dict objectForKey:@"Location"],[dict objectForKey:@"Matchdate"],[dict objectForKey:@"TttHandicapIndex"]);
+  
     [tableView dequeueReusableCellWithIdentifier:@"PhotoCustomCell"];
     
     if(cell==nil)
@@ -201,7 +370,7 @@
     label2.font=[UIFont fontWithName:MYRIARDPROLIGHT size:15];
     label3.font=[UIFont fontWithName:MYRIARDPROLIGHT size:13];
     label4.font=[UIFont fontWithName:MYREADPROREGULAR size:24];
-    label1.text=[dict objectForKey:@"MatchName"];
+    label1.text=[[dict objectForKey:@"MatchName"]uppercaseString];
     label2.text=[dict objectForKey:@"Location"];
     label3.text=[dict objectForKey:@"Matchdate"];
     label4.text=[dict objectForKey:@"TttHandicapIndex"];
@@ -230,7 +399,19 @@
 
 
 - (IBAction)backButtonClick:(id)sender {
-    [self PerformGoBack];
+   // [self PerformGoBack];
+    int index;
+    NSArray* arr = [[NSArray alloc] initWithArray:self.navigationController.viewControllers];
+    for(int j=0 ; j<[arr count] ; j++)
+    {
+        if(![[arr objectAtIndex:j] isKindOfClass:NSClassFromString(@"TTTHandicaptViewController")])
+            
+        {
+            index = j;
+        }
+    }
+    [self.navigationController popToViewController:[arr objectAtIndex:index] animated:YES];
+
 }
 - (IBAction)menuChanged:(id)sender {
     if(isopened==NO){
@@ -415,7 +596,7 @@
                 
                 if (islastlocation)
                 {
-                    NSLog(@"open satisfied");
+                    
                     [UIView animateWithDuration:0.3f animations:^{
                         _ScreenView.frame=frame;
                         
@@ -424,7 +605,7 @@
                 }
                 else
                 {
-                    NSLog(@"close satisfied");
+                   
                     IsLeftMenuBoxOpen=YES;
                     isFastLocation=TRUE;
                     CGRect lastFrame=[_ScreenView frame];
@@ -439,12 +620,12 @@
             
             else
             {
-                //NSLog(@"TRY Left Menu OPEN");
+               
                 
                 if (stopLocation.x*-1>60.0f)
                 {
                     isFastLocation=FALSE;
-                    // NSLog(@"is fast location");
+                    
                 }
                 else
                 {
@@ -461,7 +642,7 @@
                 if (isFastLocation)
                 {
                     
-                    NSLog(@"open satisfied");
+                   
                     [UIView animateWithDuration:.2 animations:^{
                         _ScreenView.frame=frame;
                         
@@ -470,7 +651,7 @@
                 }
                 else
                 {
-                    NSLog(@"close satisfied");
+                    
                     IsLeftMenuBoxOpen=NO;
                     islastlocation=TRUE;
                     CGRect lastFrame2=[_ScreenView frame];
@@ -492,7 +673,7 @@
         {
             if (stopLocation.x<150&islastlocation==TRUE&IsLeftMenuBoxOpen==NO)
             {
-                NSLog(@"Left Menu closed %f",stopLocation.x);
+                
                 CGRect framelast=[_ScreenView frame];
                 framelast.origin.x=0;
                 
@@ -505,7 +686,7 @@
             
             if (stopLocation.x*-1<100.0f&isFastLocation==TRUE&IsLeftMenuBoxOpen==YES)
             {
-                NSLog(@"Left Menu opened%f",stopLocation.x);
+                
                 
                 CGRect framelast=[_ScreenView frame];
                 framelast.origin.x=260;
@@ -526,11 +707,64 @@
 }
 
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+
+{
+    
+    CGPoint offset = scrollView.contentOffset;
+    
+    CGRect bounds = scrollView.bounds;
+    
+    CGSize size = scrollView.contentSize;
+    
+    UIEdgeInsets inset = scrollView.contentInset;
+    
+    float y = offset.y + bounds.size.height - inset.bottom;
+    
+    float h = size.height;
+    
+    float reload_distance = -60.0f;
+    
+    if(y > h + reload_distance)
+        
+    {
+        if (IfMoreDataAvalable==TRUE && isScroll==FALSE)
+            
+        {
+            isLoadMode=TRUE;
+            isScroll=TRUE;
+            [self Load];
+            NSInvocationOperation *operation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(getTheData:) object:lastID];
+            [OperationQ addOperation:operation];
+        }
+        
+    }
+    
+}
+
+-(void)Load{
+    viewonfooter = [[UIView alloc] initWithFrame:CGRectMake(0,_handcaplist.frame.size.height, 320, 30)];
+    viewonfooter.backgroundColor=[UIColor clearColor];
+    progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(150,10, 20, 20)];
+    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    [viewonfooter addSubview:progress];
+    [progress startAnimating];
+    _handcaplist.tableFooterView= viewonfooter;
+}
+-(void)footer{
+    viewonfooter = [[UIView alloc] initWithFrame:CGRectMake(0,_handcaplist.frame.size.height, 320, 0)];
+    viewonfooter.backgroundColor=[UIColor clearColor];
+    _handcaplist.tableFooterView= viewonfooter;
+}
+
+
+
+
 -(void)PerformChatSliderOperation
 {
     
     IsChatMenuBoxOpen=[self PerformChatSlider:_ScreenView withChatArea:self.chatBoxView IsOpen:IsChatMenuBoxOpen];
-    NSLog(@"PerformChatSliderOperation %@",IsChatMenuBoxOpen?@"YES":@"NO");
+  
     
 }
 

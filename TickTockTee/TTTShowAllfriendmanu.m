@@ -33,6 +33,7 @@ BOOL  islastlocation;
 BOOL isFastLocation;
 NSString *LastLoadedid;
     BOOL isloadmoredata;
+     NSInteger position;
     
     
     
@@ -88,6 +89,7 @@ NSString *LastLoadedid;
     
     Searchtextfield.font=[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f];
     [Searchtextfield setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+     [Searchtextfield addTarget:self action:@selector(performSearch) forControlEvents:UIControlEventEditingChanged];
     ViewerID=([Parmfrienduserid length]>0)?Parmfrienduserid:[self LoggedId];
     
     if (Parmfrienduserid.length>0)
@@ -123,6 +125,7 @@ NSString *LastLoadedid;
 
 - (IBAction)PerformmanuSlider:(id)sender
 {
+    [self keyboardhide];
     IsLeftMenuBoxOpen=[self PerformMenuSlider:ScreenView withMenuArea:MenuView IsOpen:IsLeftMenuBoxOpen];
     if (IsLeftMenuBoxOpen==TRUE)
     {
@@ -141,7 +144,7 @@ NSString *LastLoadedid;
     
     CGPoint  stopLocation;
     
-    
+    [self keyboardhide];
     
     if (panRecognizer.state == UIGestureRecognizerStateBegan)
     {
@@ -564,58 +567,86 @@ NSString *LastLoadedid;
 }
 -(void)deletfriend:(NSString *)friendID
 {
+    
     if ([self isConnectedToInternet])
     {
         @try
         {
-            NSError *Error;
+           NSError *Error;
             NSString *StringUrl=[NSString stringWithFormat:@"%@user.php?mode=deletefriend&userid=%@&friendid=%@",API,[self LoggedId],friendID];
             NSLog(@"The friend id:%@",friendID);
-            NSData *SentDeletInfo=[NSData dataWithContentsOfURL:[NSURL URLWithString:StringUrl]];
+           NSData *SentDeletInfo=[NSData dataWithContentsOfURL:[NSURL URLWithString:StringUrl]];
             NSDictionary *dataDic=[NSJSONSerialization JSONObjectWithData:SentDeletInfo options:kNilOptions error:&Error];
             NSString *Responce=[dataDic valueForKey:@"status"];
             NSString *returnmessage=[dataDic valueForKey:@"message"];
+        
             if ([Responce isEqualToString:@"success"])
             {
-                dispatch_async(dispatch_get_main_queue(), ^{
+                        if(isFiltered)
+                {
+                    for(int i=0;i<[friendlistarray count];i++)
+                    {
+                        if([[[friendlistarray objectAtIndex:i] valueForKey:@"FriendId"]isEqualToString:friendID])
+                        {
+                            position=i;
+                            break;
+                        }
+                    }
                     
-                   
-                    [friendlistarray removeObjectAtIndex:numbor];
-                 
-                     NSIndexPath *Indexpath=[NSIndexPath indexPathForRow:numbor inSection:0];
-                    [friendlist beginUpdates];
-                    [friendlist deleteRowsAtIndexPaths:[[NSArray alloc]initWithObjects:Indexpath, nil] withRowAnimation:UITableViewRowAnimationFade];
-                    [friendlist endUpdates];
-                     [SVProgressHUD showSuccessWithStatus:returnmessage];
+                    [FilterArry removeObjectAtIndex:numbor];
                     
-                });
-            }
+                    
+                    
+                }else{
+                    position=numbor;
+                }
+                
+                [self performSelectorOnMainThread:@selector(RemoverowandShowstatus:) withObject:returnmessage waitUntilDone:YES];
+                
+                
+           }
             else
-            {
-                  [SVProgressHUD showErrorWithStatus:returnmessage];
+           {
+               dispatch_async(dispatch_get_main_queue(), ^{
+                   [SVProgressHUD showErrorWithStatus:returnmessage];
+               });
             }
-
+    
         }
         @catch (NSException *exception)
         {
-            NSLog(@"ERROR REPORT:--------------%@",exception);
+           NSLog(@"ERROR REPORT:--------------%@",exception);
         }
-       
+    
         
     }
     else
     {
-        [SVProgressHUD showErrorWithStatus:@"request could not complete"];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showErrorWithStatus:@"No internet connection"];
+        });
     }
     
     
 }
 
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+-(void)RemoverowandShowstatus:(NSString *)returnmessage
 {
-     [self performSearch];
-    return YES;
+    
+    
+    [friendlistarray removeObjectAtIndex:position];
+    [friendlist reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD showSuccessWithStatus:returnmessage];
+    });
 }
+
+
+//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+//{
+//     [self performSearch];
+//    return YES;
+//}
 
 -(IBAction)Sendmessage:(UIButton *)sender
 {
@@ -627,9 +658,17 @@ NSString *LastLoadedid;
 
     
     numbor=sender.tag-9999;
-    NSMutableDictionary *mutDic=[friendlistarray objectAtIndex:numbor];
+    NSMutableDictionary *mutDic;
+    if (isFiltered)
+    {
+        mutDic=[FilterArry objectAtIndex:numbor];
+    }
+    else
+    {
+        mutDic=[friendlistarray objectAtIndex:numbor];
+    }
     
-    NSString *fndId=[mutDic valueForKey:@"FriendId"];
+   NSString *fndId=[mutDic valueForKey:@"FriendId"];
     NSLog(@"The value of frend id:%@",fndId);
     TTTCretenewmessage *messageViewcontroller=[[TTTCretenewmessage alloc]init];
     messageViewcontroller.MessageSenderid=fndId;
@@ -706,7 +745,8 @@ NSString *LastLoadedid;
 
 - (IBAction)FilterThefrienddata:(id)sender
 {
-    [self performSearch];
+//    [self performSearch];
+    [Searchtextfield resignFirstResponder];
 }
 
 -(void)gestureAction:(UITapGestureRecognizer *) sender
@@ -714,6 +754,7 @@ NSString *LastLoadedid;
     CGPoint touchLocation = [sender locationOfTouch:0 inView:friendlist];
     NSIndexPath *indexPath = [friendlist indexPathForRowAtPoint:touchLocation];
     NSMutableDictionary *mutablDic=[friendlistarray objectAtIndex:indexPath.row];
+    [Searchtextfield resignFirstResponder];
     TTTProfileViewController *ProfileView=[[TTTProfileViewController alloc]init];
     ProfileView.ParamprofileViewerId=[mutablDic valueForKey:@"FriendId"];
     ProfileView.mainLabelString=[mutablDic valueForKey:@"FriendName"];
@@ -733,7 +774,7 @@ NSString *LastLoadedid;
 -(void)performSearch
 {
     
-    isFiltered=FALSE;
+    
     if([[Searchtextfield text] length]>0)
     {
         isFiltered=TRUE;
@@ -744,30 +785,19 @@ NSString *LastLoadedid;
             NSRange FnameRange=[[Friendlistarry valueForKey:@"FriendName"] rangeOfString:[Searchtextfield text] options:NSCaseInsensitiveSearch];
             
             NSRange emailRange=[[Friendlistarry valueForKey:@"email"] rangeOfString:[Searchtextfield text] options:NSCaseInsensitiveSearch];
-         
+            
             
             if(FnameRange.location!=NSNotFound || emailRange.location!=NSNotFound ) [FilterArry addObject:Friendlistarry];
         }
+    }else{
+        isFiltered=FALSE;
     }
-     [friendlist reloadData];
+    
+    
+    [friendlist reloadData];
     
 }
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    if (textField ==Searchtextfield)
-    {
-         [self performSearch];
-    }
-    return YES;
-}
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-    if (textField==Searchtextfield)
-    {
-        [self performSearch];
-    }
-}
+
 - (IBAction)Backbuttonclick:(id)sender
 {
     [self PerformGoBack];
@@ -808,6 +838,121 @@ NSString *LastLoadedid;
     
 }
 
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    
+    [textField resignFirstResponder];
+    
+
+    if(textField==self.manuSearchtxt){
+        
+        if ([self.manuSearchtxt.text length]<1)
+            
+        {
+            
+            CGRect frame=[self.Scarchicon frame];
+            
+            frame.origin.x=122;
+            
+            [UIView animateWithDuration:.3f animations:^{
+                
+                
+                
+                self.Scarchicon.frame=frame;
+                
+                
+                
+                
+                
+            }];
+            
+            
+            
+        }
+        
+    }
+    
+    return YES;
+    
+}
+
+
+
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    
+    
+    if(textField==self.manuSearchtxt){
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=9;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+    
+    
+}
+
+
+
+
+
+
+
+-(void)keyboardhide{
+    
+    [Searchtextfield resignFirstResponder];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    [SVProgressHUD dismiss];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=122;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
 
 
 @end

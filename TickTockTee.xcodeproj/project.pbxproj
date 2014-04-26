@@ -38,7 +38,6 @@
 		0DF6CBD618B5C65100D3E18F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF6CBD518B5C65100D3E18F /* Security.framework */; };
 		0DF6CBD818B5C65800D3E18F /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF6CBD718B5C65800D3E18F /* Social.framework */; };
 		0DF6CBDA18B5C66200D3E18F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF6CBD918B5C66200D3E18F /* SystemConfiguration.framework */; };
-		0DF6CBDC18B5C66900D3E18F /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF6CBDB18B5C66900D3E18F /* Twitter.framework */; };
 		0DF6CBDE18B5C67000D3E18F /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF6CBDD18B5C67000D3E18F /* CFNetwork.framework */; };
 		0DF6CBE018B5C67600D3E18F /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF6CBDF18B5C67600D3E18F /* QuartzCore.framework */; };
 		0DF6CBE218B5C68000D3E18F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DF6CBE118B5C68000D3E18F /* Accelerate.framework */; };
@@ -268,6 +267,7 @@
 		4CFFBDAC18CEE41E00D92D47 /* TTTCellForgolferActivity.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CFFBDAB18CEE41E00D92D47 /* TTTCellForgolferActivity.xib */; };
 		4CFFBDB018CF0BB700D92D47 /* TTTCellForActivityComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFBDAF18CF0BB700D92D47 /* TTTCellForActivityComment.m */; };
 		4CFFBDB218CF0BCD00D92D47 /* TTTCellForActivityComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CFFBDB118CF0BCD00D92D47 /* TTTCellForActivityComment.xib */; };
+		550B892D190B9B6F00199C32 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550B892C190B9B6E00199C32 /* Twitter.framework */; };
 		D9963C4B19093B0700F383AC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9963C4A19093B0700F383AC /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
@@ -326,7 +326,6 @@
 		0DF6CBD518B5C65100D3E18F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0DF6CBD718B5C65800D3E18F /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		0DF6CBD918B5C66200D3E18F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		0DF6CBDB18B5C66900D3E18F /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		0DF6CBDD18B5C67000D3E18F /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		0DF6CBDF18B5C67600D3E18F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0DF6CBE118B5C68000D3E18F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -649,6 +648,7 @@
 		4CFFBDAE18CF0BB700D92D47 /* TTTCellForActivityComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTCellForActivityComment.h; sourceTree = "<group>"; };
 		4CFFBDAF18CF0BB700D92D47 /* TTTCellForActivityComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTCellForActivityComment.m; sourceTree = "<group>"; };
 		4CFFBDB118CF0BCD00D92D47 /* TTTCellForActivityComment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTCellForActivityComment.xib; sourceTree = "<group>"; };
+		550B892C190B9B6E00199C32 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = ../../Downloads/Twitter.framework; sourceTree = "<group>"; };
 		D9963C4A19093B0700F383AC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -657,6 +657,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				550B892D190B9B6F00199C32 /* Twitter.framework in Frameworks */,
 				D9963C4B19093B0700F383AC /* FacebookSDK.framework in Frameworks */,
 				0DF6CBE218B5C68000D3E18F /* Accelerate.framework in Frameworks */,
 				4C398D5918CB020D00D2CB13 /* CoreImage.framework in Frameworks */,
@@ -667,7 +668,6 @@
 				4CE28CB018BEFCBB00900F5E /* MapKit.framework in Frameworks */,
 				0DF6CBE018B5C67600D3E18F /* QuartzCore.framework in Frameworks */,
 				0DF6CBDE18B5C67000D3E18F /* CFNetwork.framework in Frameworks */,
-				0DF6CBDC18B5C66900D3E18F /* Twitter.framework in Frameworks */,
 				0DF6CBDA18B5C66200D3E18F /* SystemConfiguration.framework in Frameworks */,
 				0DF6CBD818B5C65800D3E18F /* Social.framework in Frameworks */,
 				0DF6CBD618B5C65100D3E18F /* Security.framework in Frameworks */,
@@ -874,6 +874,7 @@
 		0DFF3A1C18B5C3AC00FFC80B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				550B892C190B9B6E00199C32 /* Twitter.framework */,
 				D9963C4A19093B0700F383AC /* FacebookSDK.framework */,
 				4C398D5818CB020D00D2CB13 /* CoreImage.framework */,
 				4CE28CC118BF7CA100900F5E /* AVFoundation.framework */,
@@ -884,7 +885,6 @@
 				0DF6CBE118B5C68000D3E18F /* Accelerate.framework */,
 				0DF6CBDF18B5C67600D3E18F /* QuartzCore.framework */,
 				0DF6CBDD18B5C67000D3E18F /* CFNetwork.framework */,
-				0DF6CBDB18B5C66900D3E18F /* Twitter.framework */,
 				0DF6CBD918B5C66200D3E18F /* SystemConfiguration.framework */,
 				0DF6CBD718B5C65800D3E18F /* Social.framework */,
 				0DF6CBD518B5C65100D3E18F /* Security.framework */,
@@ -2347,6 +2347,7 @@
 					/Users/macbook_ms/Desktop,
 					"/Users/macbook_ms/Documents/Souvik\\ Projects/TTT\\ Most\\ Recent/TickTockTee\\ 5",
 					"/Users/esolztech2/Downloads/TickTockTee\\ 19",
+					/Users/esolz_mac/Downloads,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TickTockTee/TickTockTee-Prefix.pch";
@@ -2369,6 +2370,7 @@
 					/Users/macbook_ms/Desktop,
 					"/Users/macbook_ms/Documents/Souvik\\ Projects/TTT\\ Most\\ Recent/TickTockTee\\ 5",
 					"/Users/esolztech2/Downloads/TickTockTee\\ 19",
+					/Users/esolz_mac/Downloads,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TickTockTee/TickTockTee-Prefix.pch";

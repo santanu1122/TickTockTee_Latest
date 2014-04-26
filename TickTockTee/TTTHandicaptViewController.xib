@@ -9,7 +9,6 @@
                 <outlet property="MenuBarView" destination="iyo-dn-38q" id="yXJ-WZ-4vt"/>
                 <outlet property="ScreenView" destination="acS-cy-mq5" id="Hdd-c1-tuD"/>
                 <outlet property="achievementbtn" destination="Vja-AO-1ZA" id="ocb-Cd-jfF"/>
-                <outlet property="avtivity" destination="iqO-X0-pGN" id="1NC-tw-sr8"/>
                 <outlet property="chatBoxView" destination="hyd-A9-5xD" id="Phk-W9-jx8"/>
                 <outlet property="datestatics" destination="XPa-jg-vgS" id="1nU-cW-D7Z"/>
                 <outlet property="dropDownView1" destination="aMw-l1-Bu2" id="FIn-9W-osr"/>
@@ -92,10 +91,6 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" id="iqO-X0-pGN">
-                            <rect key="frame" x="150" y="274" width="20" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
@@ -129,7 +124,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="77" sectionHeaderHeight="22" sectionFooterHeight="22" id="giD-wC-kdt">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="391"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="394"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
