@@ -11,5 +11,6 @@
 
 
 @interface TTTSigninViewController : TTTGlobalViewController<UITextFieldDelegate>
+@property(nonatomic, retain) NSString *FBAccessToken;
 
 @end

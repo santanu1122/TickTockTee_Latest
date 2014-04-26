@@ -15,9 +15,6 @@
 @synthesize deviceTokenString;
 
 
-// Abdur Rahim
-// from  souvik
-// jayati saha
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -56,8 +53,8 @@
 {
     deviceTokenString = [[[[devToken description]
                            stringByReplacingOccurrencesOfString:@"<"withString:@""]
-                          stringByReplacingOccurrencesOfString:@">" withString:@""]
-                         stringByReplacingOccurrencesOfString: @" " withString: @""];
+                           stringByReplacingOccurrencesOfString:@">" withString:@""]
+                           stringByReplacingOccurrencesOfString: @" " withString: @""];
     
     
 

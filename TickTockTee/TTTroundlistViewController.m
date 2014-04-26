@@ -21,6 +21,7 @@
     
 }
 @property (strong, nonatomic) IBOutlet UIView *chatBoxView;
+@property (strong, nonatomic) IBOutlet UIImageView *arrowImage;
 
 @end
 
@@ -437,6 +438,7 @@
          {
              Ishoveropen=TRUE;
          }];
+        self.arrowImage.hidden=YES;
         
     }
     else
@@ -452,6 +454,7 @@
              Ishoveropen=FALSE;
              [self.popupview removeFromSuperview];
          }];
+        self.arrowImage.hidden=NO;
     }
     
     
@@ -474,6 +477,7 @@
          [self.popupview removeFromSuperview];
          //[SVProgressHUD show];
      }];
+    self.arrowImage.hidden=NO;
     TTTStatisticsViewController *Statistic=[[TTTStatisticsViewController alloc]init];
     Statistic.paramviewID=paramviewID;
     [self PushViewController:Statistic TransitationFrom:kCATransitionFade];
@@ -493,7 +497,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
-    
+    self.arrowImage.hidden=NO;
     TTTAchievementStatisticViewController *Achive=[[TTTAchievementStatisticViewController alloc]init];
     Achive.ParamViewid=paramviewID;
     [self PushViewController:Achive TransitationFrom:kCATransitionFade];
@@ -519,6 +523,7 @@
          // [SVProgressHUD show];
          
      }];
+    self.arrowImage.hidden=NO;
     TTTHandicaptViewController *hanDicap=[[TTTHandicaptViewController alloc]init];
     hanDicap.paramviewID=paramviewID;
     [self PushViewController:hanDicap TransitationFrom:kCATransitionFade];
@@ -536,6 +541,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
+    self.arrowImage.hidden=NO;
     TTTroundlistViewController *roundList=[[TTTroundlistViewController alloc]init];
     roundList.paramviewID=paramviewID;
     [self PushViewController:roundList TransitationFrom:kCATransitionFade];

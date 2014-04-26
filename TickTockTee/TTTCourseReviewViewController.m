@@ -64,8 +64,8 @@
 -(void)Viewwillall
 {
     NSError *error;
+    
     NSString *str=[NSString stringWithFormat:@"%@user.php?mode=coursedetailsreview&userid=%@&courseid=%@",API,[self LoggedId],courseid];
-    NSLog(@"The string url:%@",str);
     NSURL *url=[NSURL URLWithString:str];
     NSData *data=[NSData dataWithContentsOfURL:url];
     if (data.length>2)
@@ -141,7 +141,7 @@
     UITextView *reviewtxt=[[UITextView alloc]initWithFrame:CGRectMake(15, 70, 295, 30)];
     reviewtxt.font=[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f];
     reviewtxt.textColor=[UIColor whiteColor];
-   reviewtxt.textAlignment=NSTextAlignmentLeft;
+    reviewtxt.textAlignment=NSTextAlignmentLeft;
     [reviewtxt setEditable:NO];
     reviewtxt.text =[NSString stringWithFormat:@"                   %@",[[reviewarray objectAtIndex:indexPath.row]valueForKey:@"review"]];
     // NSAttributedString *Attributed=[[NSAttributedString alloc]initWithString:message.text];

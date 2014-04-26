@@ -612,9 +612,9 @@ float reload_distance = -60.0f;
         
         [SVProgressHUD showWithStatus:@"searching"];
         [self.view setUserInteractionEnabled:NO];
-    [self searchResult];
-    isEditing=NO;
-    [_Searchtextfield resignFirstResponder];
+        [self searchResult];
+         isEditing=NO;
+         [_Searchtextfield resignFirstResponder];
 
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
