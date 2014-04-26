@@ -14,4 +14,5 @@
 @property (strong, nonatomic) TTTSigninViewController *viewController;
 
 @property (nonatomic,retain) UINavigationController *Navigation;
+@property(nonatomic, retain) NSString *FBAccessToken;
 @end
