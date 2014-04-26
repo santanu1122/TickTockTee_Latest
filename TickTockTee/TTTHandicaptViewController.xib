@@ -9,6 +9,7 @@
                 <outlet property="MenuBarView" destination="iyo-dn-38q" id="yXJ-WZ-4vt"/>
                 <outlet property="ScreenView" destination="acS-cy-mq5" id="Hdd-c1-tuD"/>
                 <outlet property="achievementbtn" destination="Vja-AO-1ZA" id="ocb-Cd-jfF"/>
+                <outlet property="arrowImage" destination="MGb-pc-Va1" id="Uq0-ML-9mR"/>
                 <outlet property="avtivity" destination="iqO-X0-pGN" id="1NC-tw-sr8"/>
                 <outlet property="chatBoxView" destination="hyd-A9-5xD" id="Phk-W9-jx8"/>
                 <outlet property="datestatics" destination="XPa-jg-vgS" id="1nU-cW-D7Z"/>
@@ -221,6 +222,11 @@
                         <action selector="handicapfunc:" destination="-1" eventType="touchUpInside" id="AvH-er-P99"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropdownFrontlogo" id="mqs-hb-Sft">
+                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -231,6 +237,7 @@
         <image name="back-button" width="90" height="90"/>
         <image name="background_2.png" width="640" height="1136"/>
         <image name="dropdown" width="80" height="30"/>
+        <image name="dropdownFrontlogo" width="37" height="17"/>
         <image name="topbar" width="640" height="128"/>
     </resources>
 </document>

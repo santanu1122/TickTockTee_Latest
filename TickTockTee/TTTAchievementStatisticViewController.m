@@ -53,6 +53,8 @@ typedef enum {
 @property (strong,nonatomic)IBOutlet UIView *DropdownMain;
 @property (strong,nonatomic)NSMutableArray *content;
 @property (strong, nonatomic) IBOutlet UIView *chatBoxview;
+@property (strong, nonatomic) IBOutlet UIButton *arrowImage;
+
 @end
 
 @implementation TTTAchievementStatisticViewController
@@ -401,6 +403,7 @@ typedef enum {
              
              
          }];
+        self.arrowImage.hidden=YES;
     }
     else{
         isDropDownOpen=NO;

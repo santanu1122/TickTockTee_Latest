@@ -9,6 +9,7 @@
                 <outlet property="MenuBarView" destination="4ap-fB-m1T" id="77o-lz-Cwx"/>
                 <outlet property="ScreenView" destination="SLP-LE-2I5" id="JnR-0D-uec"/>
                 <outlet property="achievementbtn" destination="Juw-0a-jRb" id="2XK-pT-QYA"/>
+                <outlet property="arrowImage" destination="vBR-mF-DCG" id="FLk-7K-OSL"/>
                 <outlet property="avtivity" destination="oCt-p1-5Nx" id="Lxa-A4-zww"/>
                 <outlet property="datestatics" destination="1Qm-nK-UpL" id="Qsc-NN-LD1"/>
                 <outlet property="dropDownView1" destination="WAF-Wi-Ntt" id="v2L-JN-wQA"/>
@@ -97,7 +98,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agf-bK-NM9" userLabel="Button-dropdown">
-                                    <rect key="frame" x="108" y="17" width="103" height="47"/>
+                                    <rect key="frame" x="109" y="16" width="103" height="47"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <state key="normal">
@@ -211,6 +212,11 @@
                         <action selector="handicapfunc:" destination="-1" eventType="touchUpInside" id="hQf-iT-7L8"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dropdownFrontlogo" translatesAutoresizingMaskIntoConstraints="NO" id="Rhl-I8-a3f">
+                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -221,6 +227,7 @@
         <image name="back-button" width="90" height="90"/>
         <image name="background_2.png" width="640" height="1136"/>
         <image name="dropdown" width="80" height="30"/>
+        <image name="dropdownFrontlogo" width="37" height="17"/>
         <image name="topbar" width="640" height="128"/>
     </resources>
 </document>
