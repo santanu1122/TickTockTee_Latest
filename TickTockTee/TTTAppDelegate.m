@@ -14,16 +14,6 @@
 @synthesize Navigation = _Navigation;
 @synthesize deviceTokenString;
 
-<<<<<<< HEAD
-// Abdur   Rahim
-// from    souvik
-// jayati  saha
-=======
-
-// Abdur Rahim
-// from  souvik
-// jayati saha
->>>>>>> FETCH_HEAD
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -62,8 +52,8 @@
 {
     deviceTokenString = [[[[devToken description]
                            stringByReplacingOccurrencesOfString:@"<"withString:@""]
-                          stringByReplacingOccurrencesOfString:@">" withString:@""]
-                         stringByReplacingOccurrencesOfString: @" " withString: @""];
+                           stringByReplacingOccurrencesOfString:@">" withString:@""]
+                           stringByReplacingOccurrencesOfString: @" " withString: @""];
     
     
 
