@@ -14,9 +14,9 @@
 @synthesize Navigation = _Navigation;
 @synthesize deviceTokenString;
 
-// Abdur Rahim
-// from  souvik
-// jayati saha
+// Abdur   Rahim
+// from    souvik
+// jayati  saha
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

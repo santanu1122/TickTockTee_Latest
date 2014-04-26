@@ -32,6 +32,8 @@
     BOOL isFastLocation;
     BOOL ISSearchOpen,IfSearchViewopen,IsChatMenuBoxOpen;
     NSInteger TotalFollowingpeople;
+    NSInteger Numborofreview;
+    UIView *ReviewListview;
 
     
 }
@@ -118,12 +120,68 @@
      [Coursedetailsoperation addOperation:operationloadall];
 }
 
+
+
 - (IBAction)PerformDropdown:(id)sender
 {
   
     [self PerformGoBack];
 }
-
+-(void)OpenreciewList
+{
+    Numborofreview=0;
+    NSArray *arr=[[NSBundle mainBundle] loadNibNamed:@"EtendedDesignView" owner:self options:nil];
+    
+    ReviewListview=[arr objectAtIndex:16];
+    
+    UIView *topView=[ReviewListview viewWithTag:200];
+    
+    UIButton *backButton=(UIButton *)[topView viewWithTag:201];
+    
+    
+    
+    [backButton addTarget:self action:@selector(backfuncforcommentView) forControlEvents:UIControlEventTouchUpInside];
+    
+ 
+    [ReviewListview setFrame:CGRectMake(0, ReviewListview.frame.size.height, ReviewListview.frame.size.width, ReviewListview.frame.size.height)];
+    
+    [self.view addSubview:ReviewListview];
+    
+    [UIView animateWithDuration:0.2
+     
+                          delay:0.0
+     
+                        options: UIViewAnimationOptionTransitionFlipFromBottom
+     
+                     animations:^
+     
+     {
+         
+         CGRect frame = commentView.frame;
+         
+         frame.origin.y = 0;
+         
+         frame.origin.x = 0;
+         
+         ReviewListview.frame = frame;
+         
+     }
+     
+                     completion:^(BOOL finished)
+     
+     {
+         
+         
+         
+         
+         
+     }];
+    
+  
+    [SVProgressHUD show];
+    NSInvocationOperation *EventOperation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(LoadActivitycomment:) object:[ActivityDic objectForKey:@"ActivityCommentId"]];
+   // [ addOperation:EventOperation];
+}
 
 -(void)PerFormcourseDetails
 {
