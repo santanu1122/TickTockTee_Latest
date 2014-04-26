@@ -14,6 +14,10 @@
     BOOL islastlocation;
     BOOL isFastLocation,IfMoreDataAvalable,IsChatMenuBoxOpen;
     NSString *lastID;
+    BOOL isScroll,isLoadMode;
+    UIActivityIndicatorView *progress;
+    UIView *viewonfooter;
+    NSInteger numborofarray;
     
 }
 @property (strong, nonatomic) IBOutlet UIView *chatBoxView;
@@ -52,6 +56,8 @@
     IsLeftMenuBoxOpen=FALSE;
     IfMoreDataAvalable=TRUE;
     lastID=@"0";
+    isScroll=FALSE;
+    isLoadMode=FALSE;
     ViewID=(paramviewID.length>0)?paramviewID:[self LoggedId];
 
     if(paramviewID>0)
@@ -243,9 +249,15 @@
                         
                         
                         
+                        if(isLoadMode==TRUE){
+                            [self performSelectorOnMainThread:@selector(insertroundlistintotable) withObject:nil waitUntilDone:YES];
+                        }
                     }
                     
-                    [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+                    if(isLoadMode==FALSE){
+                        [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+                    }
+
                     
                     
                     
@@ -329,15 +341,25 @@
     
 }
 
-
+-(void)insertroundlistintotable
+{
+    numborofarray=[roundArray count]-1;
+    
+    [_roundlist beginUpdates];
+    NSIndexPath *Indexpath=[NSIndexPath indexPathForRow:numborofarray inSection:0];
+    [_roundlist insertRowsAtIndexPaths:[[NSArray alloc] initWithObjects:Indexpath, nil] withRowAnimation:UITableViewRowAnimationFade];
+    [_roundlist endUpdates];
+    [progress stopAnimating];
+    [progress hidesWhenStopped];
+    [viewonfooter removeFromSuperview];
+    [self footer];
+    isScroll=FALSE;
+    
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 
 {
-    
-    
-    
-    
     
     CGPoint offset = scrollView.contentOffset;
     
@@ -356,19 +378,33 @@
     if(y > h + reload_distance)
         
     {
-        
-        if (IfMoreDataAvalable==TRUE)
+        if (IfMoreDataAvalable==TRUE && isScroll==FALSE)
             
         {
-            NSLog(@"do my job first:");
-            [self Domywork];
-            
+            isLoadMode=TRUE;
+            isScroll=TRUE;
+            [self Load];
+            NSInvocationOperation *operation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(data_for_table:) object:lastID];
+            [OperationQ addOperation:operation];
         }
-        
-        
         
     }
     
+}
+
+-(void)Load{
+    viewonfooter = [[UIView alloc] initWithFrame:CGRectMake(0,_roundlist.frame.size.height, 320, 30)];
+    viewonfooter.backgroundColor=[UIColor clearColor];
+    progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(150,10, 20, 20)];
+    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    [viewonfooter addSubview:progress];
+    [progress startAnimating];
+    _roundlist.tableFooterView= viewonfooter;
+}
+-(void)footer{
+    viewonfooter = [[UIView alloc] initWithFrame:CGRectMake(0,_roundlist.frame.size.height, 320, 0)];
+    viewonfooter.backgroundColor=[UIColor clearColor];
+    _roundlist.tableFooterView= viewonfooter;
 }
 
 
@@ -523,8 +559,6 @@
     _activesincelabel.font = [UIFont fontWithName:MYRIARDPROLIGHT size:14.0];
     
     [SVProgressHUD dismiss];
-    
-    [_roundlist setHidden:NO];
     
     [_roundlist reloadData];
     
