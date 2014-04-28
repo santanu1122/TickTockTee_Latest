@@ -1238,18 +1238,21 @@ typedef enum {
       [NameLabel setText:[self LoggerName]];
       [NameLabel setTextColor:UIColorFromRGB(0xb5b5b5)];
     
-       NameLabel.font=[UIFont fontWithName:@"MyriadPro-Semibold" size:15.0f];
+       NameLabel.font=[UIFont fontWithName:MYRIARDPROSAMIBOLT size:15.0f];
        UILabel *LblHandicapIndex=(UILabel *)[manuSacroll viewWithTag:4];
        [LblHandicapIndex setText:[PrivateLogger valueForKey:HANDICAPINDEX]];
-       LblHandicapIndex.font=[UIFont fontWithName:@"MyriadProLight" size:15.0f];
+       LblHandicapIndex.font=[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f];
         UILabel *LblPoints=(UILabel *)[manuSacroll viewWithTag:5];
        [LblPoints setText:[PrivateLogger valueForKey:TOTALPOINT]];
-       LblPoints.font=[UIFont fontWithName:@"MyriadProLight" size:15.0f];
+       LblPoints.font=[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f];
         LblPoints.layer.opacity=.7;
     
         _Scarchicon=(UIImageView *)[manuSacroll viewWithTag:99];
         _manuSearchtxt=(UITextField *)[manuSacroll viewWithTag:150];
-         _manuSearchtxt.delegate=self;
+        _manuSearchtxt.font=[UIFont fontWithName:MYRIARDPROLIGHT size:13.0f];
+        _manuSearchtxt.placeholder=@"Search Location or Course name";
+    [_manuSearchtxt setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+           _manuSearchtxt.delegate=self;
     
     
     
@@ -1313,7 +1316,12 @@ typedef enum {
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
+//    if(textField==_manuSearchtxt){
+//        NSLog(@"_manuSearchtxt search");
+//        [self globalSearch];
+//    }
     return YES;
+    
 }
 //Course view navigation
 
@@ -2211,6 +2219,13 @@ typedef enum {
     return isValidURL;
 }
 
+-(void)globalSearch{
+    NSString *searchtext=_manuSearchtxt.text;
+    TTTCourseListViewController *CourseList=[[TTTCourseListViewController alloc]init];
+    CourseList.searchtextfrommenu=searchtext;
+    CourseList.isComingfrommenu=TRUE;
+    [self PushViewController:CourseList TransitationFrom:kCATransitionFade];
+}
 
 
 @end

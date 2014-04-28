@@ -12,5 +12,6 @@
 @property(strong,nonatomic) NSMutableArray *tableContent;
 @property (strong, nonatomic) IBOutlet UIView *menuView;
 @property (strong, nonatomic) IBOutlet UIView *screenView;
-
+@property (nonatomic, retain) NSString *searchtextfrommenu;
+@property (nonatomic ,assign) BOOL isComingfrommenu;
 @end

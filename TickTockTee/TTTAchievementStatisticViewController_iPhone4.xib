@@ -10,6 +10,7 @@
                 <outlet property="ScreenView" destination="3WX-mh-OQw" id="VTk-Pa-sJB"/>
                 <outlet property="achievementButton" destination="VyE-8q-QbI" id="Y5b-YV-VOa"/>
                 <outlet property="activityScroll" destination="dCb-0L-UTv" id="L8u-PX-ejh"/>
+                <outlet property="arrowImage" destination="cC1-V2-zdb" id="PK3-lx-CPl"/>
                 <outlet property="dropDownMenu" destination="N81-03-qXM" id="0QY-Ie-jt4"/>
                 <outlet property="dropDownMenus" destination="jLN-rA-Rhb" id="LUw-5T-iHX"/>
                 <outlet property="footerView" destination="2gj-KG-xev" id="klE-xc-lWL"/>
@@ -196,6 +197,11 @@
                         <action selector="HandicapAction:" destination="-1" eventType="touchDragInside" id="r4b-7X-svV"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropdownFrontlogo" id="enN-8E-LKc">
+                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -211,6 +217,7 @@
         <image name="GropDown4" width="640" height="453"/>
         <image name="background_2.png" width="640" height="1136"/>
         <image name="dropdown" width="80" height="30"/>
+        <image name="dropdownFrontlogo" width="37" height="17"/>
         <image name="menu-iconForActivitt" width="90" height="90"/>
         <image name="row" width="640" height="86"/>
     </resources>

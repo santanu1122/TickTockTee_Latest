@@ -53,6 +53,8 @@ typedef enum {
 @property (strong,nonatomic)IBOutlet UIView *DropdownMain;
 @property (strong,nonatomic)NSMutableArray *content;
 @property (strong, nonatomic) IBOutlet UIView *chatBoxview;
+@property (strong, nonatomic) IBOutlet UIButton *arrowImage;
+
 @end
 
 @implementation TTTAchievementStatisticViewController
@@ -85,7 +87,7 @@ typedef enum {
     [indicView startAnimating];
     [self.view addSubview:indicView];
     IsLeftMenuBoxOpen=FALSE;
-    [self AddLeftMenuTo:_MenuView];
+   [self AddLeftMenuTo:_MenuView];
     
     [self.view addSubview:_dropDownMenus];
     
@@ -106,8 +108,10 @@ typedef enum {
         [self.ScreenView addGestureRecognizer:panRecognizer];
     }
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+    self.navigationController.navigationBar.hidden=YES;
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor whiteColor]];
     
-    [self AddLeftMenuTo:_MenuView];
     
     [_footerView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bottom-bar2"]]];
     (!IsIphone5)?[_footerView setFrame:CGRectMake(0, (480 - _footerView.frame.size.height), _footerView.frame.size.width, _footerView.frame.size.height)]:[_footerView setFrame:CGRectMake(0, (568 - _footerView.frame.size.height), _footerView.frame.size.width, _footerView.frame.size.height)];
@@ -185,10 +189,8 @@ typedef enum {
                 }
                 
              
-                IsLeftMenuBoxOpen=FALSE;
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
-                self.navigationController.navigationBar.hidden=YES;
-                [self.navigationController.navigationBar setBackgroundColor:[UIColor whiteColor]];
+               // IsLeftMenuBoxOpen=FALSE;
+               
                 
                 
                 topBackImage=[[UIImageView alloc]initWithFrame:CGRectMake(_upView.bounds.origin.x, _upView.bounds.origin.y, _upView.bounds.size.width, _upView.bounds.size.height)];
@@ -350,6 +352,9 @@ typedef enum {
     [self PushViewController:ScrobordView TransitationFrom:kCATransitionFade];
 }
 - (IBAction)menuClicked:(id)sender {
+    [self keyboardhide];
+    self.MenuView.hidden=NO;
+    self.chatBoxview.hidden=YES;
      IsLeftMenuBoxOpen=[self PerformMenuSlider:_ScreenView withMenuArea:_MenuView IsOpen:IsLeftMenuBoxOpen];
     
 }
@@ -401,6 +406,7 @@ typedef enum {
              
              
          }];
+        self.arrowImage.hidden=YES;
     }
     else{
         isDropDownOpen=NO;
@@ -479,7 +485,7 @@ typedef enum {
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         self.chatBoxview.hidden=YES;
         self.MenuView.hidden=NO;
@@ -638,5 +644,88 @@ typedef enum {
     NSLog(@"PerformChatSliderOperation %@",IsChatMenuBoxOpen?@"YES":@"NO");
     
 }
+-(void)keyboardhide{
+    
+    [SVProgressHUD dismiss];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
+
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    [textField resignFirstResponder];
+    
+     if ([self.manuSearchtxt.text length]<1)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            self.Scarchicon.frame=frame;
+            
+        }];
+        
+    }else{
+        [self globalSearch];
+    }
+    
+    
+    
+    return YES;
+    
+}
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    CGRect frame=[self.Scarchicon frame];
+    
+    frame.origin.x=9;
+    
+    [UIView animateWithDuration:.3f animations:^{
+        
+        self.Scarchicon.frame=frame;
+        
+    }];
+    
+}
+
 
 @end

@@ -192,6 +192,7 @@
     NSString *TouchviewTag=[NSString stringWithFormat:@"%d",TouchedView.tag];
     
     TTTPhotodetailsViewController *PhotoDetais=[[TTTPhotodetailsViewController alloc]init];
+    NSLog(@"AlbamAllphoto %@",AlbamAllphoto);
     PhotoDetais.ParamPhotoArry=[AlbamAllphoto copy];
     PhotoDetais.ClickphotoId=TouchviewTag;
     //TouchedView

@@ -15,9 +15,10 @@
 #import "TTTCourseReviewViewController.h"
 #import "TTTCourseOverviewViewController.h"
 #import "TTTFollowerlistviewController.h"
+#import "TTTCellForCourseReview.h"
 
 
-@interface TTTCourseDetailsView ()
+@interface TTTCourseDetailsView ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 {
     NSString *ViewID;
     NSMutableDictionary *MainDetailsPageDetails;
@@ -27,13 +28,20 @@
     NSString *followUnfollow;
     BOOL isFOLLOW;
     NSOperationQueue *Coursedetailsoperation;
-   BOOL IsLeftMenuBoxOpen,isEditing,Ishoveropen,ISMoreData,ISsearched,ISLastContent,isChatboxopen;
+    BOOL IsLeftMenuBoxOpen,isEditing,Ishoveropen,ISMoreData,ISsearched,ISLastContent,isChatboxopen;
     BOOL islastlocation;
     BOOL isFastLocation;
     BOOL ISSearchOpen,IfSearchViewopen,IsChatMenuBoxOpen;
     NSInteger TotalFollowingpeople;
     NSInteger Numborofreview;
     UIView *ReviewListview;
+    UITableView *ReviewList;
+    NSMutableArray *reviewListarry;
+    CGFloat height;
+    BOOL slideup,IScancelButtonclick,isfinish,clickcancel;
+    int Addallrating;
+    UIView *AddNewReviewView;
+    
 
     
 }
@@ -58,10 +66,24 @@
 @property (strong, nonatomic) IBOutlet UIImageView *FooterBackgroundimage;
 
 @property (strong, nonatomic) IBOutlet UIView *menuview;
+
+@property (strong, nonatomic)  UILabel *reviewOptionLbl;
+@property (strong, nonatomic)  UIView *ScreenView;
+@property (strong, nonatomic)  UIView *footerview;
+@property (strong, nonatomic)  UITextView *writereview;
+@property (strong, nonatomic)  UIButton *star1;
+@property (strong, nonatomic)  UIButton *star2;
+@property (strong, nonatomic)  UIButton *star3;
+@property (strong, nonatomic)  UIButton *star4;
+@property (strong, nonatomic)  UIButton *star5;
+@property (strong, nonatomic)  UILabel *instruction;
+@property (weak, nonatomic)    UIButton *ButtonDon;
+
+
 @end
 
 @implementation TTTCourseDetailsView
-@synthesize ParamViewerid,CourseID,ChatSliderView,FooterBackgroundimage;
+@synthesize ParamViewerid,CourseID,ChatSliderView,FooterBackgroundimage,writereview;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -91,7 +113,7 @@
         frame.origin.y=480-49;
         [self.Vfooterback setFrame:frame];
     }
-    
+    height=0.0f;
     
     ViewID=(ParamViewerid.length>0)?ParamViewerid:[self LoggedId];
     MainDetailsPageDetails=[[NSMutableDictionary alloc]init];
@@ -111,76 +133,172 @@
      [SVProgressHUD show];
     ChatSliderView.hidden=TRUE;
     [self AddNavigationBarTo:_Vfooterback withSelected:@""];
-     UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDetected:)];
-    panRecognizer.delegate=self;
-    [self.Screenview addGestureRecognizer:panRecognizer];
-    [self AddLeftMenuTo:_menuview setSelected:@""];
+    
 
+    
+     [self AddLeftMenuTo:_menuview setSelected:@""];
+     reviewListarry=[[NSMutableArray alloc] init];
+    
      NSInvocationOperation *operationloadall=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(PerFormcourseDetails) object:nil];
      [Coursedetailsoperation addOperation:operationloadall];
 }
 
 
+//----------------- Review Listing page -------------//
+-(void)ShowallreviewList
+{
+    @try
+    {
+        NSError *error;
+        NSString *str=[NSString stringWithFormat:@"%@user.php?mode=coursedetailsreview&userid=%@&courseid=%@",API,[self LoggedId],CourseID];
+        NSURL *url=[NSURL URLWithString:str];
+        NSData *data=[NSData dataWithContentsOfURL:url];
+        if (data.length>2)
+        {
+            NSDictionary *MainDic=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+            NSDictionary *reviewListArry=[MainDic valueForKey:@"reviewlist"];
+            for (NSDictionary *ReviewDic in reviewListArry)
+            {
+                NSMutableDictionary *mutDic=[[NSMutableDictionary alloc]init];
+                [mutDic setValue:[ReviewDic valueForKey:@"reviewId"] forKey:@"reviewId"];
+                [mutDic setValue:[ReviewDic valueForKey:@"review_user_name"] forKey:@"review_user_name"];
+                [mutDic setValue:[ReviewDic valueForKey:@"review_user_rating"] forKey:@"review_user_rating"];
+                [mutDic setValue:[ReviewDic valueForKey:@"review_time"] forKey:@"review_time"];
+                [mutDic setValue:[ReviewDic valueForKey:@"review"] forKey:@"review"];
+                [mutDic setValue:[ReviewDic valueForKey:@"review_provider"] forKey:@"review_provider"];
+                [reviewListarry addObject:mutDic];
+            }
+            [self performSelectorOnMainThread:@selector(reloadteble) withObject:nil waitUntilDone:YES];
+        }
+    }
+
+     @catch (NSException *exception)
+      {
+        NSLog(@"The valureo of Exception:%@ %@",[exception name],exception);
+      }
+}
+    
+-(void)reloadteble
+{
+    [SVProgressHUD dismiss];
+    [ReviewList reloadData];
+}
+
+
+
 
 - (IBAction)PerformDropdown:(id)sender
 {
-  
-    [self PerformGoBack];
+  [self PerformGoBack];
 }
+
+
 -(void)OpenreciewList
 {
     Numborofreview=0;
     NSArray *arr=[[NSBundle mainBundle] loadNibNamed:@"EtendedDesignView" owner:self options:nil];
     
-    ReviewListview=[arr objectAtIndex:16];
+    ReviewListview=[arr objectAtIndex:17];
     
     UIView *topView=[ReviewListview viewWithTag:200];
     
-    UIButton *backButton=(UIButton *)[topView viewWithTag:201];
-    
-    
-    
+    UIButton *backButton=(UIButton *)[topView viewWithTag:500];
     [backButton addTarget:self action:@selector(backfuncforcommentView) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *EditButton=(UIButton *)[topView viewWithTag:503];
+    
+    [EditButton addTarget:self action:@selector(AddNewRiviewButton) forControlEvents:UIControlEventTouchUpInside];
+    
     
  
     [ReviewListview setFrame:CGRectMake(0, ReviewListview.frame.size.height, ReviewListview.frame.size.width, ReviewListview.frame.size.height)];
     
     [self.view addSubview:ReviewListview];
     
-//    [UIView animateWithDuration:0.2
-//     
-//                          delay:0.0
-//     
-//                        options: UIViewAnimationOptionTransitionFlipFromBottom
-//     
-//                     animations:^
-//     
-//     {
-//         
-//         CGRect frame = commentView.frame;
-//         
-//         frame.origin.y = 0;
-//         
-//         frame.origin.x = 0;
-//         
-//         ReviewListview.frame = frame;
-//         
-//     }
-//     
-//                     completion:^(BOOL finished)
-//     
-//     {
-//         
-//         
-//         
-//         
-//         
-//     }];
+    ReviewList=(UITableView *)[ReviewListview viewWithTag:503];
+    ReviewList.delegate=self;
+    ReviewList.dataSource=self;
+    
+    
+    [UIView animateWithDuration:0.2
+     
+                          delay:0.0
+     
+                        options: UIViewAnimationOptionTransitionFlipFromBottom
+     
+                     animations:^
+     
+     {
+         
+         CGRect frame = ReviewListview.frame;
+         
+         frame.origin.y = 0;
+         
+         frame.origin.x = 0;
+         
+         ReviewListview.frame = frame;
+         
+     }
+     
+     completion:^(BOOL finished)
+     
+     {
+         
+    }];
     
   
     [SVProgressHUD show];
-  //  NSInvocationOperation *EventOperation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(LoadActivitycomment:) object:[ActivityDic objectForKey:@"ActivityCommentId"]];
-   // [ addOperation:EventOperation];
+    NSInvocationOperation *CommentInvication=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(ShowallreviewList) object:nil];
+    [Coursedetailsoperation addOperation:CommentInvication];
+    
+
+}
+
+
+
+-(void) backfuncforcommentView
+
+{
+    
+    [UIView animateWithDuration:0.3
+     
+                          delay:0.0
+     
+                        options: UIViewAnimationOptionTransitionFlipFromTop
+     
+                     animations:^
+     
+      {
+         
+         CGRect frame = ReviewListview.frame;
+         
+         frame.origin.y =ReviewListview.frame.size.height;
+         
+         frame.origin.x = 0;
+         
+         ReviewListview.frame = frame;
+         
+      }
+     
+                     completion:^(BOOL finished)
+     
+      {
+         
+         
+         
+         
+         
+     }];
+    
+    
+    
+}
+
+//----------- Add new review -------//
+
+-(void)AddNewRiviewButton
+{
+    
 }
 
 -(void)PerFormcourseDetails
@@ -467,167 +585,14 @@
 }
 - (IBAction)ReviewSbutton:(id)sender
 {
-    TTTCourseReviewViewController *coursereview=[[TTTCourseReviewViewController alloc]init];
-    coursereview.reviewarraylist=ReviewArray;
-    coursereview.courseid=CourseID;
-    [self PushViewController:coursereview TransitationFrom:kCATransitionFromTop];
+//    TTTCourseReviewViewController *coursereview=[[TTTCourseReviewViewController alloc]init];
+//    coursereview.reviewarraylist=ReviewArray;
+//    coursereview.courseid=CourseID;
+//    [self PushViewController:coursereview TransitationFrom:kCATransitionFromTop];
+    [self OpenreciewList];
     
     
 }
-
-- (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
-{
-    
-    CGPoint  stopLocation;
-    
-    if(IsChatMenuBoxOpen==NO){
-        
-        if (panRecognizer.state == UIGestureRecognizerStateBegan)
-        {
-            
-            // CGPoint startLocation = [panRecognizer translationInView:_ScreenView];
-            // NSLog(@"Strart locaton:%f",startLocation.x);
-            
-        }
-        
-        else if (panRecognizer.state == UIGestureRecognizerStateChanged)
-        {
-            
-            stopLocation = [panRecognizer translationInView:_Screenview];
-            
-            CGRect frame=[_Screenview frame];
-            if (IsLeftMenuBoxOpen==NO&&stopLocation.x>0)
-            {
-                NSLog(@"location is %f",stopLocation.x);
-                if (stopLocation.x>60)
-                {
-                    islastlocation=FALSE;
-                    
-                    
-                }
-                else
-                {
-                    
-                    frame.origin.x=stopLocation.x;
-                    
-                    
-                }
-                
-                
-                
-                
-                if (islastlocation)
-                {
-                    NSLog(@"open satisfied");
-                    [UIView animateWithDuration:0.3f animations:^{
-                        _Screenview.frame=frame;
-                        
-                    }];
-                    
-                }
-                else
-                {
-                    NSLog(@"close satisfied");
-                    IsLeftMenuBoxOpen=YES;
-                    isFastLocation=TRUE;
-                    CGRect lastFrame=[_Screenview frame];
-                    lastFrame.origin.x=260;
-                    [UIView animateWithDuration:.5 animations:^{
-                        _Screenview.frame=lastFrame;
-                        
-                    }];
-                }
-            }
-            
-            
-            else
-            {
-                //NSLog(@"TRY Left Menu OPEN");
-                
-                if (stopLocation.x*-1>60.0f)
-                {
-                    isFastLocation=FALSE;
-                    // NSLog(@"is fast location");
-                }
-                else
-                {
-                    if (stopLocation.x<0)
-                    {
-                        frame.origin.x=260+stopLocation.x;
-                    }
-                    
-                }
-                
-                
-                
-                
-                if (isFastLocation)
-                {
-                    
-                    NSLog(@"open satisfied");
-                    [UIView animateWithDuration:.2 animations:^{
-                        _Screenview.frame=frame;
-                        
-                    }];
-                    
-                }
-                else
-                {
-                    NSLog(@"close satisfied");
-                    IsLeftMenuBoxOpen=NO;
-                    islastlocation=TRUE;
-                    CGRect lastFrame2=[_Screenview frame];
-                    lastFrame2.origin.x=0;
-                    [UIView animateWithDuration:.5 animations:^{
-                        _Screenview.frame=lastFrame2;
-                        
-                    }];
-                }
-            }
-            
-            
-            
-            
-            
-        }
-        ///HERE LEFT MENU OPEN CLOSE HAPPENED
-        else if (panRecognizer.state==UIGestureRecognizerStateEnded)
-        {
-            if (stopLocation.x<150&islastlocation==TRUE&IsLeftMenuBoxOpen==NO)
-            {
-                NSLog(@"Left Menu closed %f",stopLocation.x);
-                CGRect framelast=[_Screenview frame];
-                framelast.origin.x=0;
-                
-                
-                [UIView animateWithDuration:.6 animations:^{
-                    _Screenview.frame=framelast;
-                    
-                }];
-            }
-            
-            if (stopLocation.x*-1<100.0f&isFastLocation==TRUE&IsLeftMenuBoxOpen==YES)
-            {
-                NSLog(@"Left Menu opened%f",stopLocation.x);
-                
-                CGRect framelast=[_Screenview frame];
-                framelast.origin.x=260;
-                
-                
-                [UIView animateWithDuration:.6 animations:^{
-                    _Screenview.frame=framelast;
-                    
-                }];
-                
-            }
-            
-            
-        }
-        
-    }
-    
-}
-
 
 -(void)PerformChatSliderOperation
 {
@@ -636,14 +601,307 @@
     NSLog(@"PerformChatSliderOperation %@",IsChatMenuBoxOpen?@"YES":@"NO");
     
 }
+
 - (IBAction)TotalFollowerlist:(id)sender
 {
     TTTFollowerlistviewController *folloewlist=[[TTTFollowerlistviewController alloc]init];
     folloewlist.CourseREviewID=CourseID;
   
     [self PushViewController:folloewlist WithAnimation:kCATransitionFade];
-//    [self presentViewController:folloewlist animated:YES completion:^{
-//        [SVProgressHUD dismiss];
-//    }];
 }
+
+// ------ Tableview methods ------- //
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [reviewListarry count];
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    UITextView *reviewtxt=[[UITextView alloc]initWithFrame:CGRectMake(15, 70, 295, 30)];
+    reviewtxt.font=[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f];
+    reviewtxt.textColor=[UIColor whiteColor];
+    reviewtxt.textAlignment=NSTextAlignmentLeft;
+    [reviewtxt setEditable:NO];
+    reviewtxt.text =[NSString stringWithFormat:@"                   %@",[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review"]];
+  
+    
+    NSAttributedString *Attributed=[[NSAttributedString alloc]initWithString:reviewtxt.text attributes:@{
+                                                                                                         
+                                                                                                         NSFontAttributeName : [UIFont fontWithName:MYRIARDPROLIGHT size:15.0f],
+                                                                                                         NSForegroundColorAttributeName : [UIColor whiteColor]
+                                                                                                         }];
+    
+    
+    
+    [reviewtxt setAttributedText:Attributed];
+    
+    CGSize newSize = [reviewtxt sizeThatFits:CGSizeMake(295, MAXFLOAT)];
+    CGFloat Extraheight=0.0f;
+    if (newSize.height>30)
+    {
+        CGRect frame=[reviewtxt frame];
+        Extraheight=newSize.height-30;
+        frame.size.height+=Extraheight;
+        [reviewtxt setFrame:frame];
+    }
+    
+    height+=102+Extraheight;
+
+    return 102+Extraheight;
+}
+
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TTTCellForCourseReview *cell=(TTTCellForCourseReview *)[tableView dequeueReusableCellWithIdentifier:nil];
+    
+    if (cell==nil)
+    {
+        NSArray *arr=[[NSBundle mainBundle]loadNibNamed:@"TTTCellForCourseReview" owner:self options:nil];
+        
+        cell=[arr objectAtIndex:0];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
+    
+    cell.sendername.font=[UIFont fontWithName:MYRIARDPROSAMIBOLT size:18.0];
+    
+    cell.sendername.text=[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review_user_name"];
+    cell.review.font=[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f];
+    cell.time.font=[UIFont fontWithName:MYRIARDPROLIGHT size:13.0f];
+    cell.time.text=[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review_time"];
+    [self SetroundborderWithborderWidth:2.0f WithColour:[UIColor whiteColor] ForView:cell.viewOnsenderimage];
+    
+    
+    [self SetroundborderWithborderWidth:2.0f WithColour:[UIColor clearColor] ForImageview:cell.senderimage];
+    
+    NSString *BackgroundImageStgring=[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review_provider"];
+    
+    
+    
+    NSURLRequest *request_img = [NSURLRequest requestWithURL:[NSURL URLWithString:BackgroundImageStgring]];
+    AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:request_img
+                                                                              imageProcessingBlock:nil
+                                                                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                                                               if(image!=nil)
+                                                                                               {
+                                                                                                   [cell.senderimage setImage:image];
+                                                                                                   [cell.spinner stopAnimating];
+                                                                                                   [cell.spinner setHidden:YES];
+                                                                                               }
+                                                                                               
+                                                                                           }
+                                                                                           failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                                                               NSLog(@"Error %@",error);
+                                                                                               [cell.spinner stopAnimating];
+                                                                                               [cell.spinner setHidden:YES];
+                                                                                               
+                                                                                               
+                                                                                           }];
+    [operation start];
+    
+    
+    
+    
+    int rating=[[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review_user_rating"]intValue];
+    for(int i=0; i<rating;  i++)
+    {
+        UIImageView *star=(UIImageView *)[cell.starView viewWithTag:100+i];
+        [star setHidden:NO];
+    }
+    cell.review.textColor=[UIColor whiteColor];
+    cell.review.backgroundColor=[UIColor clearColor];
+    cell.review.textAlignment=NSTextAlignmentLeft;
+    cell.review.delegate=self;
+    cell.review.scrollEnabled=NO;
+    [cell.review setEditable:NO];
+    cell.review.text =[NSString stringWithFormat:@"                   %@",[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review"]];
+    
+    NSAttributedString *Attributed=[[NSAttributedString alloc]initWithString:cell.review.text attributes:@{
+                                                                                                           NSFontAttributeName :[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f],
+                                                                                                           NSForegroundColorAttributeName :[UIColor whiteColor]
+                                                                                                           }];
+    
+    [cell.review setAttributedText:Attributed];
+    
+    CGSize newSize = [cell.review sizeThatFits:CGSizeMake(295, MAXFLOAT)];
+    CGFloat Extraheight=0.0f;
+    if (newSize.height>30)
+    {
+        CGRect frame=[cell.review frame];
+        
+        Extraheight=newSize.height-30;
+        frame.size.height+=Extraheight;
+        
+        
+        [cell.review setFrame:frame];
+         cell.review.scrollEnabled=YES;
+    }
+    // Change the size of cell frame according to the textfield text
+    
+    CGRect Celframe=[cell.BackView frame];
+    Celframe.size.height+=Extraheight;
+    [cell.BackView setFrame:Celframe];
+    
+    return cell;
+    
+    
+}
+// --------- open addreview portion -----------//
+
+-(void)OpenCommentarray
+{
+    NSArray *arr=[[NSBundle mainBundle] loadNibNamed:@"EtendedDesignView" owner:self options:nil];
+    
+    AddNewReviewView=[arr objectAtIndex:19];
+    
+    UIView *topView=[ReviewListview viewWithTag:1000];
+    
+    UIButton *backButton=(UIButton *)[topView viewWithTag:1001];
+    [backButton addTarget:self action:@selector(backtoreviewdetils) forControlEvents:UIControlEventTouchUpInside];
+    
+   // UIView *FooterView=(UIView *)[AddNewReviewView viewWithTag:403];
+  // UIButton *Cancelbutton=(UIButton *)
+    
+  
+ 
+}
+-(void)backtoreviewdetils
+{
+    
+    [UIView animateWithDuration:0.3
+     
+                          delay:0.0
+     
+                        options: UIViewAnimationOptionTransitionFlipFromTop
+     
+                     animations:^
+     
+     {
+         
+         CGRect frame = AddNewReviewView.frame;
+         
+         frame.origin.y =AddNewReviewView.frame.size.height;
+         
+         frame.origin.x = 0;
+         
+         AddNewReviewView.frame = frame;
+         
+     }
+     
+                     completion:^(BOOL finished)
+     
+     {
+         
+         
+         
+         
+         
+     }];
+    
+ 
+}
+
+
+//---------------------- Add Review ----------//
+/*-(void)postreview
+{
+    if([[writereview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0){
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self clearrating];
+            [SVProgressHUD showErrorWithStatus:@"Please write a review"];
+        });
+    }
+    else if (!rating >0)
+    {
+        [SVProgressHUD showErrorWithStatus:@"Please add rating"];
+    }
+    
+    else
+    {
+        
+        if ([self isConnectedToInternet])
+        {
+            NSError *Error;
+            @try
+            {
+                NSString *URL=[NSString stringWithFormat:@"%@user.php?mode=course_review&userid=%@&courseid=%@&msg=%@&rating=%d", API,viewerID,reviewCourseID,[[writereview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],rating];
+                NSLog(@"%@", URL);
+                
+                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URL]];
+                if([data length]>0)
+                {
+                    NSDictionary * OutputDic=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&Error];
+                    
+                    if ([OutputDic isKindOfClass:[NSDictionary class]]){
+                        NSDictionary *extraparam=[OutputDic valueForKey:@"extraparam"];
+                        if ([extraparam isKindOfClass:[NSDictionary class]]){
+                            if([[extraparam valueForKey:@"response"] isEqualToString:@"success"])
+                            {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    
+                                    
+                                    [self clearrating];
+                                    [SVProgressHUD showSuccessWithStatus:[extraparam valueForKey:@"message"]];
+                                    TTTCourseReviewViewController *courseReview=[[TTTCourseReviewViewController alloc]init];
+                                    courseReview.reviewarraylist=[AllReviews copy];
+                                    courseReview.courseid=reviewCourseID;
+                                    [self PushViewController:courseReview TransitationFrom:kCATransitionFade];
+                                    
+                                    
+                                });
+                            }else
+                            {
+                                dispatch_async(dispatch_get_main_queue(), ^{
+                                    
+                                    [SVProgressHUD showErrorWithStatus:[extraparam valueForKey:@"message"]];
+                                });
+                                
+                                
+                            }
+                        }
+                        else
+                        {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                
+                                [SVProgressHUD showErrorWithStatus:@"Unexpected error occured."];
+                                
+                            });
+                        }
+                    }
+                    else
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            
+                            [SVProgressHUD showErrorWithStatus:@"Unexpected error occured."];
+                            
+                        });
+                    }
+                }
+                
+            }@catch (NSException *exception) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                    [SVProgressHUD showErrorWithStatus:@"Unexpected error occured."];
+                    
+                });
+                
+                NSLog(@" %s exception %@",__PRETTY_FUNCTION__,exception);
+            }
+            
+        }else
+        {
+            [SVProgressHUD showErrorWithStatus:@"No internet connection"];
+        }
+    }
+    
+}*/
+
+
+
+
+
+
 @end

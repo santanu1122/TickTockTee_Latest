@@ -9,8 +9,6 @@
                 <outlet property="MenuBarView" destination="iyo-dn-38q" id="yXJ-WZ-4vt"/>
                 <outlet property="ScreenView" destination="acS-cy-mq5" id="Hdd-c1-tuD"/>
                 <outlet property="achievementbtn" destination="Vja-AO-1ZA" id="ocb-Cd-jfF"/>
-                <outlet property="avtivity" destination="iqO-X0-pGN" id="1NC-tw-sr8"/>
-                <outlet property="chatBoxView" destination="hyd-A9-5xD" id="Phk-W9-jx8"/>
                 <outlet property="datestatics" destination="XPa-jg-vgS" id="1nU-cW-D7Z"/>
                 <outlet property="dropDownView1" destination="aMw-l1-Bu2" id="FIn-9W-osr"/>
                 <outlet property="footerView" destination="GEP-ST-953" id="BKp-XR-8vN"/>
@@ -31,11 +29,6 @@
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" id="iyo-dn-38q" userLabel="manubarView">
                     <rect key="frame" x="0.0" y="0.0" width="260" height="568"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-                <view contentMode="scaleToFill" id="hyd-A9-5xD" userLabel="ChatBoxView">
-                    <rect key="frame" x="60" y="0.0" width="260" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
@@ -92,10 +85,6 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="white" id="iqO-X0-pGN">
-                            <rect key="frame" x="150" y="274" width="20" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </activityIndicatorView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>

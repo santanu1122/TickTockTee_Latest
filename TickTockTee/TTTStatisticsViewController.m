@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *ManubuttonClick;
 @property (strong, nonatomic) IBOutlet UIView *chatBoxView;
 
+
 @end
 
 @implementation TTTStatisticsViewController
@@ -575,7 +576,8 @@
 - (IBAction)manuSlideropen:(id)sender
 {
     self.chatBoxView.hidden=YES;
-    self.MenuBarView.hidden=NO;    
+    self.MenuBarView.hidden=NO;
+    [self keyboardhide];
     IsLeftMenuBoxOpen=[self PerformMenuSlider:_ScreenView withMenuArea:_MenuBarView IsOpen:IsLeftMenuBoxOpen];
     
 }
@@ -614,6 +616,7 @@
              Ishoveropen=FALSE;
              [self.popupview removeFromSuperview];
          }];
+        
     }
     
 }
@@ -629,6 +632,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
+    
     TTTStatisticsViewController *statistics=[[TTTStatisticsViewController alloc]init];
     statistics.paramviewID=paramviewID;
     [self PushViewController:statistics TransitationFrom:kCATransitionFade];
@@ -648,7 +652,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
-    
+   
     TTTAchievementStatisticViewController *Achivemnt=[[TTTAchievementStatisticViewController alloc]init];
     Achivemnt.ParamViewid=paramviewID;
     [self PushViewController:Achivemnt TransitationFrom:kCATransitionFade];
@@ -664,6 +668,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
+    
     TTTroundlistViewController *roundDetails=[[TTTroundlistViewController alloc]init];
     roundDetails.paramviewID=paramviewID;
     [self PushViewController:roundDetails TransitationFrom:kCATransitionFade];
@@ -693,6 +698,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
+   
     TTTHandicaptViewController *handicapts=[[TTTHandicaptViewController alloc]init];
     handicapts.paramviewID=paramviewID;
     [self PushViewController:handicapts TransitationFrom:kCATransitionFade];
@@ -839,7 +845,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         self.chatBoxView.hidden=YES;
         self.MenuBarView.hidden=NO;
@@ -998,5 +1004,107 @@
     NSLog(@"PerformChatSliderOperation %@",IsChatMenuBoxOpen?@"YES":@"NO");
     
 }
+
+-(void)keyboardhide{
+    
+    [SVProgressHUD dismiss];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
+
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    
+    
+    
+    
+    
+    [textField resignFirstResponder];
+    
+    
+    
+    
+    
+    if ([self.manuSearchtxt.text length]<1)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+        
+        
+    }else{
+        [self globalSearch];
+    }
+    
+    
+    
+    return YES;
+    
+}
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    CGRect frame=[self.Scarchicon frame];
+    
+    frame.origin.x=9;
+    
+    [UIView animateWithDuration:.3f animations:^{
+        
+        self.Scarchicon.frame=frame;
+        
+    }];
+    
+}
+
+
 
 @end

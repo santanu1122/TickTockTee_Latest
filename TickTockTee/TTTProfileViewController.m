@@ -54,6 +54,7 @@
     [self AddLeftMenuTo:_sideView];
     
     [self setRoundBorderToImageView:_profileImage];
+
     [self SetroundborderWithborderWidth:2.0f WithColour:[UIColor whiteColor] ForView:_viewOnProfileImage];
     [self AddNavigationBarTo:_vfooterbackview];
     
@@ -69,14 +70,14 @@
     _profilePlace.font=[UIFont fontWithName:MYREADPROREGULAR size:12];
     
     _loggedInUserid=[self LoggedId];
-    _MainLabel.text=[NSString stringWithFormat:@"%@'s Profile",_mainLabelString];
+  //  _MainLabel.text=[NSString stringWithFormat:@"%@'s Profile",_mainLabelString];
     ParamprofileViewerId=([ParamprofileViewerId length]>0)?ParamprofileViewerId:[self LoggedId];
     [self initializeDict];
     
     if([_loggedInUserid isEqualToString:ParamprofileViewerId])
     {
-        _unflowButton.hidden=NO;
-        _messagebutton.hidden=NO;
+        _unflowButton.hidden=YES;
+        _messagebutton.hidden=YES;
         _plusButton.hidden=YES;
         self.menu.hidden=NO;
         self.BackButtonClick.hidden=YES;
@@ -85,9 +86,10 @@
         
     }
     else{
-        _unflowButton.hidden=YES;
-        _messagebutton.hidden=YES;
-        _plusButton.hidden=NO;
+        
+        _unflowButton.hidden=NO;
+        _messagebutton.hidden=NO;
+        _plusButton.hidden=YES;
         self.menu.hidden=YES;
         self.BackButtonClick.hidden=NO;
     }
@@ -103,7 +105,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         
         if (panRecognizer.state == UIGestureRecognizerStateBegan)
@@ -297,6 +299,7 @@
         if(!error){
             [self setimage:[_dict objectForKey:@"coverphoto"] tag:1];
             [self setimage:[_dict objectForKey:@"thumb"] tag:0];
+            
             _profileName.text=[_dict objectForKey:@"userfullname"];
             NSString *mainString;
             if ([[_dict objectForKey:@"CityTown"] length]>0&&[[_dict objectForKey:@"State"] length]>0&&[[_dict objectForKey:@"Country"] length]>0)
@@ -329,7 +332,7 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         }
-        _MainLabel.text=[_dict objectForKey:@"username"];
+        _MainLabel.text=[NSString stringWithFormat:@"%@'s Profile",[_dict objectForKey:@"username"]];
     }
     else
     {
@@ -563,7 +566,7 @@
     if ([self.manuSearchtxt.text length]<1)
     {
         CGRect frame=[self.Scarchicon frame];
-        frame.origin.x=122;
+        frame.origin.x=205;
         [UIView animateWithDuration:.3f animations:^{
             
             self.Scarchicon.frame=frame;
@@ -583,7 +586,7 @@
     if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
     {
         CGRect frame=[self.Scarchicon frame];
-        frame.origin.x=122;
+        frame.origin.x=205;
         [UIView animateWithDuration:.3f animations:^{
             
             self.Scarchicon.frame=frame;

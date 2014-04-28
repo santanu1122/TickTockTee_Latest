@@ -146,6 +146,7 @@
 
 -(void)PerformChatSliderOperation;
 -(BOOL)PerformChatSliding:(UIView *)MainBackView IsOpen:(bool)isOpen;
+-(void)globalSearch;
 
 
 @end

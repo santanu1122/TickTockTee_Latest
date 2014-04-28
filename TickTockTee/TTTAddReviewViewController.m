@@ -237,14 +237,7 @@ writereview.font=[UIFont fontWithName:MYREADPROREGULAR size:15];
                              
                             
                             [self clearrating];
-//                            NSMutableDictionary *mutDic=[[NSMutableDictionary alloc]init];
-//                             [mutDic setValue:writereview.text forKey:@"review"];
-//                             [mutDic setValue:[NSString stringWithFormat:@"%d",rating] forKey:@"review_user_rating"];
-//                             [mutDic setValue:MyString forKey:@"review_time"];
-//                             [mutDic setValue:[self LoggerName] forKey:@"review_user_name"];
-//                             [mutDic setValue:[self LoggerImageURL] forKey:@"review_provider"];
-//                             [AllReviews addObject:mutDic];
-                              [SVProgressHUD showSuccessWithStatus:[extraparam valueForKey:@"message"]];
+                             [SVProgressHUD showSuccessWithStatus:[extraparam valueForKey:@"message"]];
                              TTTCourseReviewViewController *courseReview=[[TTTCourseReviewViewController alloc]init];
                              courseReview.reviewarraylist=[AllReviews copy];
                              courseReview.courseid=reviewCourseID;

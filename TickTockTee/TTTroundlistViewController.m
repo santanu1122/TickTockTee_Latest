@@ -14,9 +14,14 @@
     BOOL islastlocation;
     BOOL isFastLocation,IfMoreDataAvalable,IsChatMenuBoxOpen;
     NSString *lastID;
+    BOOL isScroll,isLoadMode;
+    UIActivityIndicatorView *progress;
+    UIView *viewonfooter;
+    NSInteger numborofarray;
     
 }
 @property (strong, nonatomic) IBOutlet UIView *chatBoxView;
+
 
 @end
 
@@ -52,8 +57,10 @@
     IsLeftMenuBoxOpen=FALSE;
     IfMoreDataAvalable=TRUE;
     lastID=@"0";
+    isScroll=FALSE;
+    isLoadMode=FALSE;
     ViewID=(paramviewID.length>0)?paramviewID:[self LoggedId];
-
+   
     if(paramviewID>0)
     {
         self.menu.hidden=YES;
@@ -203,17 +210,17 @@
                         
                         
                         
-                        NSString *eventid = [loop objectForKey:@"eventid"];
+                        NSString *eventid = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"eventid"]];
                         
-                        NSString *matchtitle = [loop objectForKey:@"matchtitle"];
+                        NSString *matchtitle = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"matchtitle"]];
                         
-                        NSString *Location = [loop objectForKey:@"Location"];
+                        NSString *Location = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"Location"]];
                         
-                        NSString *CourseName = [loop objectForKey:@"CourseName"];
+                        NSString *CourseName = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"CourseName"]];
                         
-                        NSString *NetScore = [loop objectForKey:@"NetScore"];
+                        NSString *NetScore = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"NetScore"]];
                         
-                        NSString *MatchCreated = [loop objectForKey:@"MatchCreated"];
+                        NSString *MatchCreated = [self RemoveNullandreplaceWithSpace:[loop objectForKey:@"MatchCreated"]];
                         
                         
                         
@@ -243,9 +250,15 @@
                         
                         
                         
+                        if(isLoadMode==TRUE){
+                            [self performSelectorOnMainThread:@selector(insertroundlistintotable) withObject:nil waitUntilDone:YES];
+                        }
                     }
                     
-                    [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+                    if(isLoadMode==FALSE){
+                        [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+                    }
+
                     
                     
                     
@@ -329,15 +342,25 @@
     
 }
 
-
+-(void)insertroundlistintotable
+{
+    numborofarray=[roundArray count]-1;
+    
+    [_roundlist beginUpdates];
+    NSIndexPath *Indexpath=[NSIndexPath indexPathForRow:numborofarray inSection:0];
+    [_roundlist insertRowsAtIndexPaths:[[NSArray alloc] initWithObjects:Indexpath, nil] withRowAnimation:UITableViewRowAnimationFade];
+    [_roundlist endUpdates];
+    [progress stopAnimating];
+    [progress hidesWhenStopped];
+    [viewonfooter removeFromSuperview];
+    [self footer];
+    isScroll=FALSE;
+    
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 
 {
-    
-    
-    
-    
     
     CGPoint offset = scrollView.contentOffset;
     
@@ -356,19 +379,33 @@
     if(y > h + reload_distance)
         
     {
-        
-        if (IfMoreDataAvalable==TRUE)
+        if (IfMoreDataAvalable==TRUE && isScroll==FALSE)
             
         {
-            NSLog(@"do my job first:");
-            [self Domywork];
-            
+            isLoadMode=TRUE;
+            isScroll=TRUE;
+            [self Load];
+            NSInvocationOperation *operation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(data_for_table:) object:lastID];
+            [OperationQ addOperation:operation];
         }
-        
-        
         
     }
     
+}
+
+-(void)Load{
+    viewonfooter = [[UIView alloc] initWithFrame:CGRectMake(0,_roundlist.frame.size.height, 320, 30)];
+    viewonfooter.backgroundColor=[UIColor clearColor];
+    progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(150,10, 20, 20)];
+    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    [viewonfooter addSubview:progress];
+    [progress startAnimating];
+    _roundlist.tableFooterView= viewonfooter;
+}
+-(void)footer{
+    viewonfooter = [[UIView alloc] initWithFrame:CGRectMake(0,_roundlist.frame.size.height, 320, 0)];
+    viewonfooter.backgroundColor=[UIColor clearColor];
+    _roundlist.tableFooterView= viewonfooter;
 }
 
 
@@ -402,6 +439,7 @@
              Ishoveropen=TRUE;
          }];
         
+        
     }
     else
     {
@@ -416,6 +454,7 @@
              Ishoveropen=FALSE;
              [self.popupview removeFromSuperview];
          }];
+       
     }
     
     
@@ -438,6 +477,7 @@
          [self.popupview removeFromSuperview];
          //[SVProgressHUD show];
      }];
+    
     TTTStatisticsViewController *Statistic=[[TTTStatisticsViewController alloc]init];
     Statistic.paramviewID=paramviewID;
     [self PushViewController:Statistic TransitationFrom:kCATransitionFade];
@@ -483,6 +523,7 @@
          // [SVProgressHUD show];
          
      }];
+    
     TTTHandicaptViewController *hanDicap=[[TTTHandicaptViewController alloc]init];
     hanDicap.paramviewID=paramviewID;
     [self PushViewController:hanDicap TransitationFrom:kCATransitionFade];
@@ -500,6 +541,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
+    
     TTTroundlistViewController *roundList=[[TTTroundlistViewController alloc]init];
     roundList.paramviewID=paramviewID;
     [self PushViewController:roundList TransitationFrom:kCATransitionFade];
@@ -523,15 +565,14 @@
     _activesincelabel.font = [UIFont fontWithName:MYRIARDPROLIGHT size:14.0];
     
     [SVProgressHUD dismiss];
-    
     [_roundlist setHidden:NO];
-    
     [_roundlist reloadData];
     
 }
 
 - (IBAction)manuSlideropen:(id)sender
 {
+    [self keyboardhide];
     self.MenuBarView.hidden=NO;
     self.chatBoxView.hidden=YES;
     IsLeftMenuBoxOpen=[self PerformMenuSlider:_ScreenView withMenuArea:_MenuBarView IsOpen:IsLeftMenuBoxOpen];
@@ -624,7 +665,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         self.MenuBarView.hidden=NO;
         self.chatBoxView.hidden=YES;
@@ -783,5 +824,97 @@
     NSLog(@"PerformChatSliderOperation %@",IsChatMenuBoxOpen?@"YES":@"NO");
     
 }
+
+
+-(void)keyboardhide{
+    
+    [SVProgressHUD dismiss];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
+
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    
+    [textField resignFirstResponder];
+    
+    
+    if ([self.manuSearchtxt.text length]<1)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+        }];
+        
+       
+    }else{
+        [self globalSearch];
+    }
+    
+    
+    
+    return YES;
+    
+}
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    CGRect frame=[self.Scarchicon frame];
+    
+    frame.origin.x=9;
+    
+    [UIView animateWithDuration:.3f animations:^{
+        
+        self.Scarchicon.frame=frame;
+        
+    }];
+    
+}
+
+
 
 @end

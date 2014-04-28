@@ -17,7 +17,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *handcaplist;
 @property (strong, nonatomic) IBOutlet UILabel *statistics;
 @property (strong, nonatomic) IBOutlet UILabel *datestatics;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *avtivity;
+
 @property (strong, nonatomic) IBOutlet UIView *dropDownView1;
 @property (strong, nonatomic) NSString *paramviewID;
 @end
