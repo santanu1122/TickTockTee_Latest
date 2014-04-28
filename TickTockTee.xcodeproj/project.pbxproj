@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D875F36190BAAF300F0012F /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D875F35190BAAF300F0012F /* FacebookSDK.framework */; };
 		0DF6CB8518B5C44D00D3E18F /* ImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DF6CB7B18B5C44D00D3E18F /* ImageProcessor.m */; };
 		0DF6CB8618B5C44D00D3E18F /* TTTGlobalErrAndSuccessStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DF6CB7E18B5C44D00D3E18F /* TTTGlobalErrAndSuccessStrings.m */; };
 		0DF6CB8718B5C44D00D3E18F /* TTTGlobalMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DF6CB8018B5C44D00D3E18F /* TTTGlobalMethods.m */; };
@@ -93,7 +94,6 @@
 		4C39439B18B8C526003F6807 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C39439A18B8C526003F6807 /* Images.xcassets */; };
 		4C398D5618CAE11D00D2CB13 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C398D5218CAE11D00D2CB13 /* UIImage+ImageEffects.m */; };
 		4C398D5718CAE11D00D2CB13 /* UIImage+BlurredFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C398D5318CAE11D00D2CB13 /* UIImage+BlurredFrame.m */; };
-		4C398D5918CB020D00D2CB13 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C398D5818CB020D00D2CB13 /* CoreImage.framework */; };
 		4C398D5C18CB02F900D2CB13 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C398D5A18CB02F900D2CB13 /* FXBlurView.m */; };
 		4C623C3118E9AAD6007D54C3 /* SGSLineGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C623C3018E9AAD6007D54C3 /* SGSLineGraphView.m */; };
 		4C623C3718E9AD17007D54C3 /* TTTStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C623C3418E9AD17007D54C3 /* TTTStatisticsViewController.m */; };
@@ -268,7 +268,6 @@
 		4CFFBDAC18CEE41E00D92D47 /* TTTCellForgolferActivity.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CFFBDAB18CEE41E00D92D47 /* TTTCellForgolferActivity.xib */; };
 		4CFFBDB018CF0BB700D92D47 /* TTTCellForActivityComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFBDAF18CF0BB700D92D47 /* TTTCellForActivityComment.m */; };
 		4CFFBDB218CF0BCD00D92D47 /* TTTCellForActivityComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CFFBDB118CF0BCD00D92D47 /* TTTCellForActivityComment.xib */; };
-		D9963C4B19093B0700F383AC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9963C4A19093B0700F383AC /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -282,6 +281,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D875F35190BAAF300F0012F /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		0DF6CB7A18B5C44D00D3E18F /* ImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageProcessor.h; sourceTree = "<group>"; };
 		0DF6CB7B18B5C44D00D3E18F /* ImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageProcessor.m; sourceTree = "<group>"; };
 		0DF6CB7C18B5C44D00D3E18F /* TTTGlobalConnectionStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTGlobalConnectionStrings.h; sourceTree = "<group>"; };
@@ -396,7 +396,6 @@
 		4C398D5318CAE11D00D2CB13 /* UIImage+BlurredFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BlurredFrame.m"; sourceTree = "<group>"; };
 		4C398D5418CAE11D00D2CB13 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		4C398D5518CAE11D00D2CB13 /* UIImage+BlurredFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlurredFrame.h"; sourceTree = "<group>"; };
-		4C398D5818CB020D00D2CB13 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		4C398D5A18CB02F900D2CB13 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		4C398D5B18CB02F900D2CB13 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
 		4C623C2F18E9AAD6007D54C3 /* SGSLineGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGSLineGraphView.h; sourceTree = "<group>"; };
@@ -649,7 +648,6 @@
 		4CFFBDAE18CF0BB700D92D47 /* TTTCellForActivityComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTCellForActivityComment.h; sourceTree = "<group>"; };
 		4CFFBDAF18CF0BB700D92D47 /* TTTCellForActivityComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTCellForActivityComment.m; sourceTree = "<group>"; };
 		4CFFBDB118CF0BCD00D92D47 /* TTTCellForActivityComment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTCellForActivityComment.xib; sourceTree = "<group>"; };
-		D9963C4A19093B0700F383AC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -657,9 +655,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9963C4B19093B0700F383AC /* FacebookSDK.framework in Frameworks */,
 				0DF6CBE218B5C68000D3E18F /* Accelerate.framework in Frameworks */,
-				4C398D5918CB020D00D2CB13 /* CoreImage.framework in Frameworks */,
 				4CE28CC218BF7CA100900F5E /* AVFoundation.framework in Frameworks */,
 				4CE28CC018BF7BF200900F5E /* libsqlite3.0.dylib in Frameworks */,
 				4CE28CBC18BF735700900F5E /* Accounts.framework in Frameworks */,
@@ -672,6 +668,7 @@
 				0DF6CBD818B5C65800D3E18F /* Social.framework in Frameworks */,
 				0DF6CBD618B5C65100D3E18F /* Security.framework in Frameworks */,
 				0DFF3A1E18B5C3AC00FFC80B /* UIKit.framework in Frameworks */,
+				0D875F36190BAAF300F0012F /* FacebookSDK.framework in Frameworks */,
 				0DFF3A2018B5C3AC00FFC80B /* Foundation.framework in Frameworks */,
 				0DFF3A2218B5C3AC00FFC80B /* CoreGraphics.framework in Frameworks */,
 			);
@@ -874,8 +871,7 @@
 		0DFF3A1C18B5C3AC00FFC80B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D9963C4A19093B0700F383AC /* FacebookSDK.framework */,
-				4C398D5818CB020D00D2CB13 /* CoreImage.framework */,
+				0D875F35190BAAF300F0012F /* FacebookSDK.framework */,
 				4CE28CC118BF7CA100900F5E /* AVFoundation.framework */,
 				4CE28CBF18BF7BF200900F5E /* libsqlite3.0.dylib */,
 				4CE28CBB18BF735700900F5E /* Accounts.framework */,
@@ -2347,6 +2343,7 @@
 					/Users/macbook_ms/Desktop,
 					"/Users/macbook_ms/Documents/Souvik\\ Projects/TTT\\ Most\\ Recent/TickTockTee\\ 5",
 					"/Users/esolztech2/Downloads/TickTockTee\\ 19",
+					"/Users/iphone_2/Desktop/san-dev/TickTockTee_Latest",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TickTockTee/TickTockTee-Prefix.pch";
@@ -2369,6 +2366,7 @@
 					/Users/macbook_ms/Desktop,
 					"/Users/macbook_ms/Documents/Souvik\\ Projects/TTT\\ Most\\ Recent/TickTockTee\\ 5",
 					"/Users/esolztech2/Downloads/TickTockTee\\ 19",
+					"/Users/iphone_2/Desktop/san-dev/TickTockTee_Latest",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TickTockTee/TickTockTee-Prefix.pch";
