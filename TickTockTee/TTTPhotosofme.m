@@ -138,7 +138,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
       if(IsChatMenuBoxOpen==NO)
       {
           self.Manuvire.hidden=NO;
@@ -525,6 +525,7 @@
 
 - (IBAction)LeftManuopen:(id)sender
 {
+    [self keyboardhide];
     IsLeftMenuBoxOpen=[self PerformMenuSlider:Screenview withMenuArea:Manuvire IsOpen:IsLeftMenuBoxOpen];
     isFastLocation=IsLeftMenuBoxOpen;
     if (IsLeftMenuBoxOpen)
@@ -736,6 +737,106 @@
 {
   //  [self PerformGoBack];
     [self PerformGoBackWithTransitationFrom:kCATransitionFromBottom];
+}
+
+-(void)keyboardhide{
+    
+    [SVProgressHUD dismiss];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
+
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    
+    
+    
+    
+    
+    [textField resignFirstResponder];
+    
+    
+    
+    
+    
+    if ([self.manuSearchtxt.text length]<1)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+        
+        
+    }else{
+        [self globalSearch];
+    }
+    
+    
+    
+    return YES;
+    
+}
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    CGRect frame=[self.Scarchicon frame];
+    
+    frame.origin.x=9;
+    
+    [UIView animateWithDuration:.3f animations:^{
+        
+        self.Scarchicon.frame=frame;
+        
+    }];
+    
 }
 
 

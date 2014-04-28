@@ -54,6 +54,7 @@
     [self AddLeftMenuTo:_sideView];
     
     [self setRoundBorderToImageView:_profileImage];
+
     [self SetroundborderWithborderWidth:2.0f WithColour:[UIColor whiteColor] ForView:_viewOnProfileImage];
     [self AddNavigationBarTo:_vfooterbackview];
     
@@ -104,7 +105,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         
         if (panRecognizer.state == UIGestureRecognizerStateBegan)
@@ -298,6 +299,7 @@
         if(!error){
             [self setimage:[_dict objectForKey:@"coverphoto"] tag:1];
             [self setimage:[_dict objectForKey:@"thumb"] tag:0];
+            
             _profileName.text=[_dict objectForKey:@"userfullname"];
             NSString *mainString;
             if ([[_dict objectForKey:@"CityTown"] length]>0&&[[_dict objectForKey:@"State"] length]>0&&[[_dict objectForKey:@"Country"] length]>0)
@@ -564,7 +566,7 @@
     if ([self.manuSearchtxt.text length]<1)
     {
         CGRect frame=[self.Scarchicon frame];
-        frame.origin.x=122;
+        frame.origin.x=205;
         [UIView animateWithDuration:.3f animations:^{
             
             self.Scarchicon.frame=frame;
@@ -584,7 +586,7 @@
     if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
     {
         CGRect frame=[self.Scarchicon frame];
-        frame.origin.x=122;
+        frame.origin.x=205;
         [UIView animateWithDuration:.3f animations:^{
             
             self.Scarchicon.frame=frame;

@@ -24,6 +24,8 @@
     BOOL islastlocation;
     BOOL isFastLocation;
     BOOL ISSearchOpen,IfSearchViewopen;
+    NSString *stringurl;
+    BOOL IsScroll;
     
 }
 @property (strong, nonatomic) IBOutlet UILabel *courseLabel;
@@ -41,7 +43,7 @@
 @end
 
 @implementation TTTCourseListViewController
-@synthesize tableContent,courseTable,searchPopup;
+@synthesize tableContent,courseTable,searchPopup,searchtextfrommenu,isComingfrommenu;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -66,6 +68,7 @@
     ISLastContent=YES;
     count=0;
     IfSearchViewopen=FALSE;
+    IsScroll=FALSE;
     tableContent=[[NSMutableArray alloc]init];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     self.navigationController.navigationBar.hidden=YES;
@@ -73,9 +76,24 @@
     [self AddLeftMenuTo:_menuView];
     
     arr=[[NSArray alloc]initWithObjects:@"My Course",@"All Course", nil];
-    _courseLabel.text=[NSString stringWithFormat:@"%@",[arr objectAtIndex:0]];
-    [SVProgressHUD show];
-    NSString *stringurl = [NSString stringWithFormat:@"%@user.php?mode=mycourses&userid=%@&loggedin_userid=%@", API,[self LoggedId],[self LoggedId]];
+    
+    
+    if(isComingfrommenu){
+        ISsearched=YES;
+        _courseLabel.text=[NSString stringWithFormat:@"%@",[arr objectAtIndex:1]];
+        _Searchtextfield.text=searchtextfrommenu;
+        searchText=_Searchtextfield.text;
+        [self searchfrommenu];
+        stringurl = [NSString stringWithFormat:@"%@user.php?mode=allcourses&userid=%@&loggedin_userid=%@&search=%@", API,[self LoggedId],[self LoggedId],[searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [SVProgressHUD showWithStatus:@"searching"];
+        i=1;
+    }else{
+        _courseLabel.text=[NSString stringWithFormat:@"%@",[arr objectAtIndex:0]];
+     stringurl = [NSString stringWithFormat:@"%@user.php?mode=mycourses&userid=%@&loggedin_userid=%@", API,[self LoggedId],[self LoggedId]];
+        i=0;
+        [SVProgressHUD show];
+    }
+    
     NSLog(@"stringurl---%@",stringurl);
     NSURL *url = [NSURL URLWithString:stringurl];
     NSURLRequest *req = [NSURLRequest requestWithURL:url];
@@ -126,8 +144,7 @@
         arrr=[arrx objectForKey:@"courselist"];
         [tableContent addObjectsFromArray:arrr];
         ISLastContent=YES;
-
-        
+ 
         }
 
     else if(ISMoreData==NO)
@@ -137,16 +154,20 @@
     else{
         //int lastIndex=[tableContent count];
        tableContent=[arrx objectForKey:@"courselist"];
-       
     }
     lastId=[[arrx objectForKey:@"extraparam"]objectForKey:@"last_id"];
-    
+        if([tableContent count]==0){
+            if(ISsearched==YES)
+                [SVProgressHUD showErrorWithStatus:@"No search result found!"];
+            else
+                [SVProgressHUD showErrorWithStatus:@"Course list not available!"];
+        }
     [courseTable reloadData];
-    
+        IsScroll=FALSE;
     NSLog(@"tableContent lastid = %@ and %@",lastId,ISMoreData?@"YES":@"NO" );
     //NSLog(@"Contents are here is %@ length = %d",tableContent,[tableContent count]);
     [self.view setUserInteractionEnabled:YES];
-    [SVProgressHUD dismiss];
+   [SVProgressHUD dismiss];
     count++;
     }
     @catch(NSException *e){
@@ -252,7 +273,21 @@
 }
 
 - (IBAction)menuClicked:(id)sender {
-    IsLeftMenuBoxOpen=[self PerformMenuSlider:_screenView withMenuArea:_menuView IsOpen:IsLeftMenuBoxOpen];//[self PerformMenuSlider:_screenView withMenuArea:_menuView IsOpen:IsLeftMenuBoxOpen];
+    [self keyboardhide];
+    IsLeftMenuBoxOpen=[self PerformMenuSlider:_screenView withMenuArea:_menuView IsOpen:IsLeftMenuBoxOpen];
+    //[self PerformMenuSlider:_screenView withMenuArea:_menuView IsOpen:IsLeftMenuBoxOpen];
+    
+    if (IsLeftMenuBoxOpen==TRUE)
+    {
+        _Searchtextfield.enabled=NO;
+        
+    }
+    else
+    {
+        _Searchtextfield.enabled=YES;
+        
+    }
+
 }
 
 - (IBAction)searchClicked:(id)sender {
@@ -281,9 +316,10 @@
 -(void)searchResult{
     ISsearched=YES;
     NSLog(@"We are at search");
-      NSString *stringurl;
+    
     searchText=[_Searchtextfield text];//[textfld text];
-    tableContent=[[NSMutableArray alloc]init];
+   // tableContent=[[NSMutableArray alloc]init];
+    [tableContent removeAllObjects];
     count=0;
     if(i==1)
         stringurl = [NSString stringWithFormat:@"%@user.php?mode=allcourses&userid=%@&loggedin_userid=%@&search=%@", API,[self LoggedId],[self LoggedId],[searchText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -300,10 +336,11 @@
     isEditing=NO;
     
     [self.searchPopup removeFromSuperview];
-    [SVProgressHUD show];
+    [SVProgressHUD showWithStatus:@"Searching"];
 }
 - (IBAction)menuChanged:(id)sender {
-    
+    IfSearchViewopen=TRUE;
+    [self searchfrommenu];
     if (Ishoveropen==FALSE)
     {
         self.arrowimage.hidden=YES;
@@ -353,10 +390,11 @@ completion:^(BOOL finished)
         [self.MenuAppear removeFromSuperview];
         [SVProgressHUD show];
     }];
-    
+    IsScroll=FALSE;
     ISsearched=NO;
     //ISMoreData=YES;
-    NSString *stringurl=[NSString stringWithFormat:@"%@user.php?mode=mycourses&userid=%@&loggedin_userid=%@", API,[self LoggedId],[self LoggedId]];
+    stringurl=[NSString stringWithFormat:@"%@user.php?mode=mycourses&userid=%@&loggedin_userid=%@", API,[self LoggedId],[self LoggedId]];
+    NSLog(@"stringurl %@",stringurl);
     _courseLabel.text=[arr objectAtIndex:0];
     NSURL *url = [NSURL URLWithString:stringurl];
     NSURLRequest *req = [NSURLRequest requestWithURL:url];
@@ -366,7 +404,8 @@ completion:^(BOOL finished)
         staticData = [[NSMutableData alloc]init];
     }
     if(tableContent!=nil)
-    tableContent=[[NSMutableArray alloc]init];
+   // tableContent=[[NSMutableArray alloc]init];
+        [tableContent removeAllObjects];
     i=0;
     count=0;
     }
@@ -386,9 +425,10 @@ completion:^(BOOL finished)
 
      }];
     ISsearched=NO;
-    
+    IsScroll=FALSE;
     _courseLabel.text=[arr objectAtIndex:1];
-    NSString *stringurl=[NSString stringWithFormat:@"%@user.php?mode=allcourses&userid=%@&loggedin_userid=%@", API,[self LoggedId],[self LoggedId]];
+    stringurl=[NSString stringWithFormat:@"%@user.php?mode=allcourses&userid=%@&loggedin_userid=%@", API,[self LoggedId],[self LoggedId]];
+    NSLog(@"stringurl %@",stringurl);
     NSURL *url = [NSURL URLWithString:stringurl];
     NSURLRequest *req = [NSURLRequest requestWithURL:url];
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:req delegate:self];
@@ -397,12 +437,13 @@ completion:^(BOOL finished)
         staticData = [[NSMutableData alloc]init];
     }
     if(tableContent!=nil)
-        tableContent=[[NSMutableArray alloc]init];
+        [tableContent removeAllObjects];
+       // tableContent=[[NSMutableArray alloc]init];
     i=1;
     count=0;
 }
 -(void) MoreDataLoadOnTable{
-    NSString *stringurl;
+   
    
     
     if(ISMoreData==YES){
@@ -447,7 +488,10 @@ float h = size.height;
 
 float reload_distance = -60.0f;
     if(y > h + reload_distance){
+        if(IsScroll==FALSE){
+            IsScroll=TRUE;
         [self MoreDataLoadOnTable];
+        }
     }
 }
 
@@ -471,7 +515,7 @@ float reload_distance = -60.0f;
     CGPoint  stopLocation;
     
     
-    
+    [self keyboardhide];
    
     if (panRecognizer.state == UIGestureRecognizerStateChanged)
     {
@@ -515,6 +559,7 @@ float reload_distance = -60.0f;
                 lastFrame.origin.x=260;
                 [UIView animateWithDuration:.5 animations:^{
                     _screenView.frame=lastFrame;
+                    _Searchtextfield.enabled=NO;
                     
                 }];
             }
@@ -560,6 +605,7 @@ float reload_distance = -60.0f;
                 lastFrame2.origin.x=0;
                 [UIView animateWithDuration:.5 animations:^{
                     _screenView.frame=lastFrame2;
+                    _Searchtextfield.enabled=YES;
                     
                 }];
             }
@@ -612,6 +658,7 @@ float reload_distance = -60.0f;
         
         [SVProgressHUD showWithStatus:@"searching"];
         [self.view setUserInteractionEnabled:NO];
+        IsScroll=FALSE;
         [self searchResult];
          isEditing=NO;
          [_Searchtextfield resignFirstResponder];
@@ -621,32 +668,106 @@ float reload_distance = -60.0f;
 {
     [textField resignFirstResponder];
     
-    [self.view setUserInteractionEnabled:NO];
+   
     if (IsLeftMenuBoxOpen==FALSE)
     {
         [SVProgressHUD showWithStatus:@"searching"];
         [[self view] setUserInteractionEnabled:NO];
        
     }
-    
+    if(textField==self.manuSearchtxt){
     if ([self.manuSearchtxt.text length]<1)
     {
         CGRect frame=[self.Scarchicon frame];
-        frame.origin.x=122;
+        frame.origin.x=205;
         [UIView animateWithDuration:.3f animations:^{
             
             self.Scarchicon.frame=frame;
         }];
         
     }
+    else{
+        [self globalSearch];
+    }
+}else if(textField==_Searchtextfield){
+     [self.view setUserInteractionEnabled:NO];
+    IsScroll=FALSE;
     [self searchResult];
+    }
     isEditing=NO;
-    
     return YES;
 }
 
 - (IBAction)SearchMatch:(id)sender
 {
+    Ishoveropen=true;
+    [_Searchtextfield setTextColor:[UIColor whiteColor]];
+    _Searchtextfield.font=[UIFont fontWithName:@"MyriadPro-Regular" size:16.0f];
+    [_Searchtextfield setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_Searchview setFrame:CGRectMake(0, 60, 320, 0)];
+    [_screenView addSubview:_Searchview];
+    CGRect Frame=[_Searchview frame];
+    [self dropdownchoange];
+    
+    if (IfSearchViewopen==FALSE)
+    {
+        Frame.size.height=40;
+        _Searchtextfield.hidden=YES;
+        _searchIconPng.hidden=YES;
+        // NSLog(@"the value of scarchlist");
+        [UIView animateWithDuration:.4 animations:^{
+            _Searchview.frame=Frame;
+            if (IsIphone5)
+            {
+                courseTable.frame = CGRectMake(0, 100, 320, 468);
+            }
+            else
+            {
+                courseTable.frame = CGRectMake(0, 100, 320, 380);
+            }
+            
+            
+        }
+                         completion:^(BOOL finish)
+         {
+             IfSearchViewopen=TRUE;
+             _Searchtextfield.hidden=FALSE;
+             _searchIconPng.hidden=NO;
+         }];
+    }
+    
+    else
+    {
+        Frame.size.height=0;
+        
+        [UIView animateWithDuration:.3 animations:^{
+            _Searchview.frame=Frame;
+            _Searchtextfield.hidden=TRUE;
+            _searchIconPng.hidden=YES;
+            if (IsIphone5)
+            {
+                courseTable.frame = CGRectMake(0, 60, 320, 508);
+            }
+            else
+            {
+                courseTable.frame = CGRectMake(0, 60, 320, 420);
+            }
+            
+            
+        }
+                         completion:^(BOOL finish)
+         {
+             IfSearchViewopen=FALSE;
+             [_Searchview removeFromSuperview];
+         }];
+    }
+    
+
+}
+
+
+-(void)searchfrommenu{
+    
     [_Searchtextfield setTextColor:[UIColor whiteColor]];
     _Searchtextfield.font=[UIFont fontWithName:@"MyriadPro-Regular" size:16.0f];
     [_Searchtextfield setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
@@ -708,7 +829,7 @@ float reload_distance = -60.0f;
          }];
     }
     
-
+ 
 }
 -(void)addremove:(UIButton *)sender
 {
@@ -770,5 +891,94 @@ float reload_distance = -60.0f;
     }
     
 }
+
+-(void)dropdownchoange{
+    if (Ishoveropen==FALSE)
+    {
+        self.arrowimage.hidden=YES;
+        self.MenuAppear.frame=CGRectMake(0, 60, 320, 0);
+        self.MenuAppear.alpha=0.0000f;
+        [self.screenView addSubview:self.MenuAppear];
+        
+        [UIView animateWithDuration:0.2f animations:^{
+            
+            self.MenuAppear.frame=CGRectMake(0, 60, 320, 110);
+            self.MenuAppear.alpha=1.0000f;
+            
+        }
+                         completion:^(BOOL finished)
+         {
+             Ishoveropen=TRUE;
+         }];
+        
+    }
+    else
+    {
+        self.arrowimage.hidden=NO;
+        [UIView animateWithDuration:0.2f animations:^{
+            self.MenuAppear.frame=CGRectMake(0, 60, 320, 0);
+            self.MenuAppear.alpha=0.0000f;
+        }
+                         completion:^(BOOL finished)
+         {
+             
+             Ishoveropen=FALSE;
+             [ self.MenuAppear removeFromSuperview];
+         }];
+    }
+    [ self.screenView bringSubviewToFront:self.searchPopup];
+}
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    if(textField==self.manuSearchtxt){
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=9;
+        
+        [UIView animateWithDuration:.3f animations:^{
+           self.Scarchicon.frame=frame;
+        }];
+        
+    }
+    
+}
+
+-(void)keyboardhide{
+    
+    
+    
+    [_Searchtextfield resignFirstResponder];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
 
 @end

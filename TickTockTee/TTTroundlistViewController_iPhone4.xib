@@ -9,7 +9,6 @@
                 <outlet property="MenuBarView" destination="kL1-2o-kPT" id="agq-IL-5b1"/>
                 <outlet property="ScreenView" destination="RVA-rL-Z3Z" id="M5x-Nh-81d"/>
                 <outlet property="activesincelabel" destination="1eH-2F-2Zy" id="ha4-hZ-SRR"/>
-                <outlet property="arrowImage" destination="iv3-Qw-MrF" id="IHE-Gm-M6Q"/>
                 <outlet property="dropdown" destination="mAp-xL-Wdk" id="VBL-6G-nJ7"/>
                 <outlet property="footerView" destination="YR0-4V-5TH" id="Byh-F6-bTz"/>
                 <outlet property="menu" destination="lcH-qS-BkP" id="fRS-ft-X4H"/>
@@ -193,11 +192,6 @@
                         <action selector="Showhandicap:" destination="-1" eventType="touchUpInside" id="Zee-I6-Tjq"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropdownFrontlogo" id="0ne-oR-WbZ">
-                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -220,7 +214,6 @@
         <image name="GropDown4" width="640" height="453"/>
         <image name="background_2.png" width="640" height="1136"/>
         <image name="dropdown" width="80" height="30"/>
-        <image name="dropdownFrontlogo" width="37" height="17"/>
         <image name="menu-iconForActivitt" width="90" height="90"/>
         <image name="topbar" width="640" height="128"/>
     </resources>

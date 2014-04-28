@@ -91,7 +91,7 @@
      ISShowMoreCaption=FALSE;
      Method=[[TTTGlobalMethods alloc]init];
      SeeMoreButton.titleLabel.font=[UIFont fontWithName:MYRIARDPROSAMIBOLT size:11.0f];
-     IsInLandScapemode=FALSE;
+    // IsInLandScapemode=FALSE;
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
      [self PrepareScreen];
@@ -196,6 +196,7 @@
           
             break;
         default:
+           
             [[UIApplication sharedApplication] setStatusBarHidden:NO];
             break;
     }
@@ -292,13 +293,15 @@
           NSLog(@"Print the else part");
       if (IsIphone5)
        {
+            
         imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 568)];
+           
        }
       else
       {
         imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 480)];
       }
-    }
+      }
     NSURLRequest *request_img4 = [NSURLRequest requestWithURL:[NSURL URLWithString:MyImageContent]];
     [imageview setContentMode:UIViewContentModeScaleAspectFit];
     [imageview setTag:[[PreSentPhotoArry valueForKey:@"photo_id"] integerValue]];
@@ -313,6 +316,7 @@
                                               {
                                                   
                                                   imageview.image=image;
+                                                 
                                                   [SpinnerView stopAnimating];
                                               }
                                               
@@ -327,6 +331,7 @@
     [operation start];
     
     [MainScrollVire addSubview:imageview];
+    
     totalCommentLbl.text=[PreSentPhotoArry valueForKey:@"commentcount"];
     
     TotalteeLbl.text=[PreSentPhotoArry valueForKey:@"likecount"];
@@ -449,7 +454,7 @@
         TotalteeLbl.hidden=YES;
         TeetxtLbl.hidden=YES;
     }
-    if (IsInLandScapemode)
+    if (!IsInLandScapemode)
     {
         
         if (IsIphone5)

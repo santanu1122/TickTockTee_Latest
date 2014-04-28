@@ -518,6 +518,7 @@
                         options: UIViewAnimationOptionTransitionFlipFromTop
                      animations:^
      {
+         [StatusTxt resignFirstResponder];
          CGRect frame = statview.frame;
          frame.origin.y =statview.frame.size.height;
          frame.origin.x = 0;
@@ -938,6 +939,7 @@
     
     self.chatBoxview.hidden=YES;
     self.ManuBarView.hidden=NO;
+    [self keyboardhide ];
     IsLeftMenuBoxOpen=[self PerformMenuSlider:_ScreenView withMenuArea:_ManuBarView IsOpen:IsLeftMenuBoxOpen];
     
 }
@@ -1101,6 +1103,7 @@
 {
     
     CGPoint  stopLocation;
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO)
     {
         self.ManuBarView.hidden=NO;
@@ -6693,7 +6696,7 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     
-    
+    if(textField==self.manuSearchtxt){
     CGRect frame=[self.Scarchicon frame];
     frame.origin.x=9;
     [UIView animateWithDuration:.3f animations:^{
@@ -6702,6 +6705,7 @@
         
         
     }];
+    }
     
     
     
@@ -6713,20 +6717,20 @@
     
     [textField resignFirstResponder];
     
-    
+    if(textField==self.manuSearchtxt){
     if ([self.manuSearchtxt.text length]<1)
     {
         CGRect frame=[self.Scarchicon frame];
-        frame.origin.x=122;
+        frame.origin.x=205;
         [UIView animateWithDuration:.3f animations:^{
             
             self.Scarchicon.frame=frame;
-            
-            
-        }];
+       }];
         
+    }else{
+        [self globalSearch];
     }
-    
+    }
     return YES;
 }
 
@@ -6888,6 +6892,38 @@
     }
 }
 
+
+-(void)keyboardhide{
+    
+    [SVProgressHUD dismiss];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
 
 
 

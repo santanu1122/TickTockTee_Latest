@@ -9,12 +9,6 @@
                 <outlet property="MenuBarView" destination="iyo-dn-38q" id="yXJ-WZ-4vt"/>
                 <outlet property="ScreenView" destination="acS-cy-mq5" id="Hdd-c1-tuD"/>
                 <outlet property="achievementbtn" destination="Vja-AO-1ZA" id="ocb-Cd-jfF"/>
-<<<<<<< HEAD
-=======
-                <outlet property="arrowImage" destination="MGb-pc-Va1" id="Uq0-ML-9mR"/>
-                <outlet property="avtivity" destination="iqO-X0-pGN" id="1NC-tw-sr8"/>
->>>>>>> FETCH_HEAD
-                <outlet property="chatBoxView" destination="hyd-A9-5xD" id="Phk-W9-jx8"/>
                 <outlet property="datestatics" destination="XPa-jg-vgS" id="1nU-cW-D7Z"/>
                 <outlet property="dropDownView1" destination="aMw-l1-Bu2" id="FIn-9W-osr"/>
                 <outlet property="footerView" destination="GEP-ST-953" id="BKp-XR-8vN"/>
@@ -35,11 +29,6 @@
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" id="iyo-dn-38q" userLabel="manubarView">
                     <rect key="frame" x="0.0" y="0.0" width="260" height="568"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-                <view contentMode="scaleToFill" id="hyd-A9-5xD" userLabel="ChatBoxView">
-                    <rect key="frame" x="60" y="0.0" width="260" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
@@ -129,7 +118,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="77" sectionHeaderHeight="22" sectionFooterHeight="22" id="giD-wC-kdt">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="394"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="391"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -221,11 +210,6 @@
                         <action selector="handicapfunc:" destination="-1" eventType="touchUpInside" id="AvH-er-P99"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropdownFrontlogo" id="mqs-hb-Sft">
-                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -236,7 +220,6 @@
         <image name="back-button" width="90" height="90"/>
         <image name="background_2.png" width="640" height="1136"/>
         <image name="dropdown" width="80" height="30"/>
-        <image name="dropdownFrontlogo" width="37" height="17"/>
         <image name="topbar" width="640" height="128"/>
     </resources>
 </document>

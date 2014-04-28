@@ -11,8 +11,6 @@
                 <outlet property="MenuBarView" destination="xnV-FG-awC" id="cva-sI-V3Y"/>
                 <outlet property="ScreenView" destination="AI9-JC-8RQ" id="slP-CL-4Fn"/>
                 <outlet property="activesincelabel" destination="cyl-Oi-tTQ" id="wIv-JV-CZv"/>
-                <outlet property="arrowImage" destination="Lo5-ny-Wil" id="hNE-lv-YQW"/>
-                <outlet property="chatBoxView" destination="idT-2z-g4i" id="Puv-4t-go6"/>
                 <outlet property="dropdown" destination="76R-Kl-1c8" id="fRy-cn-tCx"/>
                 <outlet property="footerView" destination="t4H-Yu-hJ9" id="6zr-fU-CiS"/>
                 <outlet property="menu" destination="r2R-M2-bSf" id="1hX-Su-5m5"/>
@@ -31,11 +29,6 @@
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" id="xnV-FG-awC" userLabel="manubarView">
                     <rect key="frame" x="0.0" y="0.0" width="260" height="568"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-                <view contentMode="scaleToFill" id="idT-2z-g4i" userLabel="ChatBoxView">
-                    <rect key="frame" x="60" y="0.0" width="260" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
@@ -228,17 +221,6 @@
                         <action selector="Showhandicap:" destination="-1" eventType="touchUpInside" id="jwr-oq-rhK"/>
                     </connections>
                 </button>
-<<<<<<< HEAD
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropdownFrontlogo" id="76M-7D-mhk">
-                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-=======
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropdownFrontlogo" id="07n-vv-XlX">
-                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
->>>>>>> FETCH_HEAD
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -249,7 +231,6 @@
         <image name="back-button" width="90" height="90"/>
         <image name="background_2.png" width="640" height="1136"/>
         <image name="dropdown" width="80" height="30"/>
-        <image name="dropdownFrontlogo" width="37" height="17"/>
         <image name="menu-iconForActivitt" width="90" height="90"/>
         <image name="topbar" width="640" height="128"/>
     </resources>

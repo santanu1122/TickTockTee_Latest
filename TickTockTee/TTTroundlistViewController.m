@@ -21,7 +21,7 @@
     
 }
 @property (strong, nonatomic) IBOutlet UIView *chatBoxView;
-@property (strong, nonatomic) IBOutlet UIImageView *arrowImage;
+
 
 @end
 
@@ -60,7 +60,7 @@
     isScroll=FALSE;
     isLoadMode=FALSE;
     ViewID=(paramviewID.length>0)?paramviewID:[self LoggedId];
-
+   
     if(paramviewID>0)
     {
         self.menu.hidden=YES;
@@ -438,7 +438,7 @@
          {
              Ishoveropen=TRUE;
          }];
-        self.arrowImage.hidden=YES;
+        
         
     }
     else
@@ -454,7 +454,7 @@
              Ishoveropen=FALSE;
              [self.popupview removeFromSuperview];
          }];
-        self.arrowImage.hidden=NO;
+       
     }
     
     
@@ -477,7 +477,7 @@
          [self.popupview removeFromSuperview];
          //[SVProgressHUD show];
      }];
-    self.arrowImage.hidden=NO;
+    
     TTTStatisticsViewController *Statistic=[[TTTStatisticsViewController alloc]init];
     Statistic.paramviewID=paramviewID;
     [self PushViewController:Statistic TransitationFrom:kCATransitionFade];
@@ -497,7 +497,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
-    self.arrowImage.hidden=NO;
+    
     TTTAchievementStatisticViewController *Achive=[[TTTAchievementStatisticViewController alloc]init];
     Achive.ParamViewid=paramviewID;
     [self PushViewController:Achive TransitationFrom:kCATransitionFade];
@@ -523,7 +523,7 @@
          // [SVProgressHUD show];
          
      }];
-    self.arrowImage.hidden=NO;
+    
     TTTHandicaptViewController *hanDicap=[[TTTHandicaptViewController alloc]init];
     hanDicap.paramviewID=paramviewID;
     [self PushViewController:hanDicap TransitationFrom:kCATransitionFade];
@@ -541,7 +541,7 @@
          Ishoveropen=FALSE;
          [self.popupview removeFromSuperview];
      }];
-    self.arrowImage.hidden=NO;
+    
     TTTroundlistViewController *roundList=[[TTTroundlistViewController alloc]init];
     roundList.paramviewID=paramviewID;
     [self PushViewController:roundList TransitationFrom:kCATransitionFade];
@@ -838,7 +838,7 @@
         
         CGRect frame=[self.Scarchicon frame];
         
-        frame.origin.x=122;
+        frame.origin.x=205;
         
         [UIView animateWithDuration:.3f animations:^{
             
@@ -866,14 +866,7 @@
 
 {
     
-    
-    
-    
-    
     [textField resignFirstResponder];
-    
-    
-    
     
     
     if ([self.manuSearchtxt.text length]<1)
@@ -882,7 +875,7 @@
         
         CGRect frame=[self.Scarchicon frame];
         
-        frame.origin.x=122;
+        frame.origin.x=205;
         
         [UIView animateWithDuration:.3f animations:^{
             
@@ -891,13 +884,11 @@
             self.Scarchicon.frame=frame;
             
             
-            
-            
-            
         }];
         
-        
-        
+       
+    }else{
+        [self globalSearch];
     }
     
     

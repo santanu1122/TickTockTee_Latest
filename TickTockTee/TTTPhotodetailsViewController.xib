@@ -9,6 +9,7 @@
                 <outlet property="Buttonteabox" destination="E7X-N5-m4P" id="hOJ-JX-b32"/>
                 <outlet property="DoneButtonclicked" destination="w9f-Ku-Klz" id="LPQ-3c-748"/>
                 <outlet property="ImageTitelLbl" destination="zZt-7h-Gyr" id="HuP-vN-8Vf"/>
+                <outlet property="MainBackview" destination="uja-R9-S6S" id="0oe-8f-1bl"/>
                 <outlet property="MainScrollVire" destination="TZd-pC-tKH" id="s72-xj-Gy0"/>
                 <outlet property="SeeMoreButton" destination="glE-x7-aJg" id="SiJ-hH-2a4"/>
                 <outlet property="SpinnerView" destination="pz9-HU-wxd" id="7FW-Le-WNK"/>

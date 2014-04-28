@@ -31,6 +31,11 @@
     int i;
     BOOL isFastLocation;
     BOOL islastlocation,IsChatMenuBoxOpen;
+    NSInteger numborofscore;
+  UIView *viewonfooter;
+    UIActivityIndicatorView *progress;
+    BOOL isLoadMode,isSearchLoadMode,IFSCROLL;
+    
 }
 @property (strong, nonatomic) IBOutlet UIView *chatBoxView;
 
@@ -59,20 +64,23 @@
     self.chatBoxView.hidden=YES;
     self.MenuBarView.hidden=YES;
     IsChatMenuBoxOpen=NO;
-    
+    IFSCROLL=FALSE;
+    isLoadMode=FALSE;
+    isSearchLoadMode=FALSE;
     searchMoreDataAvalable=TRUE;
     _page_title.font = [UIFont fontWithName:@"MyriadPro-regular" size:20.0];
     Scorecardlistarry=[[NSMutableArray alloc]init];
     match1=[[NSMutableArray alloc]init];
     OperationQ=[[NSOperationQueue alloc]init];
     [_footerView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bottom-bar2"]]];
-    
+    islastlocation=TRUE;
+    isFastLocation=TRUE;
     IsLeftMenuBoxOpen=FALSE;
     (!IsIphone5)?[_footerView setFrame:CGRectMake(0, (480 - _footerView.frame.size.height), _footerView.frame.size.width, _footerView.frame.size.height)]:[_footerView setFrame:CGRectMake(0, (568 - _footerView.frame.size.height), _footerView.frame.size.width, _footerView.frame.size.height)];
     [self.view bringSubviewToFront:_footerView];
     [self AddNavigationBarTo:_footerView withSelected:@""];
     [self.ScreenView addSubview:_footerView];
-    
+   
     
     
     
@@ -97,6 +105,7 @@
     _scorelist_table.dataSource=self;
     [_scorelist_table setBackgroundColor:[UIColor clearColor]];
     
+    
 }
 
 -(void)DoMyjob
@@ -107,31 +116,35 @@
     [OperationQ addOperation:operation];
     
 }
--(void)viewWillAppear:(BOOL)animated
-{
-    IfSearchViewopen=FALSE;
-    [_SearchView removeFromSuperview];
-    
-    
-}
 
 //Pan Added to the menu
+
 
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
 {
     
     CGPoint  stopLocation;
-    if(IsChatMenuBoxOpen==NO)
-    {
+    [self keyboardhide];
+    if(IsChatMenuBoxOpen==NO){
         self.MenuBarView.hidden=NO;
         self.chatBoxView.hidden=YES;
-        if (panRecognizer.state == UIGestureRecognizerStateChanged)
+        if (panRecognizer.state == UIGestureRecognizerStateBegan)
         {
+            
+            // CGPoint startLocation = [panRecognizer translationInView:_ScreenView];
+            // NSLog(@"Strart locaton:%f",startLocation.x);
+            
+        }
+        
+        else if (panRecognizer.state == UIGestureRecognizerStateChanged)
+        {
+            
             stopLocation = [panRecognizer translationInView:_ScreenView];
             
             CGRect frame=[_ScreenView frame];
             if (IsLeftMenuBoxOpen==NO&&stopLocation.x>0)
             {
+                NSLog(@"location is %f",stopLocation.x);
                 if (stopLocation.x>60)
                 {
                     islastlocation=FALSE;
@@ -151,7 +164,7 @@
                 
                 if (islastlocation)
                 {
-                    
+                    NSLog(@"open satisfied");
                     [UIView animateWithDuration:0.3f animations:^{
                         _ScreenView.frame=frame;
                         
@@ -160,27 +173,27 @@
                 }
                 else
                 {
-                    
+                    NSLog(@"close satisfied");
                     IsLeftMenuBoxOpen=YES;
                     isFastLocation=TRUE;
                     CGRect lastFrame=[_ScreenView frame];
                     lastFrame.origin.x=260;
                     [UIView animateWithDuration:.5 animations:^{
                         _ScreenView.frame=lastFrame;
-                        
-                    }];
+                        _Searchtextfield.enabled=NO;
+                                           }];
                 }
             }
             
             
             else
             {
-                
+                //NSLog(@"TRY Left Menu OPEN");
                 
                 if (stopLocation.x*-1>60.0f)
                 {
                     isFastLocation=FALSE;
-                    
+                    // NSLog(@"is fast location");
                 }
                 else
                 {
@@ -197,6 +210,7 @@
                 if (isFastLocation)
                 {
                     
+                    NSLog(@"open satisfied");
                     [UIView animateWithDuration:.2 animations:^{
                         _ScreenView.frame=frame;
                         
@@ -205,13 +219,15 @@
                 }
                 else
                 {
-                    
+                    NSLog(@"close satisfied");
                     IsLeftMenuBoxOpen=NO;
                     islastlocation=TRUE;
                     CGRect lastFrame2=[_ScreenView frame];
                     lastFrame2.origin.x=0;
                     [UIView animateWithDuration:.5 animations:^{
                         _ScreenView.frame=lastFrame2;
+                        _Searchtextfield.enabled=YES;
+                      
                         
                     }];
                 }
@@ -222,18 +238,17 @@
             
             
         }
-        
+        ///HERE LEFT MENU OPEN CLOSE HAPPENED
         else if (panRecognizer.state==UIGestureRecognizerStateEnded)
         {
-            
             if (stopLocation.x<150&islastlocation==TRUE&IsLeftMenuBoxOpen==NO)
             {
-                
+                NSLog(@"Left Menu closed %f",stopLocation.x);
                 CGRect framelast=[_ScreenView frame];
                 framelast.origin.x=0;
                 
                 
-                [UIView animateWithDuration:.2 animations:^{
+                [UIView animateWithDuration:.6 animations:^{
                     _ScreenView.frame=framelast;
                     
                 }];
@@ -241,13 +256,13 @@
             
             if (stopLocation.x*-1<100.0f&isFastLocation==TRUE&IsLeftMenuBoxOpen==YES)
             {
-                
+                NSLog(@"Left Menu opened%f",stopLocation.x);
                 
                 CGRect framelast=[_ScreenView frame];
                 framelast.origin.x=260;
                 
                 
-                [UIView animateWithDuration:.2 animations:^{
+                [UIView animateWithDuration:.6 animations:^{
                     _ScreenView.frame=framelast;
                     
                 }];
@@ -260,6 +275,7 @@
     }
     
 }
+
 -(void)PerformChatSliderOperation
 {
     self.MenuBarView.hidden=YES;
@@ -336,9 +352,14 @@
                         [mutDic setValue:[Dicall valueForKey:@"MatchTopar"] forKey:@"MatchTopar"];
                         
                         [Scorecardlistarry addObject:mutDic];
+                        if(isLoadMode==TRUE){
+                            [self performSelectorOnMainThread:@selector(insertscorelistintotable) withObject:nil waitUntilDone:YES];
+                        }
                     }
                     
-                    [self performSelectorOnMainThread:@selector(Tblreload) withObject:nil waitUntilDone:YES];
+                    if(isLoadMode==FALSE){
+                        [self performSelectorOnMainThread:@selector(Tblreload) withObject:nil waitUntilDone:YES];
+                    }
                 }
                 else
                 {
@@ -403,6 +424,21 @@
     [_scorelist_table reloadData];
     
 }
+
+-(void)insertscorelistintotable
+{
+    numborofscore=[Scorecardlistarry count]-1;
+    NSLog(@"numborofscore %d",numborofscore);
+    [_scorelist_table beginUpdates];
+    NSIndexPath *Indexpath=[NSIndexPath indexPathForRow:numborofscore inSection:0];
+    [_scorelist_table insertRowsAtIndexPaths:[[NSArray alloc] initWithObjects:Indexpath, nil] withRowAnimation:UITableViewRowAnimationFade];
+    [_scorelist_table endUpdates];
+    [progress stopAnimating];
+    [viewonfooter removeFromSuperview];
+    [self footer];
+    IFSCROLL=FALSE;
+    
+}
 -(void)Domywork
 {
     [self.view setUserInteractionEnabled:NO];
@@ -414,8 +450,21 @@
 
 - (IBAction)manuSlideropen:(id)sender
 {
+    [self keyboardhide];
     IsLeftMenuBoxOpen=[self PerformMenuSlider:_ScreenView withMenuArea:_MenuBarView IsOpen:IsLeftMenuBoxOpen];
-    [_Searchtextfield resignFirstResponder];
+    isFastLocation=IsLeftMenuBoxOpen;
+
+    if (IsLeftMenuBoxOpen==TRUE)
+    {
+        _Searchtextfield.enabled=NO;
+        
+    }
+    else
+    {
+        _Searchtextfield.enabled=YES;
+        
+    }
+    
     
 }
 - (IBAction)AddMaxView:(id)sender
@@ -508,15 +557,150 @@
     
 }
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    
+    
+    if(textField==self.manuSearchtxt){
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=9;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+}
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    
+    [textField resignFirstResponder];
+    
+    if (textField==self.manuSearchtxt){
+        
+        if ([self.manuSearchtxt.text length]<1)
+            
+        {
+            
+            CGRect frame=[self.Scarchicon frame];
+            
+            frame.origin.x=205;
+            
+            [UIView animateWithDuration:.3f animations:^{
+                
+                
+                
+                self.Scarchicon.frame=frame;
+                
+                
+                
+                
+                
+            }];
+            
+        }else{
+            [self globalSearch];
+        }
+        
+    }else{
+        
+        i=0;
+        
+        
+        
+        searchlastid=@"0";
+        
+        [self.view setUserInteractionEnabled:NO];
+        
+        searchMoreDataAvalable=TRUE;
+        
+        isSearchLoadMode=FALSE;
+        IFSCROLL=FALSE;
+        
+        //    if (textField==_Searchtextfield&&_Searchtextfield.text.length>0)
+        
+        //    {
+        
+        [Scorecardlistarry removeAllObjects];
+        
+        [SVProgressHUD showWithStatus:@"Searching"];
+        
+        NSInvocationOperation *invocation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(SearchText:) object:searchlastid];
+        
+        [OperationQ addOperation:invocation];
+        
+        // }
+        
+    }
+    
+    return YES;
+    
+}
+
+
+
+-(void)keyboardhide{
+    
+    
+    
+    [_Searchtextfield resignFirstResponder];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
+
 
 - (IBAction)SearchButtonclick:(id)sender
 {
-    [SVProgressHUD showWithStatus:@"Scratching"];
+    [SVProgressHUD showWithStatus:@"Searching"];
     [_Searchtextfield resignFirstResponder];
     i=0;
     
     searchlastid=@"0";
-    
+    isSearchLoadMode=FALSE;
+    IFSCROLL=FALSE;
     searchMoreDataAvalable=TRUE;
     [Scorecardlistarry removeAllObjects];
     //[self.view setUserInteractionEnabled:NO];
@@ -531,7 +715,7 @@
 {
     IfMoreDataAvalable=FALSE;
     ISSearchButtonclick=TRUE;
-    
+    isLoadMode=FALSE;
     NSString *URL=[NSString stringWithFormat:@"%@user.php?mode=scorecard&userid=%@&loggedin_userid=%@&lastid=%@&search=%@", API,[self LoggedId], [self LoggedId],searchlastidforloadmore,[[_Searchtextfield.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     
@@ -608,12 +792,17 @@
             [mutDic setValue:[Dicall valueForKey:@"MatchTopar"] forKey:@"MatchTopar"];
             
             [Scorecardlistarry addObject:mutDic];
+            if(isSearchLoadMode==TRUE){
+                [self performSelectorOnMainThread:@selector(insertscorelistintotable) withObject:nil waitUntilDone:YES];
+            }
             
         }
         
         
-        
-        [self performSelectorOnMainThread:@selector(Tblreload) withObject:nil waitUntilDone:YES];
+        if(isSearchLoadMode==FALSE){
+            
+            [self performSelectorOnMainThread:@selector(Tblreload) withObject:nil waitUntilDone:YES];
+        }
         
         
         
@@ -625,7 +814,7 @@
                        
                        {
                            [self.view setUserInteractionEnabled:YES];
-                           [SVProgressHUD showErrorWithStatus:@"No scarch result found!"];
+                           [SVProgressHUD showErrorWithStatus:@"No search result found!"];
                            [SVProgressHUD dismiss];
                            [_scorelist_table reloadData];
                            searchMoreDataAvalable=FALSE;
@@ -638,16 +827,16 @@
 
 
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    
-    CGRect frame=[self.Scarchicon frame];
-    frame.origin.x=9;
-    [UIView animateWithDuration:.3f animations:^{
-        
-        self.Scarchicon.frame=frame;
-    }];
-}
+//-(void)textFieldDidBeginEditing:(UITextField *)textField
+//{
+//    
+//    CGRect frame=[self.Scarchicon frame];
+//    frame.origin.x=9;
+//    [UIView animateWithDuration:.3f animations:^{
+//        
+//        self.Scarchicon.frame=frame;
+//    }];
+//}
 
 
 
@@ -830,28 +1019,69 @@
 }
 
 #pragma UItextFieldDelegate
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    i=0;
-    
-    searchlastid=@"0";
-    [self.view setUserInteractionEnabled:NO];
-    searchMoreDataAvalable=TRUE;
-    //    if (textField==_Searchtextfield&&_Searchtextfield.text.length>0)
-    //    {
-    [Scorecardlistarry removeAllObjects];
-    [SVProgressHUD showWithStatus:@"Searching"];
-    NSInvocationOperation *invocation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(SearchText:) object:searchlastid];
-    [OperationQ addOperation:invocation];
-    // }
-    
-    return YES;
-}
+//-(BOOL)textFieldShouldReturn:(UITextField *)textField
+//{
+//    [textField resignFirstResponder];
+//    i=0;
+//    
+//    searchlastid=@"0";
+//    [self.view setUserInteractionEnabled:NO];
+//    searchMoreDataAvalable=TRUE;
+//    //    if (textField==_Searchtextfield&&_Searchtextfield.text.length>0)
+//    //    {
+//    [Scorecardlistarry removeAllObjects];
+//    [SVProgressHUD showWithStatus:@"Searching"];
+//    NSInvocationOperation *invocation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(SearchText:) object:searchlastid];
+//    [OperationQ addOperation:invocation];
+//    // }
+//    
+//    return YES;
+//}
 -(void)viewDidDisappear:(BOOL)animated
 {
     [OperationQ cancelAllOperations];
 }
+
+
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    NSLog(@"The scroll view did Disselareting call");
+//    
+//    CGPoint offset = scrollView.contentOffset;
+//    CGRect bounds = scrollView.bounds;
+//    CGSize size = scrollView.contentSize;
+//    UIEdgeInsets inset = scrollView.contentInset;
+//    float y = offset.y + bounds.size.height - inset.bottom;
+//    float h = size.height;
+//    
+//    float reload_distance = -60.0f;
+//    if(y > h + reload_distance)
+//    {
+//        
+//        if (ISSearchButtonclick==TRUE)
+//        {
+//            if (searchMoreDataAvalable==YES)
+//            {
+//                NSInvocationOperation *invocation11=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(SearchText:) object:searchlastid];
+//                [OperationQ addOperation:invocation11];
+//            }
+//            
+//        }
+//        else
+//        {
+//            if (IfMoreDataAvalable==TRUE)
+//            {
+//                NSInvocationOperation *operation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(data_for_table:) object:lastID];
+//                [OperationQ addOperation:operation];
+//            }
+//            else
+//            {
+//                NSLog(@"Thereis mo data for loadmore");
+//            }
+//        }
+//    }
+//}
+
 
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -866,13 +1096,17 @@
     float h = size.height;
     
     float reload_distance = -60.0f;
+    
     if(y > h + reload_distance)
     {
         
         if (ISSearchButtonclick==TRUE)
         {
-            if (searchMoreDataAvalable==YES)
+            if (searchMoreDataAvalable==YES && IFSCROLL==FALSE)
             {
+                isSearchLoadMode=TRUE;
+                IFSCROLL=TRUE;
+                [self Load];
                 NSInvocationOperation *invocation11=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(SearchText:) object:searchlastid];
                 [OperationQ addOperation:invocation11];
             }
@@ -880,17 +1114,32 @@
         }
         else
         {
-            if (IfMoreDataAvalable==TRUE)
+            if (IfMoreDataAvalable==TRUE && IFSCROLL==FALSE)
             {
+                isLoadMode=TRUE;
+                IFSCROLL=TRUE;
+                [self Load];
                 NSInvocationOperation *operation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(data_for_table:) object:lastID];
                 [OperationQ addOperation:operation];
             }
-            else
-            {
-                NSLog(@"Thereis mo data for loadmore");
-            }
+            
         }
     }
+}
+
+-(void)Load{
+    viewonfooter = [[UIView alloc] initWithFrame:CGRectMake(0,_scorelist_table.frame.size.height, 320, 30)];
+    viewonfooter.backgroundColor=[UIColor clearColor];
+    progress= [[UIActivityIndicatorView alloc] initWithFrame: CGRectMake(150,10, 20, 20)];
+    progress.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    [viewonfooter addSubview:progress];
+    [progress startAnimating];
+    _scorelist_table.tableFooterView= viewonfooter;
+}
+-(void)footer{
+    viewonfooter = [[UIView alloc] initWithFrame:CGRectMake(0,_scorelist_table.frame.size.height, 320, 0)];
+    viewonfooter.backgroundColor=[UIColor clearColor];
+    _scorelist_table.tableFooterView= viewonfooter;
 }
 
 
