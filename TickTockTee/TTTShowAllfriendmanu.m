@@ -130,11 +130,13 @@ NSString *LastLoadedid;
     if (IsLeftMenuBoxOpen==TRUE)
     {
         [self.Hideview setHidden:NO];
+        [Searchtextfield setEnabled:NO];
 
     }
     else
     {
         [self.Hideview setHidden:YES];
+        [Searchtextfield setEnabled:YES];
 
     }
     
@@ -196,6 +198,7 @@ NSString *LastLoadedid;
                 [UIView animateWithDuration:.5 animations:^{
                     ScreenView.frame=lastFrame;
                     [self.Hideview setHidden:NO];
+                    [Searchtextfield setEnabled:NO];
 
                 }];
             }
@@ -242,6 +245,7 @@ NSString *LastLoadedid;
                 [UIView animateWithDuration:.5 animations:^{
                     ScreenView.frame=lastFrame2;
                     [self.Hideview setHidden:YES];
+                    [Searchtextfield setEnabled:YES];
 
                 }];
             }
@@ -853,7 +857,7 @@ NSString *LastLoadedid;
             
             CGRect frame=[self.Scarchicon frame];
             
-            frame.origin.x=122;
+            frame.origin.x=205;
             
             [UIView animateWithDuration:.3f animations:^{
                 
@@ -869,6 +873,8 @@ NSString *LastLoadedid;
             
             
             
+        }else{
+            [self globalSearch];
         }
         
     }
@@ -934,7 +940,7 @@ NSString *LastLoadedid;
         
         CGRect frame=[self.Scarchicon frame];
         
-        frame.origin.x=122;
+        frame.origin.x=205;
         
         [UIView animateWithDuration:.3f animations:^{
             

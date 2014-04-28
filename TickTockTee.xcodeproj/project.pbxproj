@@ -62,6 +62,10 @@
 		0DFF3A4F18B5C3AD00FFC80B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0DFF3A4D18B5C3AD00FFC80B /* InfoPlist.strings */; };
 		0DFF3A5218B5C3AD00FFC80B /* TickTockTeeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DFF3A5118B5C3AD00FFC80B /* TickTockTeeTests.m */; };
 		4C27299218E28D9D00B6ACBC /* TTTHandicapDetails_iPhone4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C27299118E28D9D00B6ACBC /* TTTHandicapDetails_iPhone4.xib */; };
+<<<<<<< HEAD
+=======
+		4C27299618E3003900B6ACBC /* TTTroundlistViewController_iPhone4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C27299518E3003900B6ACBC /* TTTroundlistViewController_iPhone4.xib */; };
+>>>>>>> FETCH_HEAD
 		4C27299818E3007400B6ACBC /* TTTRounddetailsViewController_iPhone4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C27299718E3007400B6ACBC /* TTTRounddetailsViewController_iPhone4.xib */; };
 		4C27299C18E3010400B6ACBC /* TTTAchievementDetailsViewController_iPhone4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C27299B18E3010400B6ACBC /* TTTAchievementDetailsViewController_iPhone4.xib */; };
 		4C27299E18E3014800B6ACBC /* TTTAchievementStatisticViewController_iPhone4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C27299D18E3014800B6ACBC /* TTTAchievementStatisticViewController_iPhone4.xib */; };
@@ -268,6 +272,9 @@
 		4CFFBDB018CF0BB700D92D47 /* TTTCellForActivityComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFBDAF18CF0BB700D92D47 /* TTTCellForActivityComment.m */; };
 		4CFFBDB218CF0BCD00D92D47 /* TTTCellForActivityComment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4CFFBDB118CF0BCD00D92D47 /* TTTCellForActivityComment.xib */; };
 		550B892D190B9B6F00199C32 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 550B892C190B9B6E00199C32 /* Twitter.framework */; };
+		550B8930190BEDC700199C32 /* TTTHandicaptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 550B892E190BEDC700199C32 /* TTTHandicaptViewController.xib */; };
+		550B8931190BEDC700199C32 /* TTTHandicaptViewController_iPhone4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 550B892F190BEDC700199C32 /* TTTHandicaptViewController_iPhone4.xib */; };
+		550B8933190BEE0B00199C32 /* TTTroundlistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 550B8932190BEE0B00199C32 /* TTTroundlistViewController.xib */; };
 		D9963C4B19093B0700F383AC /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9963C4A19093B0700F383AC /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
@@ -353,6 +360,10 @@
 		0DFF3A5018B5C3AD00FFC80B /* TickTockTeeTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TickTockTeeTests.h; sourceTree = "<group>"; };
 		0DFF3A5118B5C3AD00FFC80B /* TickTockTeeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TickTockTeeTests.m; sourceTree = "<group>"; };
 		4C27299118E28D9D00B6ACBC /* TTTHandicapDetails_iPhone4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTHandicapDetails_iPhone4.xib; sourceTree = "<group>"; };
+<<<<<<< HEAD
+=======
+		4C27299518E3003900B6ACBC /* TTTroundlistViewController_iPhone4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTroundlistViewController_iPhone4.xib; sourceTree = "<group>"; };
+>>>>>>> FETCH_HEAD
 		4C27299718E3007400B6ACBC /* TTTRounddetailsViewController_iPhone4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTRounddetailsViewController_iPhone4.xib; sourceTree = "<group>"; };
 		4C27299B18E3010400B6ACBC /* TTTAchievementDetailsViewController_iPhone4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTAchievementDetailsViewController_iPhone4.xib; sourceTree = "<group>"; };
 		4C27299D18E3014800B6ACBC /* TTTAchievementStatisticViewController_iPhone4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTAchievementStatisticViewController_iPhone4.xib; sourceTree = "<group>"; };
@@ -649,6 +660,9 @@
 		4CFFBDAF18CF0BB700D92D47 /* TTTCellForActivityComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTCellForActivityComment.m; sourceTree = "<group>"; };
 		4CFFBDB118CF0BCD00D92D47 /* TTTCellForActivityComment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTCellForActivityComment.xib; sourceTree = "<group>"; };
 		550B892C190B9B6E00199C32 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = ../../Downloads/Twitter.framework; sourceTree = "<group>"; };
+		550B892E190BEDC700199C32 /* TTTHandicaptViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTHandicaptViewController.xib; sourceTree = "<group>"; };
+		550B892F190BEDC700199C32 /* TTTHandicaptViewController_iPhone4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTHandicaptViewController_iPhone4.xib; sourceTree = "<group>"; };
+		550B8932190BEE0B00199C32 /* TTTroundlistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTTroundlistViewController.xib; sourceTree = "<group>"; };
 		D9963C4A19093B0700F383AC /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1411,8 +1425,13 @@
 			children = (
 				4C94845A18E078D600D76F22 /* TTTroundlistViewController.h */,
 				4C94845B18E078D600D76F22 /* TTTroundlistViewController.m */,
+<<<<<<< HEAD
 				4C93FBB2190BE476005D3EA5 /* TTTroundlistViewController.xib */,
 				4C93FBB3190BE476005D3EA5 /* TTTroundlistViewController_iPhone4.xib */,
+=======
+				550B8932190BEE0B00199C32 /* TTTroundlistViewController.xib */,
+				4C27299518E3003900B6ACBC /* TTTroundlistViewController_iPhone4.xib */,
+>>>>>>> FETCH_HEAD
 			);
 			name = "round state cell";
 			sourceTree = "<group>";
@@ -1422,8 +1441,13 @@
 			children = (
 				4C93BE5D18E1AD6400658310 /* TTTHandicaptViewController.h */,
 				4C93BE5E18E1AD6400658310 /* TTTHandicaptViewController.m */,
+<<<<<<< HEAD
 				4C93FBAE190BE429005D3EA5 /* TTTHandicaptViewController.xib */,
 				4C93FBAF190BE429005D3EA5 /* TTTHandicaptViewController_iPhone4.xib */,
+=======
+				550B892E190BEDC700199C32 /* TTTHandicaptViewController.xib */,
+				550B892F190BEDC700199C32 /* TTTHandicaptViewController_iPhone4.xib */,
+>>>>>>> FETCH_HEA
 			);
 			name = hanDicapDetis;
 			sourceTree = "<group>";
@@ -2033,7 +2057,11 @@
 				4C97731E18E3E7B100EE432E /* TTTAddPhotoWithoption_iPhone4.xib in Resources */,
 				0DF6CBB518B5C57300D3E18F /* TTTLaunchViewController.xib in Resources */,
 				0DFF3A3018B5C3AC00FFC80B /* Default.png in Resources */,
+<<<<<<< HEAD
 				4C93FBB1190BE429005D3EA5 /* TTTHandicaptViewController_iPhone4.xib in Resources */,
+=======
+				550B8931190BEDC700199C32 /* TTTHandicaptViewController_iPhone4.xib in Resources */,
+>>>>>>> FETCH_HEAD
 				4CF6E34A18E58B11002DEF7D /* TTTPhotodetailsViewController.xib in Resources */,
 				4CF6E34818E58B11002DEF7D /* TTTPhotodetailsViewController_iPhone4.xib in Resources */,
 				4C8E0AE3190801640004F6E2 /* TTTTotalteeuserlist.xib in Resources */,
@@ -2047,6 +2075,7 @@
 				4C94CE1F18F6BB3E00DA6F75 /* TTTCourseListViewController.xib in Resources */,
 				4C94E060190959590038E988 /* ChatCell.xib in Resources */,
 				4C27861918DDE075008DF60B /* Empty.xib in Resources */,
+				550B8933190BEE0B00199C32 /* TTTroundlistViewController.xib in Resources */,
 				4C94846918E079C600D76F22 /* TTTCellForHandcap.xib in Resources */,
 				0DFF3A3418B5C3AD00FFC80B /* Default-568h@2x.png in Resources */,
 				4C9AE6DD18F4428700D88A28 /* TTTProfileViewController.xib in Resources */,
@@ -2069,7 +2098,11 @@
 				0DF6CBCC18B5C5C900D3E18F /* TTTSigninViewController_4.xib in Resources */,
 				4C2A6FB818BDF49D0054D763 /* TTTCellFormatchListcontroller.xib in Resources */,
 				4C949B6618F7CF2000CC694D /* TTTCellForfollowerList.xib in Resources */,
+<<<<<<< HEAD
 				4C93FBB0190BE429005D3EA5 /* TTTHandicaptViewController.xib in Resources */,
+=======
+				550B8930190BEDC700199C32 /* TTTHandicaptViewController.xib in Resources */,
+>>>>>>> FETCH_HEAD
 				0DFF3A3D18B5C3AD00FFC80B /* TTTViewController_iPad.xib in Resources */,
 				4CA3A57318B75E010081521A /* TTTForgetpasswordHome.xib in Resources */,
 				0DF6CBB618B5C57300D3E18F /* TTTLaunchViewController_4.xib in Resources */,

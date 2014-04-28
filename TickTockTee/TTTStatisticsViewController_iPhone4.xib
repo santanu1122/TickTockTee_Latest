@@ -12,7 +12,6 @@
                 <outlet property="MenuBarView" destination="5Ic-NP-gDN" id="all-TR-eef"/>
                 <outlet property="ScreenView" destination="uXX-Wv-VJ1" id="3HY-rt-fMR"/>
                 <outlet property="actionView" destination="Bbo-nM-FSD" id="wxY-Lo-5Bt"/>
-                <outlet property="arrowImage" destination="eeP-Iw-q9M" id="MZS-NP-qvU"/>
                 <outlet property="dataView" destination="Vaw-UH-jol" id="wBC-v0-arX"/>
                 <outlet property="footerView" destination="Hur-ma-UrT" id="JyU-VO-1aS"/>
                 <outlet property="lineGraphView" destination="UgV-tr-xpI" id="h0R-8y-v1E"/>
@@ -176,11 +175,6 @@
                         <action selector="GoesHandicapDetais:" destination="-1" eventType="touchUpInside" id="ZF4-ZQ-jNb"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dropdownFrontlogo" translatesAutoresizingMaskIntoConstraints="NO" id="oTj-Fj-hdJ">
-                    <rect key="frame" x="150" y="-1" width="19" height="9"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -932,7 +926,6 @@
         <image name="GropDown4" width="640" height="453"/>
         <image name="background_2.png" width="640" height="1136"/>
         <image name="dropdown" width="80" height="30"/>
-        <image name="dropdownFrontlogo" width="37" height="17"/>
         <image name="graph-pic1" width="577" height="437"/>
         <image name="menu-iconForActivitt" width="90" height="90"/>
         <image name="row1" width="640" height="56"/>

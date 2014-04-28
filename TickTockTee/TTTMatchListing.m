@@ -51,6 +51,11 @@
        BOOL ispastmatchclick;
        CGRect mainframe;
        NSString *ViewID;
+    BOOL ISSearchButtonclick;
+    BOOL searchMoreDataAvalable,IFSCROLL,isLoadMode;
+    
+    NSInteger numborofscore;
+   
     
 }
 @property (weak, nonatomic) IBOutlet UIButton *BackButton;
@@ -109,6 +114,10 @@
     isupcommingclick=YES;
     Isongoingclick=NO;
     ispastmatchclick=NO;
+    ISSearchButtonclick=FALSE;
+    searchMoreDataAvalable=TRUE;
+    isLoadMode=FALSE;
+    IFSCROLL=FALSE;
     ViewID=(ParamUserID.length>0)?ParamUserID:[self LoggedId];
     mainframe=[matchListtable frame];
     MatchMode=@"upcomingevent";
@@ -127,7 +136,7 @@
     LastIdScarch=@"0";
     Method=[[TTTGlobalMethods alloc]init];
     
-    
+
     matchListtable.delegate=self;
     matchListtable.dataSource=self;
     
@@ -201,9 +210,20 @@
 {
     self.MamuView.hidden=NO;
     self.ChatboxView.hidden=YES;
+    [self keyboardhide];
     IsLeftMenuBoxOpen=[self PerformMenuSlider:_ScreenView withMenuArea:MamuView IsOpen:IsLeftMenuBoxOpen];
     isFastLocation=IsLeftMenuBoxOpen;
-    [_Searchtextfield resignFirstResponder];
+    
+    if (IsLeftMenuBoxOpen==TRUE)
+    {
+        self.Searchtextfield.enabled=NO;
+    }
+    else
+    {
+        self.Searchtextfield.enabled=YES;
+        
+    }
+    
 }
 
 
@@ -240,19 +260,61 @@
 }
 
 
+- (void)dropdownview
+{
+    
+    isLoadMode=FALSE;
+    IFSCROLL=FALSE;
+    ISSearchButtonclick=NO;
+    ISMOREDATAAVALABLEUPCOMMING=TRUE;
+   
+    if (Ishoveropen==FALSE)
+    {
+        
+        self.popupview.frame=CGRectMake(0, 60, 320, 0);
+        self.popupview.alpha=0.0000f;
+        [_ScreenView addSubview:self.popupview];
+        
+        [UIView animateWithDuration:0.2f animations:^{
+            
+            self.popupview.frame=CGRectMake(0, 60, 320, 174);
+            self.popupview.alpha=1.0000f;
+            
+        }
+                         completion:^(BOOL finished)
+         {
+             Ishoveropen=TRUE;
+         }];
+        
+    }
+    else
+    {
+        [UIView animateWithDuration:0.2f animations:^{
+            self.popupview.frame=CGRectMake(0, 60, 320, 0);
+            self.popupview.alpha=0.0000f;
+        }
+                         completion:^(BOOL finished)
+         {
+             
+             Ishoveropen=FALSE;
+             [self.popupview removeFromSuperview];
+         }];
+    }
+    
+    
+}
 
 
 - (IBAction)Searchmatch:(id)sender
 {
-    
+    Ishoveropen=TRUE;
     [_Searchtextfield setTextColor:[UIColor whiteColor]];
     _Searchtextfield.font=[UIFont fontWithName:@"MyriadPro-Regular" size:16.0f];
     [_Searchtextfield setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_SearchView setFrame:CGRectMake(0, 60, 320, 0)];
     [_ScreenView addSubview:_SearchView];
      CGRect Frame=[_SearchView frame];
-    
-    
+    [self dropdownview];
     if (IfSearchViewopen==FALSE)
     {
         Frame.size.height=40;
@@ -383,6 +445,10 @@
 - (IBAction)UpcommingMatch:(id)sender
 {
     IfSearchViewopen=TRUE;
+    isLoadMode=FALSE;
+    IFSCROLL=FALSE;
+    ISSearchButtonclick=NO;
+    ISMOREDATAAVALABLEUPCOMMING=TRUE;
     [self Searchviewopen];
     
     if (Ishoveropen==FALSE)
@@ -425,7 +491,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         self.MamuView.hidden=NO;
         self.ChatboxView.hidden=YES;
@@ -481,6 +547,8 @@
                     lastFrame.origin.x=260;
                     [UIView animateWithDuration:.5 animations:^{
                         _ScreenView.frame=lastFrame;
+                        self.Searchtextfield.enabled=NO;
+                       
                         
                     }];
                 }
@@ -527,6 +595,8 @@
                     lastFrame2.origin.x=0;
                     [UIView animateWithDuration:.5 animations:^{
                         _ScreenView.frame=lastFrame2;
+                        self.Searchtextfield.enabled=YES;
+                        
                         
                     }];
                 }
@@ -652,9 +722,17 @@
                 [MutableDic setObject:MatchPlayerArry forKey:@"imagearray"];
                 
                 [matchListarry addObject:MutableDic];
-                
+                if(isLoadMode==TRUE){
+                    [self performSelectorOnMainThread:@selector(insertmatchintotable) withObject:nil waitUntilDone:YES];
+                }
             }
-            [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+            
+            if(isLoadMode==FALSE){
+                [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+            }
+                
+//            }
+//            [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
             
         }
         else
@@ -686,6 +764,7 @@
    
     
 }
+
 
 
 -(void)getUpcomingMatches:(NSString *)LastId
@@ -750,9 +829,16 @@
                   [MutableDic setObject:MatchPlayerArry forKey:@"imagearray"];
                 
                   [matchListarry addObject:MutableDic];
-
+                if(isLoadMode==TRUE){
+                    [self performSelectorOnMainThread:@selector(insertmatchintotable) withObject:nil waitUntilDone:YES];
+                }
             }
-            [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+            
+            if(isLoadMode==FALSE){
+                [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+            }
+//            }
+//            [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
             
         }
         else
@@ -854,9 +940,17 @@
                 [MutableDic setObject:MatchPlayerArry forKey:@"imagearray"];
                 
                 [matchListarry addObject:MutableDic];
-                
+                if(isLoadMode==TRUE){
+                    [self performSelectorOnMainThread:@selector(insertmatchintotable) withObject:nil waitUntilDone:YES];
+                }
             }
-            [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+            
+            if(isLoadMode==FALSE){
+                [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+            }
+                
+//            }
+//            [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
             
         }
         else
@@ -1361,6 +1455,9 @@
 - (IBAction)ShowUpcommingEvents:(id)sender
 {
     IfSearchViewopen=TRUE;
+    isLoadMode=FALSE;
+    IFSCROLL=FALSE;
+    ISMOREDATAAVALABLEUPCOMMING=TRUE;
     [self Searchviewopen];
     MatchMode=@"upcomingevent";
     self.tick2.hidden=YES;
@@ -1382,6 +1479,7 @@
     ispastmatchclick=NO;
     Isongoingclick=NO;
     isupcommingclick=YES;
+    ISSearchButtonclick=NO;
     [matchListarry removeAllObjects];
     
      NSInvocationOperation *invocation=[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(getUpcomingMatches:) object:@"0"];
@@ -1392,6 +1490,9 @@
 - (IBAction)ShowOngoingEvent:(id)sender
 {
     IfSearchViewopen=TRUE;
+    isLoadMode=FALSE;
+    IFSCROLL=FALSE;
+    ISMOREDATAAVLFORONGOING=TRUE;
     [self Searchviewopen];
     MatchMode=@"ongoingevent";
     self.tick1.hidden=YES;
@@ -1418,6 +1519,7 @@
     ispastmatchclick=NO;
     Isongoingclick=YES;
     isupcommingclick=NO;
+    ISSearchButtonclick=NO;
     NSInvocationOperation *invocation=[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(getOnGoingMatches:) object:lastIdOngong];
     [OperationQ addOperation:invocation];
 
@@ -1427,6 +1529,9 @@
 - (IBAction)PastEvent:(id)sender
 {
   [self.upcommingMatchLbl setText:@"Past"];
+    isLoadMode=FALSE;
+    ISMOREDATAAVALABLEPAST=TRUE;
+    IFSCROLL=FALSE;
     self.tick1.hidden=YES;
     self.tick2.hidden=YES;
     [self.view setUserInteractionEnabled:NO];
@@ -1447,6 +1552,7 @@
     ispastmatchclick=YES;
     Isongoingclick=NO;
     isupcommingclick=NO;
+    ISSearchButtonclick=NO;
     lastIdpast=@"0";
   [matchListarry removeAllObjects];
     NSInvocationOperation *invocation=[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(getPastMatches:) object:lastIdpast];
@@ -1461,51 +1567,25 @@
 
 - (IBAction)SearchButtonclick:(id)sender
 {
-  
+  [matchListarry removeAllObjects];
+    searchMoreDataAvalable=TRUE;
+    isLoadMode=FALSE;
+    IFSCROLL=FALSE;
     [SVProgressHUD showWithStatus:@"searching"];
     [[self view] setUserInteractionEnabled:NO];
      NSInvocationOperation *SearchOperation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(ScarchmatchWitlastId:) object:LastIdScarch];
     [OperationQ addOperation:SearchOperation];
+    [self.Searchtextfield resignFirstResponder];
     
-}
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-   
-    if (textField==self.Searchtextfield&&self.Searchtextfield.text.length>0)
-    {
-        [[self matchListtable] setUserInteractionEnabled:NO];
-        if (IsLeftMenuBoxOpen==FALSE)
-        {
-            [SVProgressHUD showWithStatus:@"searching"];
-            [[self view] setUserInteractionEnabled:NO];
-            NSInvocationOperation *SearchOperation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(ScarchmatchWitlastId:) object:LastIdScarch];
-            [OperationQ addOperation:SearchOperation];
-        }
-        
-        if ([self.manuSearchtxt.text length]<1)
-        {
-            CGRect frame=[self.Scarchicon frame];
-            frame.origin.x=122;
-            [UIView animateWithDuration:.3f animations:^{
-                
-                self.Scarchicon.frame=frame;
-            }];
-            
-        }
-
-    }
-   
-   
-    return YES;
 }
 //perform Search operation
 
 -(void)ScarchmatchWitlastId:(NSString *)LastId
 {
+    ISSearchButtonclick=TRUE;
     @try
     {
-          [matchListarry removeAllObjects];
+        
        
         NSString *URL=[NSString stringWithFormat:@"%@user.php?mode=%@&currenttime=%@&timezone=%@&userid=%@&status=my&lastid=%@&search=%@&loggedin_userid=%@", API,MatchMode,[Method Encoder:[self LocalDateTime]], [Method Encoder:[self LocalTimeZoneName]], ViewID, LastId,[Method Encoder:_Searchtextfield.text],[self LoggedId]];
         NSLog(@"%@", URL);
@@ -1514,16 +1594,14 @@
         
         NSDictionary *Output=[NSJSONSerialization JSONObjectWithData:getData options:kNilOptions error:nil];
         NSDictionary *paramdic=[Output valueForKey:@"extraparam"];
-        LastIdUpcomming=[paramdic valueForKey:@"lastid"];
+        LastIdScarch=[paramdic valueForKey:@"lastid"];
         NSString *moredata=[paramdic valueForKey:@"moredata"];
-        if ([moredata integerValue]>0)
+        if ([moredata integerValue]==0)
         {
+            searchMoreDataAvalable=FALSE;
            
         }
-        else
-        {
-            
-        }
+      
         NSArray *EventArry=[Output objectForKey:@"matches"];
         
         
@@ -1568,9 +1646,18 @@
                 
                 [matchListarry addObject:MutableDic];
                 
-                
+                if(isLoadMode==TRUE){
+                    [self performSelectorOnMainThread:@selector(insertmatchintotable) withObject:nil waitUntilDone:YES];
+                }
             }
-            [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+            
+            if(isLoadMode==FALSE){
+                [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
+            }
+
+//
+//            }
+//            [self performSelectorOnMainThread:@selector(ReloadTable) withObject:nil waitUntilDone:YES];
             
         }
         else
@@ -1580,6 +1667,7 @@
                 [SVProgressHUD dismiss];
                 [matchListtable reloadData];
                 [self.view setUserInteractionEnabled:YES];
+                searchMoreDataAvalable=FALSE;
 
             });
             
@@ -1598,22 +1686,6 @@
 }
 //Uitextfield Delegate
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    
-    
-    CGRect frame=[self.Scarchicon frame];
-    frame.origin.x=9;
-    [UIView animateWithDuration:.3f animations:^{
-        
-        self.Scarchicon.frame=frame;
-        
-        
-    }];
-    
-    
-    
-}
 
 //Scrollview Delegate
 
@@ -1656,12 +1728,26 @@
     float reload_distance = -60.0f;
     if(y > h + reload_distance)
     {
+        
+        if (ISSearchButtonclick==TRUE)
+        {
+            
+            if (searchMoreDataAvalable==TRUE && IFSCROLL==FALSE)
+            {
+                IFSCROLL=TRUE;
+                isLoadMode=TRUE;
+                NSInvocationOperation *SearchOperation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(ScarchmatchWitlastId:) object:LastIdScarch];
+                [OperationQ addOperation:SearchOperation];
+            }
+            
+        }else{
         if (ispastmatchclick==YES)
         {
-            if (ISMOREDATAAVALABLEPAST==TRUE)
+            if (ISMOREDATAAVALABLEPAST==TRUE && IFSCROLL==FALSE)
             {
-                [self.view setUserInteractionEnabled:NO];
-                 NSLog(@"Print original load more:");
+                IFSCROLL=TRUE;
+                isLoadMode=TRUE;
+               
                  NSInvocationOperation *invocation=[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(getPastMatches:) object:lastIdpast];
                  [OperationQ addOperation:invocation];
             }
@@ -1674,10 +1760,12 @@
      
         
     }
-    if (Isongoingclick==YES)
+    if (Isongoingclick==YES )
     {
-        if (ISMOREDATAAVLFORONGOING==TRUE)
+        if (ISMOREDATAAVLFORONGOING==TRUE && IFSCROLL==FALSE)
         {
+            IFSCROLL=TRUE;
+            isLoadMode=TRUE;
             NSInvocationOperation *invocation=[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(getOnGoingMatches:) object:lastIdOngong];
             [OperationQ addOperation:invocation];
 
@@ -1687,15 +1775,17 @@
     if (isupcommingclick==YES)
     {
         
-            if (ISMOREDATAAVALABLEUPCOMMING==TRUE)
+            if (ISMOREDATAAVALABLEUPCOMMING==TRUE && IFSCROLL==FALSE)
             {
+                IFSCROLL=TRUE;
+                isLoadMode=TRUE;
                 NSInvocationOperation *invocation=[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(getUpcomingMatches:) object:LastIdUpcomming];
                 [OperationQ addOperation:invocation];
             }
         
     }
  
-    
+    }
    
 }
 //ScrollView Delegate for Onscroll pagination
@@ -1705,6 +1795,144 @@
        [self PerformGoBack];
  }
 
+
+-(void)insertmatchintotable
+{
+    numborofscore=[matchListarry count]-1;
+    NSLog(@"numborofscore %d",numborofscore);
+    [matchListtable beginUpdates];
+    NSIndexPath *Indexpath=[NSIndexPath indexPathForRow:numborofscore inSection:0];
+    [matchListtable insertRowsAtIndexPaths:[[NSArray alloc] initWithObjects:Indexpath, nil] withRowAnimation:UITableViewRowAnimationFade];
+    [matchListtable endUpdates];
+   IFSCROLL=FALSE;
+    
+}
+
+
+
+-(void)keyboardhide{
+    
+    [_Searchtextfield resignFirstResponder];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    
+    
+    if(textField==self.manuSearchtxt){
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=9;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+    
+    
+}
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    
+    [textField resignFirstResponder];
+    
+    
+    
+    if (textField==self.Searchtextfield&&self.Searchtextfield.text.length>0)
+    {
+        [[self matchListtable] setUserInteractionEnabled:NO];
+        if (IsLeftMenuBoxOpen==FALSE)
+        {
+            [matchListarry removeAllObjects];
+            searchMoreDataAvalable=TRUE;
+            isLoadMode=FALSE;
+            IFSCROLL=FALSE;
+            [SVProgressHUD showWithStatus:@"searching"];
+            [[self view] setUserInteractionEnabled:NO];
+            NSInvocationOperation *SearchOperation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(ScarchmatchWitlastId:) object:LastIdScarch];
+            [OperationQ addOperation:SearchOperation];
+        }
+    }else if (textField==self.manuSearchtxt){
+        
+        if ([self.manuSearchtxt.text length]<1)
+            
+        {
+            
+            CGRect frame=[self.Scarchicon frame];
+            
+            frame.origin.x=205;
+            
+            [UIView animateWithDuration:.3f animations:^{
+                
+                
+                
+                self.Scarchicon.frame=frame;
+                
+                
+                
+                
+                
+            }];
+            
+        }else{
+            [self globalSearch];
+        }
+        
+    }
+    
+    
+    
+    return YES;
+    
+}
 
 
 

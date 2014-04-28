@@ -34,7 +34,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *rounddetailbtn;
 @property (strong, nonatomic) IBOutlet UIButton *handicapdetailbtn;
 @property (strong, nonatomic) IBOutlet UIView *chatBoxView;
-@property (strong, nonatomic) IBOutlet UIImageView *arrowImage;
+
 
 @end
 
@@ -442,7 +442,7 @@
              
              
          }];
-        self.arrowImage.hidden=YES;
+        
     }
     else{
         [UIView animateWithDuration:3
@@ -459,7 +459,7 @@
                              _page_title.text=@"Handicap Details";
                          }
                          completion:nil];
-        self.arrowImage.hidden=NO;
+        
     }
     
     
@@ -481,7 +481,7 @@
                      }
      
                      completion:nil];
-    self.arrowImage.hidden=NO;
+    
     
     TTTStatisticsViewController *statistic=[[TTTStatisticsViewController alloc]init];
     statistic.paramviewID=paramviewID;
@@ -508,7 +508,7 @@
                      }
                      completion:nil];
     
-    self.arrowImage.hidden=NO;
+   
     
 }
 
@@ -527,7 +527,7 @@
                          //_page_title.text=@"Round Details";
                      }
                      completion:nil];
-    self.arrowImage.hidden=NO;
+    
     TTTroundlistViewController *roudList=[[TTTroundlistViewController alloc]init];
     roudList.paramviewID=paramviewID;
     [self PushViewController:roudList TransitationFrom:kCATransitionFade];
@@ -548,7 +548,7 @@
                          _page_title.text=@"Handicap Details";
                      }
                      completion:nil];
-    self.arrowImage.hidden=NO;
+    
     TTTHandicaptViewController *handicap=[[TTTHandicaptViewController alloc]init];
     handicap.paramviewID=paramviewID;
     [self PushViewController:handicap TransitationFrom:kCATransitionFade];

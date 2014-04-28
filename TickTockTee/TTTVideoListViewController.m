@@ -277,6 +277,7 @@
 }
 
 - (IBAction)leftMenuOpen:(id)sender {
+    [self keyboardhide];
     self.menuView.hidden=NO;
     self.chatBoxView.hidden=YES;
     IsLeftMenuBoxOpen=[self PerformMenuSlider:_Screenview withMenuArea:_leftMenu IsOpen:IsLeftMenuBoxOpen];
@@ -294,7 +295,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         self.menuView.hidden=NO;
         self.chatBoxView.hidden=YES;
@@ -455,5 +456,107 @@
     IsChatMenuBoxOpen=[self PerformChatSlider:self.Screenview withChatArea:self.chatBoxView IsOpen:IsChatMenuBoxOpen];
     NSLog(@"PerformChatSliderOperation %@ %@",IsChatMenuBoxOpen?@"YES":@"NO",[NSDate date]);
     }
+
+-(void)keyboardhide{
+    
+    [SVProgressHUD dismiss];
+    
+    [self.manuSearchtxt resignFirstResponder];
+    
+    if ([self.manuSearchtxt.text length]<1 && self.Scarchicon.frame.origin.x==9)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+    }
+    
+    
+    
+}
+
+
+
+
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+
+{
+    
+    
+    
+    
+    
+    [textField resignFirstResponder];
+    
+    
+    
+    
+    
+    if ([self.manuSearchtxt.text length]<1)
+        
+    {
+        
+        CGRect frame=[self.Scarchicon frame];
+        
+        frame.origin.x=205;
+        
+        [UIView animateWithDuration:.3f animations:^{
+            
+            
+            
+            self.Scarchicon.frame=frame;
+            
+            
+            
+            
+            
+        }];
+        
+        
+        
+    }else{
+        [self globalSearch];
+    }
+    
+    
+    
+    return YES;
+    
+}
+
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    CGRect frame=[self.Scarchicon frame];
+    
+    frame.origin.x=9;
+    
+    [UIView animateWithDuration:.3f animations:^{
+        
+        self.Scarchicon.frame=frame;
+        
+    }];
+    
+}
+
+
 
 @end

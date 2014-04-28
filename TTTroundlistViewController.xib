@@ -11,7 +11,10 @@
                 <outlet property="MenuBarView" destination="xnV-FG-awC" id="cva-sI-V3Y"/>
                 <outlet property="ScreenView" destination="AI9-JC-8RQ" id="slP-CL-4Fn"/>
                 <outlet property="activesincelabel" destination="cyl-Oi-tTQ" id="wIv-JV-CZv"/>
+<<<<<<< HEAD:TTTroundlistViewController.xib
                 <outlet property="chatBoxView" destination="idT-2z-g4i" id="Puv-4t-go6"/>
+=======
+>>>>>>> FETCH_HEAD:TickTockTee/TTTroundlistViewController.xib
                 <outlet property="dropdown" destination="76R-Kl-1c8" id="fRy-cn-tCx"/>
                 <outlet property="footerView" destination="t4H-Yu-hJ9" id="6zr-fU-CiS"/>
                 <outlet property="menu" destination="r2R-M2-bSf" id="1hX-Su-5m5"/>
@@ -30,11 +33,6 @@
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" id="xnV-FG-awC" userLabel="manubarView">
                     <rect key="frame" x="0.0" y="0.0" width="260" height="568"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </view>
-                <view contentMode="scaleToFill" id="idT-2z-g4i" userLabel="ChatBoxView">
-                    <rect key="frame" x="60" y="0.0" width="260" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>

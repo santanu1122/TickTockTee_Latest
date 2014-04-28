@@ -150,6 +150,7 @@
     
     
     [self setRoundBorderToImageView:_profileImage];
+
     [self SetroundborderWithborderWidth:2.0f WithColour:[UIColor whiteColor] ForView:_viewOnProfileImage];
     [self AddNavigationBarTo:_vfooterbackview];
     
@@ -206,7 +207,7 @@
 {
     
     CGPoint  stopLocation;
-    
+    [self keyboardhide];
     if(IsChatMenuBoxOpen==NO){
         
        
@@ -371,6 +372,7 @@
 
 -(void)DetActivityStreem:(NSString *)TheValueoflastID
 {
+<<<<<<< HEAD
     if ([self isConnectedToInternet])
     {
         @try
@@ -381,6 +383,19 @@
             NSData *dataFromurl=[NSData dataWithContentsOfURL:[NSURL URLWithString:StringUrl]];
             NSDictionary *MainDiction=[NSJSONSerialization JSONObjectWithData:dataFromurl options:kNilOptions error:&Error];
             if ([[MainDiction valueForKey:@"extraparam"] isKindOfClass:[NSDictionary class]])
+=======
+    NSError *error;
+    // datax=[NSData dataWithContentsOfURL:url options:0 error:&error];
+    if(!error){
+        _dict=[NSJSONSerialization JSONObjectWithData:datax  options:kNilOptions error:nil];
+        if(!error){
+            [self setimage:[_dict objectForKey:@"coverphoto"] tag:1];
+            [self setimage:[_dict objectForKey:@"thumb"] tag:0];
+            
+            _profileName.text=[_dict objectForKey:@"userfullname"];
+            NSString *mainString;
+            if ([[_dict objectForKey:@"CityTown"] length]>0&&[[_dict objectForKey:@"State"] length]>0&&[[_dict objectForKey:@"Country"] length]>0)
+>>>>>>> FETCH_HEAD
             {
                 NSDictionary *ExtraparamDic=[MainDiction valueForKey:@"extraparam"];
                 
@@ -6811,7 +6826,7 @@
     if ([self.manuSearchtxt.text length]<1)
     {
         CGRect frame=[self.Scarchicon frame];
-        frame.origin.x=122;
+        frame.origin.x=205;
         [UIView animateWithDuration:.3f animations:^{
             
             self.Scarchicon.frame=frame;
@@ -6831,6 +6846,7 @@
 {
     if (scrollView==profileTable)
     {
+<<<<<<< HEAD
         CGPoint offset = scrollView.contentOffset;
         CGRect bounds = scrollView.bounds;
         CGSize size = scrollView.contentSize;
@@ -6863,6 +6879,11 @@
                 tableframe.size.height=456.0f;
                 [profileTable setFrame:tableframe];
             }
+=======
+        CGRect frame=[self.Scarchicon frame];
+        frame.origin.x=205;
+        [UIView animateWithDuration:.3f animations:^{
+>>>>>>> FETCH_HEAD
             
         }
         
