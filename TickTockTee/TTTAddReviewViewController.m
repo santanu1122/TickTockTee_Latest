@@ -65,7 +65,7 @@
     viewerID=[self LoggedId];
     rating=0;
     [star1 addTarget:self action:@selector(rating:) forControlEvents:UIControlEventTouchUpInside];
-    star1.tag=100;
+     star1.tag=100;
     [star2 addTarget:self action:@selector(rating:) forControlEvents:UIControlEventTouchUpInside];
     star2.tag=101;
     [star3 addTarget:self action:@selector(rating:) forControlEvents:UIControlEventTouchUpInside];

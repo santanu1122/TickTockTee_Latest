@@ -41,6 +41,9 @@
     BOOL slideup,IScancelButtonclick,isfinish,clickcancel;
     int Addallrating;
     UIView *AddNewReviewView;
+    NSString *MyString;
+    NSString *viewerID;
+    UIView *FooterView;
     
 
     
@@ -107,6 +110,7 @@
     ISMoreData=YES;
     IsLeftMenuBoxOpen=FALSE;
     ISLastContent=YES;
+    
     if (!IsIphone5)
     {
         CGRect frame=[self.Vfooterback frame];
@@ -134,7 +138,7 @@
     ChatSliderView.hidden=TRUE;
     [self AddNavigationBarTo:_Vfooterback withSelected:@""];
     
-
+     viewerID=([ParamViewerid length]>0)?ParamViewerid:[self LoggedId];
     
      [self AddLeftMenuTo:_menuview setSelected:@""];
      reviewListarry=[[NSMutableArray alloc] init];
@@ -157,6 +161,7 @@
         {
             NSDictionary *MainDic=[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
             NSDictionary *reviewListArry=[MainDic valueForKey:@"reviewlist"];
+           
             for (NSDictionary *ReviewDic in reviewListArry)
             {
                 NSMutableDictionary *mutDic=[[NSMutableDictionary alloc]init];
@@ -195,7 +200,6 @@
 
 -(void)OpenreciewList
 {
-    Numborofreview=0;
     NSArray *arr=[[NSBundle mainBundle] loadNibNamed:@"EtendedDesignView" owner:self options:nil];
     
     ReviewListview=[arr objectAtIndex:17];
@@ -205,7 +209,7 @@
     UIButton *backButton=(UIButton *)[topView viewWithTag:500];
     [backButton addTarget:self action:@selector(backfuncforcommentView) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *EditButton=(UIButton *)[topView viewWithTag:503];
+    UIButton *EditButton=(UIButton *)[topView viewWithTag:502];
     
     [EditButton addTarget:self action:@selector(AddNewRiviewButton) forControlEvents:UIControlEventTouchUpInside];
     
@@ -218,6 +222,7 @@
     ReviewList=(UITableView *)[ReviewListview viewWithTag:503];
     ReviewList.delegate=self;
     ReviewList.dataSource=self;
+    [ReviewList setBackgroundColor:[UIColor clearColor]];
     
     
     [UIView animateWithDuration:0.2
@@ -246,7 +251,7 @@
          
     }];
     
-  
+    [reviewListarry removeAllObjects];
     [SVProgressHUD show];
     NSInvocationOperation *CommentInvication=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(ShowallreviewList) object:nil];
     [Coursedetailsoperation addOperation:CommentInvication];
@@ -298,7 +303,7 @@
 
 -(void)AddNewRiviewButton
 {
-    
+    [self OpenCommentarray];
 }
 
 -(void)PerFormcourseDetails
@@ -528,6 +533,7 @@
 }
 
 //Follow un follow button
+
 -(void)Followingnow:(NSString *)followdata
 {
     NSString *followurl=[NSString stringWithFormat:@"%@user.php?mode=course_follow&userid=%@&courseid=%@&myoption=%@",API,[self LoggedId],[MainDetailsPageDetails valueForKey:@"courseid"],followdata];
@@ -585,10 +591,7 @@
 }
 - (IBAction)ReviewSbutton:(id)sender
 {
-//    TTTCourseReviewViewController *coursereview=[[TTTCourseReviewViewController alloc]init];
-//    coursereview.reviewarraylist=ReviewArray;
-//    coursereview.courseid=CourseID;
-//    [self PushViewController:coursereview TransitationFrom:kCATransitionFromTop];
+
     [self OpenreciewList];
     
     
@@ -623,7 +626,7 @@
     reviewtxt.textColor=[UIColor whiteColor];
     reviewtxt.textAlignment=NSTextAlignmentLeft;
     [reviewtxt setEditable:NO];
-    reviewtxt.text =[NSString stringWithFormat:@"                   %@",[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review"]];
+    reviewtxt.text =[NSString stringWithFormat:@"                   %@",[[reviewListarry objectAtIndex:indexPath.row]valueForKey:@"review"]];
   
     
     NSAttributedString *Attributed=[[NSAttributedString alloc]initWithString:reviewtxt.text attributes:@{
@@ -666,16 +669,16 @@
     
     cell.sendername.font=[UIFont fontWithName:MYRIARDPROSAMIBOLT size:18.0];
     
-    cell.sendername.text=[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review_user_name"];
+    cell.sendername.text=[[reviewListarry objectAtIndex:indexPath.row]valueForKey:@"review_user_name"];
     cell.review.font=[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f];
     cell.time.font=[UIFont fontWithName:MYRIARDPROLIGHT size:13.0f];
-    cell.time.text=[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review_time"];
+    cell.time.text=[[reviewListarry objectAtIndex:indexPath.row]valueForKey:@"review_time"];
     [self SetroundborderWithborderWidth:2.0f WithColour:[UIColor whiteColor] ForView:cell.viewOnsenderimage];
     
     
     [self SetroundborderWithborderWidth:2.0f WithColour:[UIColor clearColor] ForImageview:cell.senderimage];
     
-    NSString *BackgroundImageStgring=[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review_provider"];
+    NSString *BackgroundImageStgring=[[reviewListarry objectAtIndex:indexPath.row]valueForKey:@"review_provider"];
     
     
     
@@ -703,7 +706,8 @@
     
     
     
-    int rating=[[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review_user_rating"]intValue];
+    int rating=[[[reviewListarry objectAtIndex:indexPath.row]valueForKey:@"review_user_rating"]intValue];
+    NSLog(@"The value of ratting:%d",rating);
     for(int i=0; i<rating;  i++)
     {
         UIImageView *star=(UIImageView *)[cell.starView viewWithTag:100+i];
@@ -715,7 +719,7 @@
     cell.review.delegate=self;
     cell.review.scrollEnabled=NO;
     [cell.review setEditable:NO];
-    cell.review.text =[NSString stringWithFormat:@"                   %@",[[ReviewArray objectAtIndex:indexPath.row]valueForKey:@"review"]];
+    cell.review.text =[NSString stringWithFormat:@"                   %@",[[reviewListarry objectAtIndex:indexPath.row]valueForKey:@"review"]];
     
     NSAttributedString *Attributed=[[NSAttributedString alloc]initWithString:cell.review.text attributes:@{
                                                                                                            NSFontAttributeName :[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f],
@@ -751,24 +755,167 @@
 
 -(void)OpenCommentarray
 {
+    NSLog(@"-----open comment area-----");
+    
+    Numborofreview=0;
+    
     NSArray *arr=[[NSBundle mainBundle] loadNibNamed:@"EtendedDesignView" owner:self options:nil];
     
-    AddNewReviewView=[arr objectAtIndex:19];
-    
-    UIView *topView=[ReviewListview viewWithTag:1000];
+    AddNewReviewView=[arr objectAtIndex:18];
+     UIView *topView=[AddNewReviewView viewWithTag:1000];
+   
     
     UIButton *backButton=(UIButton *)[topView viewWithTag:1001];
+    
     [backButton addTarget:self action:@selector(backtoreviewdetils) forControlEvents:UIControlEventTouchUpInside];
+    NSDate *now = [NSDate date];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"MMM d ,yyyy"];
+	MyString = [dateFormatter stringFromDate:now];
+   
+    _star1=(UIButton *)[AddNewReviewView viewWithTag:100];
+    _star2=(UIButton *)[AddNewReviewView viewWithTag:101];
+    _star3=(UIButton *)[AddNewReviewView viewWithTag:102];
+    _star4=(UIButton *)[AddNewReviewView viewWithTag:103];
+    _star5=(UIButton *)[AddNewReviewView viewWithTag:104];
+	writereview=(UITextView *)[AddNewReviewView viewWithTag:401];
+   
+    Addallrating=0;
+    [_star1 addTarget:self action:@selector(rating:) forControlEvents:UIControlEventTouchUpInside];
+    _star1.tag=100;
+    [_star2 addTarget:self action:@selector(rating:) forControlEvents:UIControlEventTouchUpInside];
+    _star2.tag=101;
+    [_star3 addTarget:self action:@selector(rating:) forControlEvents:UIControlEventTouchUpInside];
+    _star3.tag=102;
+    [_star4 addTarget:self action:@selector(rating:) forControlEvents:UIControlEventTouchUpInside];
+    _star4.tag=103;
+    [_star5 addTarget:self action:@selector(rating:) forControlEvents:UIControlEventTouchUpInside];
+    _star5.tag=104;
     
-   // UIView *FooterView=(UIView *)[AddNewReviewView viewWithTag:403];
-  // UIButton *Cancelbutton=(UIButton *)
     
+    
+    
+      writereview.font=[UIFont fontWithName:MYREADPROREGULAR size:15];
+      self.reviewOptionLbl=(UILabel *)[AddNewReviewView viewWithTag:402];
+    
+      self.reviewOptionLbl.font=[UIFont fontWithName:MYREADPROREGULAR size:15];
+      writereview.delegate=self;
+    
+      FooterView=(UIView *)[AddNewReviewView viewWithTag:403];
+      UIButton *Cancelbutton=(UIButton *)[FooterView viewWithTag:404];
+      [Cancelbutton addTarget:self action:@selector(CAncelbuttonwork) forControlEvents:UIControlEventTouchUpInside];
+     _ButtonDon=(UIButton *)[FooterView viewWithTag:405];
+     [_ButtonDon addTarget:self action:@selector(DoneeventClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    //---------------The added -----------//
+    
+    [AddNewReviewView setFrame:CGRectMake(0, AddNewReviewView.frame.size.height, AddNewReviewView.frame.size.width, AddNewReviewView.frame.size.height)];
+    
+    [self.view addSubview:AddNewReviewView];
+    
+    
+    [UIView animateWithDuration:0.2
+     
+                          delay:0.0
+     
+                        options: UIViewAnimationOptionTransitionFlipFromBottom
+     
+                     animations:^
+     
+     {
+         
+         CGRect frame = AddNewReviewView.frame;
+         
+         frame.origin.y = 0;
+         
+         frame.origin.x = 0;
+         
+         AddNewReviewView.frame = frame;
+         
+     }
+     
+                     completion:^(BOOL finished)
+     
+     {
+         
+     }];
+    
+
   
+}
+-(void)DoneeventClick
+{
+    slideup=TRUE;
+    [self slidefooterview];
+    
+    if([[writereview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0){
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self clearrating];
+            [SVProgressHUD showErrorWithStatus:@"Please write a review"];
+        });
+    }
+    else if (!Addallrating >0)
+    {
+        [SVProgressHUD showErrorWithStatus:@"Please add rating"];
+    }
+    else
+    {
+        NSInvocationOperation *operation=[[NSInvocationOperation alloc]initWithTarget:self selector:@selector(postreview) object:nil];
+        [Coursedetailsoperation addOperation:operation];
+    }
+
+    
+}
+
+-(void)CAncelbuttonwork
+{
+    slideup=TRUE;
+    IScancelButtonclick=TRUE;
+    [self clearrating];
+    [self slidefooterview];
+    [self backtoreviewdetils];
+   
  
 }
+
+//load footerview
+
+-(void)slidefooterview
+{
+    if(slideup==FALSE){
+        [UIView animateWithDuration:.1f animations:^{
+            
+            CGRect rect1 = FooterView.frame;
+            rect1.origin.y=302;
+            FooterView.frame = rect1;
+            
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:.1f animations:^{
+            CGRect rect1 = FooterView.frame;
+            if(IsIphone5){
+                rect1.origin.y=519;
+            }else{
+                rect1.origin.y=431;
+            }
+            FooterView.frame = rect1;
+        }
+        completion:^(BOOL finish)
+         {
+             [writereview resignFirstResponder];
+             
+         }];
+    }
+    
+}
+
 -(void)backtoreviewdetils
 {
     
+    [self.writereview resignFirstResponder];
     [UIView animateWithDuration:0.3
      
                           delay:0.0
@@ -803,30 +950,16 @@
 }
 
 
-//---------------------- Add Review ----------//
-/*-(void)postreview
+//-------------- Add Review ----------//
+-(void)postreview
 {
-    if([[writereview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]==0){
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self clearrating];
-            [SVProgressHUD showErrorWithStatus:@"Please write a review"];
-        });
-    }
-    else if (!rating >0)
-    {
-        [SVProgressHUD showErrorWithStatus:@"Please add rating"];
-    }
-    
-    else
-    {
-        
-        if ([self isConnectedToInternet])
+   
+      if ([self isConnectedToInternet])
         {
             NSError *Error;
             @try
             {
-                NSString *URL=[NSString stringWithFormat:@"%@user.php?mode=course_review&userid=%@&courseid=%@&msg=%@&rating=%d", API,viewerID,reviewCourseID,[[writereview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],rating];
+                NSString *URL=[NSString stringWithFormat:@"%@user.php?mode=course_review&userid=%@&courseid=%@&msg=%@&rating=%d", API,viewerID,CourseID,[[writereview.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],Addallrating];
                 NSLog(@"%@", URL);
                 
                 NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URL]];
@@ -842,12 +975,26 @@
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     
                                     
-                                    [self clearrating];
                                     [SVProgressHUD showSuccessWithStatus:[extraparam valueForKey:@"message"]];
-                                    TTTCourseReviewViewController *courseReview=[[TTTCourseReviewViewController alloc]init];
-                                    courseReview.reviewarraylist=[AllReviews copy];
-                                    courseReview.courseid=reviewCourseID;
-                                    [self PushViewController:courseReview TransitationFrom:kCATransitionFade];
+                                    NSMutableDictionary *MutDicall=[[NSMutableDictionary alloc]init];
+                                    Numborofreview+=1;
+                                    [MutDicall setValue:@"500" forKey:@"reviewId"];
+                                    [MutDicall setValue:[self LoggerName] forKey:@"review_user_name"];
+                                    [MutDicall setValue:[self LoggerImageURL] forKey:@"review_provider"];
+                                    [MutDicall setValue:writereview.text forKey:@"review"];
+                                    [MutDicall setValue:MyString forKey:@"review_time"];
+                                    [MutDicall setValue:[NSString stringWithFormat:@"%d",Addallrating] forKey:@"review_user_rating"];
+                                    [reviewListarry insertObject:MutDicall atIndex:0];
+                                    NSIndexPath *Indexpath=[NSIndexPath indexPathForRow:0 inSection:0];
+                                    [ReviewList beginUpdates];
+                                    [ReviewList insertRowsAtIndexPaths:[[NSArray alloc] initWithObjects:Indexpath, nil] withRowAnimation:UITableViewRowAnimationFade];
+                                    [ReviewList endUpdates];
+                                    
+                                    // --- TOTAL RTEVIEW LIST -- //
+                                    
+                                    [_Totalreview setText:[NSString stringWithFormat:@"%d Reviews",[reviewListarry count]]];
+                                    [self clearrating];
+                                    [self backtoreviewdetils];
                                     
                                     
                                 });
@@ -891,15 +1038,131 @@
                 NSLog(@" %s exception %@",__PRETTY_FUNCTION__,exception);
             }
             
-        }else
+        }
+        else
         {
             [SVProgressHUD showErrorWithStatus:@"No internet connection"];
         }
+    
+    
+}
+
+//--- course review ----//
+
+-(void)rating:(UIButton *)sender
+{
+    Addallrating=0;
+    int tapbutton=sender.tag-100;
+    NSLog(@"The value of touich button:%d",tapbutton);
+    NSLog(@"the value of sender.couuent image:%@",sender.currentBackgroundImage);
+    if([sender.currentBackgroundImage isEqual:[UIImage imageNamed:@"starnotBig"]])
+    {
+    
+        for(int i=0;i<tapbutton+1;i++)
+        {
+            UIButton *Star=(UIButton *)[AddNewReviewView viewWithTag:100+i];
+            
+               [Star setBackgroundImage:[UIImage imageNamed:@"starbig"] forState:UIControlStateNormal];
+               // Addallrating++;
+        
+        }
+    }
+    else if ([sender.currentBackgroundImage isEqual:[UIImage imageNamed:@"starbig"]])
+    {
+      
+        
+        for(int i=tapbutton;i<5;i++)
+        {
+            UIButton *Star1=(UIButton *)[AddNewReviewView viewWithTag:100+i];
+            if([Star1.currentBackgroundImage isEqual:[UIImage imageNamed:@"starbig"]])
+            {
+                [Star1 setBackgroundImage:[UIImage imageNamed:@"starnotBig"] forState:UIControlStateNormal];
+                 //Addallrating++;
+            }
+            
+        }
     }
     
-}*/
+    for (int k=0; k<5; k++)
+    {
+        UIButton *Button=(UIButton *)[AddNewReviewView viewWithTag:100+k];
+        if ([Button.currentBackgroundImage isEqual:[UIImage imageNamed:@"starbig"]])
+        {
+            Addallrating++;
+        }
+        
+    }
+    
+    NSLog(@"Trhe value of add%d",Addallrating);
+    if(Addallrating>0)
+    {
+        
+        [[self ButtonDon] setBackgroundImage:[UIImage imageNamed:@"donegreen"] forState:UIControlStateNormal];
+        
+        [[self ButtonDon] setBackgroundImage:[UIImage imageNamed:@"donegreen"] forState:UIControlStateHighlighted];
+        
+        [[self ButtonDon] setBackgroundImage:[UIImage imageNamed:@"donegreen"] forState:UIControlStateSelected];
+        
+    }else{
+        
+        [[self ButtonDon] setBackgroundImage:[UIImage imageNamed:@"doneLocation"] forState:UIControlStateNormal];
+        
+        [[self ButtonDon] setBackgroundImage:[UIImage imageNamed:@"doneLocation"] forState:UIControlStateHighlighted];
+        
+        [[self ButtonDon] setBackgroundImage:[UIImage imageNamed:@"doneLocation"] forState:UIControlStateSelected];
+        
+    }
+    
+  
+}
 
 
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    slideup=FALSE;
+    [self slidefooterview];
+    [self.reviewOptionLbl setHidden:YES];
+    //[textView becomeFirstResponder];
+}
+#pragma UITextViewDelegate
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    slideup=TRUE;
+    [self slidefooterview];
+    if (!textView.text.length>0)
+    {
+        self.reviewOptionLbl.hidden=NO;
+    }
+    
+    [textView resignFirstResponder];
+}
+
+-(void)clearrating
+{
+    for(int i=0;i<5;i++){
+        UIButton *star=(UIButton *)[AddNewReviewView viewWithTag:100+i];
+        if([star.currentBackgroundImage isEqual:[UIImage imageNamed:@"starbig"]])
+        {
+            [star setBackgroundImage:[UIImage imageNamed:@"starnotBig"] forState:UIControlStateNormal];
+            Addallrating--;
+        }
+    }
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    
+    
+    
+    if([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+        
+        return NO;
+    }
+    
+    return YES;
+}
 
 
 

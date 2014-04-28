@@ -16,8 +16,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *profileImage;
 @property (strong, nonatomic) IBOutlet UIImageView *holeProfileImage;
 
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *indicatorOnProfile;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *indicatorOnScreen;
 
 @property (strong, nonatomic) IBOutlet UIView *viewOnProfileImage;
 @property (strong, nonatomic) IBOutlet UILabel *profilePlace;
@@ -39,7 +37,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *MainLabel;
 
 
-@property(strong,nonatomic) NSDictionary *dict;
+
 //USERID and LOGGEDIN USERID 
 @property (strong,nonatomic)NSString *userId;
 @property (strong,nonatomic)NSString *loggedInUserid;

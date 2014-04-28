@@ -1645,14 +1645,18 @@
         
         else
         {
-            CGRect ActivityTitelframe = [[mutDicActivity objectForKey:@"ActivityTitle"] boundingRectWithSize:CGSizeMake(285, MAXFLOAT)
-                                                                                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                                                                  attributes:@{NSFontAttributeName:[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f]
-                                                                                                               }
-                                                                                                     context:nil];
+           
+            CGRect ActivityTitelframe = [[mutDicActivity objectForKey:@"ActivityComment"] boundingRectWithSize:CGSizeMake(285, MAXFLOAT)
+                                                                                                       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                                                                    attributes:@{NSFontAttributeName:[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f]
+                                                                                                                 }
+                                                                                                       context:nil];
             
-            extraHeight=(ActivityTitelframe.size.height>16)?ActivityTitelframe.size.height-16:0.0f;
-            Height=129.0f+extraHeight;
+            extraHeight=(ActivityTitelframe.size.height>21)?ActivityTitelframe.size.height-21:0.0f;
+            Height=129+extraHeight;
+            
+            NSLog(@"The activity comment: %f",Height);
+
         }
         
     }
@@ -1763,20 +1767,20 @@
             }
             else
             {
-                CGRect ActivityTitelframe = [[mutDicActivity objectForKey:@"ActivityTitle"] boundingRectWithSize:CGSizeMake(285, MAXFLOAT)
-                                                                                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                                                                      attributes:@{NSFontAttributeName:[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f]
-                                                                                                                   }
-                                                                                                         context:nil];
+                CGRect ActivityTitelframe = [[mutDicActivity objectForKey:@"ActivityComment"] boundingRectWithSize:CGSizeMake(285, MAXFLOAT)
+                                                                                                           options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                                                                        attributes:@{NSFontAttributeName:[UIFont fontWithName:MYRIARDPROLIGHT size:15.0f]
+                                                                                                                     }
+                                                                                                           context:nil];
                 
-                extraHeight=(ActivityTitelframe.size.height>16)?ActivityTitelframe.size.height-16:0.0f;
-                Height=129.0f+extraHeight-40;
+                extraHeight=(ActivityTitelframe.size.height>21)?ActivityTitelframe.size.height-21:0.0f;
+                Height=129+extraHeight;
                 
             }
             
             if (isloadFirsttime)
             {
-                NSLog(@"The value of extra height:");
+                //NSLog(@"The value of extra height:");
                 TotalcommentHeight+=Height;
                 isloadFirsttime=FALSE;
                 
@@ -1816,7 +1820,7 @@
             
         }
         
-        NSLog(@"Thevalue for total comment:%f",TotalcommentHeight);
+       // NSLog(@"Thevalue for total comment:%f",TotalcommentHeight);
       
         
     }
@@ -1840,16 +1844,9 @@
         
         if ([[mutDicActivity valueForKey:@"ActivityType"] integerValue]==1)
         {
-            
-            
-            
-            //----------------------Activity Type Achivement-----------------------//
-            
-            
-            //  -------   Section1  -------   //
-            
-            
-           static NSString *TTTcellforachivement=@"TTTActivityCellforachivement";
+          //----------------------Activity Type Achivement-----------------------//
+                           //  ------- Section1 -------   //
+            static NSString *TTTcellforachivement=@"TTTActivityCellforachivement";
             TTTActivityCellforachivement *AchivementCell=(TTTActivityCellforachivement *)[tableView dequeueReusableCellWithIdentifier:TTTcellforachivement];
              AchivementCell=nil;
             if (AchivementCell==nil)
@@ -1897,7 +1894,8 @@
                                                                                                                    }];
                 
                 [operationProfileimage start];
-                //******  Send to profile image view  *****//
+                
+                // --------  Send to profile image view  ------- //
                 TapGesture=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SendToProfileView:)];
                 [TapGesture setNumberOfTapsRequired:1];
                 [ActivityOwnerimageView setUserInteractionEnabled:YES];
@@ -1932,7 +1930,7 @@
                 activityframe.size.height+=extraHeight;
                 [ActivityTitel setFrame:activityframe];
                 
-                //Activity posted time from privious time
+                //----- Activity posted time from privious time -----//
                 
                 UILabel *PostTimeLBL=(UILabel *)[AchivementCell.contentView viewWithTag:5];
                 PostTimeLBL.textColor=[UIColor whiteColor];
@@ -2005,7 +2003,7 @@
                 UILabel *Totaltee=(UILabel *)[AchivementCell.contentView viewWithTag:9];
                 Totaltee.textColor=[UIColor whiteColor];
                 Totaltee.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
-                Totaltee.text=[mutDicActivity objectForKey:@"ActivityLikeCount"];
+                Totaltee.text=[NSString stringWithFormat:@"%@ Tee'd It",[mutDicActivity objectForKey:@"ActivityLikeCount"]];
                 
                 //Total Comment Lable
                 
@@ -2018,7 +2016,7 @@
                 UILabel *TotalComment=(UILabel *)[AchivementCell.contentView viewWithTag:12];
                 TotalComment.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
                 TotalComment.textColor=[UIColor whiteColor];
-                TotalComment.text=[mutDicActivity objectForKey:@"ActivityCommentCount"];
+                TotalComment.text=[NSString stringWithFormat:@"%@ Comments",[mutDicActivity objectForKey:@"ActivityCommentCount"]];
                 
                 //Total comment text lable
                 
@@ -2526,7 +2524,8 @@
             UILabel *Totaltee=(UILabel *)[matchCell.contentView viewWithTag:9];
             Totaltee.textColor=[UIColor whiteColor];
             Totaltee.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
-            Totaltee.text=[mutDicActivity objectForKey:@"ActivityLikeCount"];
+            Totaltee.text=[NSString stringWithFormat:@"%@ Tee'd It",[mutDicActivity objectForKey:@"ActivityLikeCount"]];
+            
             
             //Total Comment Lable
             
@@ -2539,7 +2538,7 @@
             UILabel *TotalComment=(UILabel *)[matchCell.contentView viewWithTag:12];
             TotalComment.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
             TotalComment.textColor=[UIColor whiteColor];
-            TotalComment.text=[mutDicActivity objectForKey:@"ActivityCommentCount"];
+            TotalComment.text=[NSString stringWithFormat:@"%@ Comments",[mutDicActivity objectForKey:@"ActivityCommentCount"]];
             
             //Total comment text lable
             
@@ -2931,7 +2930,7 @@
                 UILabel *Totaltee=(UILabel *)[matchCell.contentView viewWithTag:9];
                 Totaltee.textColor=[UIColor whiteColor];
                 Totaltee.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
-                Totaltee.text=[mutDicActivity objectForKey:@"ActivityLikeCount"];
+                Totaltee.text=[NSString stringWithFormat:@"%@ Tee'd It",[mutDicActivity objectForKey:@"ActivityLikeCount"]];
                 
                 //Total Comment Lable
                 
@@ -2944,7 +2943,7 @@
                 UILabel *TotalComment=(UILabel *)[matchCell.contentView viewWithTag:12];
                 TotalComment.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
                 TotalComment.textColor=[UIColor whiteColor];
-                TotalComment.text=[mutDicActivity objectForKey:@"ActivityCommentCount"];
+                TotalComment.text=[NSString stringWithFormat:@"%@ Comments",[mutDicActivity objectForKey:@"ActivityCommentCount"] ];
                 
                 //Total comment text lable
                 
@@ -3403,7 +3402,7 @@
             UILabel *Totaltee=(UILabel *)[PhotoActivity.contentView viewWithTag:9];
             Totaltee.textColor=[UIColor whiteColor];
             Totaltee.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
-            Totaltee.text=[mutDicActivity objectForKey:@"ActivityLikeCount"];
+            Totaltee.text=[NSString stringWithFormat:@"%@ Tee'd It",[mutDicActivity objectForKey:@"ActivityLikeCount"]];
             
             //Total Comment Lable
             
@@ -3416,7 +3415,7 @@
             UILabel *TotalComment=(UILabel *)[PhotoActivity.contentView viewWithTag:12];
             TotalComment.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
             TotalComment.textColor=[UIColor whiteColor];
-            TotalComment.text=[mutDicActivity objectForKey:@"ActivityCommentCount"];
+            TotalComment.text=[NSString stringWithFormat:@"%@ Comments",[mutDicActivity objectForKey:@"ActivityCommentCount"]];
             
             //Total comment text lable
             
@@ -3759,7 +3758,7 @@
             UILabel *Totaltee=(UILabel *)[PhotoActivity.contentView viewWithTag:9];
             Totaltee.textColor=[UIColor whiteColor];
             Totaltee.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
-            Totaltee.text=[mutDicActivity objectForKey:@"ActivityLikeCount"];
+            Totaltee.text=[NSString stringWithFormat:@"%@ Tee'd It",[mutDicActivity objectForKey:@"ActivityLikeCount"]];;
             
             //Total Comment Lable
             
@@ -3772,7 +3771,7 @@
             UILabel *TotalComment=(UILabel *)[PhotoActivity.contentView viewWithTag:12];
             TotalComment.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
             TotalComment.textColor=[UIColor whiteColor];
-            TotalComment.text=[mutDicActivity objectForKey:@"ActivityCommentCount"];
+            TotalComment.text=[NSString stringWithFormat:@"%@ Comments",[mutDicActivity objectForKey:@"ActivityCommentCount"]];
             
             //Total comment text lable
             
@@ -3956,7 +3955,7 @@
                                                                                                                  }
                                                                                                        context:nil];
             
-            extraHeight=(ActivityTitelframe.size.height>16)?ActivityTitelframe.size.height-16:0.0f;
+            extraHeight=(ActivityTitelframe.size.height>21)?ActivityTitelframe.size.height-21:0.0f;
             
             ActivityTitel.text=[mutDicActivity objectForKey:@"ActivityComment"];
             [ActivityTitel setNumberOfLines:0];
@@ -3983,7 +3982,7 @@
             UILabel *Totaltee=(UILabel *)[PhotoActivity.contentView viewWithTag:9];
             Totaltee.textColor=[UIColor whiteColor];
             Totaltee.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
-            Totaltee.text=[mutDicActivity objectForKey:@"ActivityLikeCount"];
+            Totaltee.text=[NSString stringWithFormat:@"%@ Tee'd It",[mutDicActivity objectForKey:@"ActivityLikeCount"]];
             
             //Total Comment Lable
             
@@ -3996,7 +3995,7 @@
             UILabel *TotalComment=(UILabel *)[PhotoActivity.contentView viewWithTag:12];
             TotalComment.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
             TotalComment.textColor=[UIColor whiteColor];
-            TotalComment.text=[mutDicActivity objectForKey:@"ActivityCommentCount"];
+            TotalComment.text=[NSString stringWithFormat:@"%@ Comments",[mutDicActivity objectForKey:@"ActivityCommentCount"]];
             
             //Total comment text lable
             
@@ -4066,6 +4065,7 @@
             UIView *BackView=(UIView *)[PhotoActivity.contentView viewWithTag:999];
             CGRect backframe=[BackView frame];
             backframe.size.height+=extraHeight;
+            NSLog(@"Thge value of back frame:%f",backframe.size.height);
             [BackView setFrame:backframe];
             footerFrame.origin.y+=extraHeight;
             [Vfooterview setFrame:footerFrame];
@@ -4144,7 +4144,7 @@
                     //******  Send to profile image view  *****//
                     TapGesture=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SendToProfileView:)];
                     [TapGesture setNumberOfTapsRequired:1];
-                    [ActivityOwnerimageView setUserInteractionEnabled:YES];
+                    [ActivityOwnerimageView setUserInteractionEnabled:NO];
                     [ActivityOwnerimageView setTag:[[CommentACtivityDic objectForKey:@"ActivityCreator"] integerValue]];
                     [ActivityOwnerimageView addGestureRecognizer:TapGesture];
                     
@@ -4199,6 +4199,7 @@
                     TapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(GoestoAchivement:)];
                     [TapGesture setNumberOfTapsRequired:1];
                     [AchiveImgview addGestureRecognizer:TapGesture];
+                    [AchiveImgview setUserInteractionEnabled:NO];
                     
                     NSURLRequest *AchiveMentimage = [NSURLRequest requestWithURL:[NSURL URLWithString:[ActivityAchivementDic valueForKey:@"AchivementImage"]]];
                     
@@ -4254,7 +4255,7 @@
                     UILabel *Totaltee=(UILabel *)[AchivementCell.contentView viewWithTag:9];
                     Totaltee.textColor=[UIColor whiteColor];
                     Totaltee.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
-                    Totaltee.text=[CommentACtivityDic objectForKey:@"ActivityLikeCount"];
+                    Totaltee.text=[NSString stringWithFormat:@"%@ Tee'd It",[CommentACtivityDic objectForKey:@"ActivityLikeCount"]];
                     
                     //Total Comment Lable
                     
@@ -4267,7 +4268,7 @@
                     UILabel *TotalComment=(UILabel *)[AchivementCell.contentView viewWithTag:12];
                     TotalComment.font=[UIFont fontWithName:MYRIARDPROLIGHT size:14.0f];
                     TotalComment.textColor=[UIColor whiteColor];
-                    TotalComment.text=[CommentACtivityDic objectForKey:@"ActivityCommentCount"];
+                    TotalComment.text=[NSString stringWithFormat:@"%@ Comments",[CommentACtivityDic objectForKey:@"ActivityCommentCount"]];
                     
                     //Total comment text lable
                     
@@ -4405,7 +4406,7 @@
                 
                 TapGesture=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SendToProfileView:)];
                 [TapGesture setNumberOfTapsRequired:1];
-                [ActivityOwnerimageView setUserInteractionEnabled:YES];
+                [ActivityOwnerimageView setUserInteractionEnabled:NO];
                 [ActivityOwnerimageView setTag:[[CommentACtivityDic objectForKey:@"ActivityCreator"] integerValue]];
                 [ActivityOwnerimageView addGestureRecognizer:TapGesture];
                 
@@ -4457,7 +4458,7 @@
                 NSString *dateAndTime=[Mutdicmatch valueForKey:@"MatchStartDate"];
                 
                 NSArray *Concatarry=[dateAndTime componentsSeparatedByString:@" "];
-                NSLog(@"The county:%@",Concatarry);
+              
                 
                 
                 UILabel *dateLable=(UILabel *)[matchMainView viewWithTag:306];
@@ -4929,7 +4930,7 @@
                     
                     TapGesture=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SendToProfileView:)];
                     [TapGesture setNumberOfTapsRequired:1];
-                    [ActivityOwnerimageView setUserInteractionEnabled:YES];
+                    [ActivityOwnerimageView setUserInteractionEnabled:NO];
                     [ActivityOwnerimageView setTag:[[CommentACtivityDic objectForKey:@"ActivityCreator"] integerValue]];
                     [ActivityOwnerimageView addGestureRecognizer:TapGesture];
                     
@@ -5294,6 +5295,7 @@
                     FriendCell=(TTTCellforAcceptFriendrequest *)[CellNib objectAtIndex:0];
                 }
                 FriendCell.backgroundColor=[UIColor clearColor];
+                [FriendCell setSelectionStyle:UITableViewCellSelectionStyleNone];
                 UIView *CreaterbackView=(UIView *)[FriendCell.contentView viewWithTag:1];
                 UIImageView *CreaterImageView=(UIImageView *)[FriendCell.contentView viewWithTag:2];
                 
@@ -5382,10 +5384,10 @@
                 
                 TapGesture=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SendToProfileView:)];
                 [TapGesture setNumberOfTapsRequired:1];
-                [CreaterImageView setUserInteractionEnabled:YES];
+                [CreaterImageView setUserInteractionEnabled:NO];
                 [CreaterImageView setTag:[[CommentACtivityDic objectForKey:@"ActivityCreator"] integerValue]];
                 [TargetImageView setTag:[[CommentACtivityDic objectForKey:@"ActivityTarget"] integerValue]];
-                [TargetImageView setUserInteractionEnabled:YES];
+                [TargetImageView setUserInteractionEnabled:NO];
                 [CreaterImageView addGestureRecognizer:TapGesture];
                 [TargetImageView addGestureRecognizer:TapGesture];
                 
@@ -5467,7 +5469,7 @@
                 
                 TapGesture=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SendToProfileView:)];
                 [TapGesture setNumberOfTapsRequired:1];
-                [ActivityOwnerimageView setUserInteractionEnabled:YES];
+                [ActivityOwnerimageView setUserInteractionEnabled:NO];
                 [ActivityOwnerimageView setTag:[[CommentACtivityDic objectForKey:@"ActivityCreator"] integerValue]];
                 [ActivityOwnerimageView addGestureRecognizer:TapGesture];
                 
@@ -5540,7 +5542,7 @@
                 
                 TapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(SenToimagedetailspage:)];
                 [TapGesture setNumberOfTapsRequired:1];
-                [PhotoImage setUserInteractionEnabled:YES];
+                [PhotoImage setUserInteractionEnabled:NO];
                 [PhotoImage setTag:PHOTOCELL+indexPath.row];
                 [PhotoImage addGestureRecognizer:TapGesture];
                 
@@ -5896,7 +5898,7 @@
                 UIImageView *PhotoImage=(UIImageView *)[PhotoActivity.contentView viewWithTag:403];
                 TapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(Sendtovideodetails:)];
                 [TapGesture setNumberOfTapsRequired:1];
-                [PhotoImage setUserInteractionEnabled:YES];
+                [PhotoImage setUserInteractionEnabled:NO];
                 [PhotoImage setTag:PHOTOCELL+indexPath.row];
                 [PhotoImage addGestureRecognizer:TapGesture];
                 
@@ -6121,7 +6123,8 @@
             else
             {
                 //-------------------Profile Type cativity------------------//
-                //Step one//
+                
+                //---------- Step one ------//
                 
                 static NSString *Activitypost =@"TTTprofiletypeActivityCell";
                 
@@ -6180,7 +6183,7 @@
                 
                 TapGesture=[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SendToProfileView:)];
                 [TapGesture setNumberOfTapsRequired:1];
-                [ActivityOwnerimageView setUserInteractionEnabled:YES];
+                [ActivityOwnerimageView setUserInteractionEnabled:NO];
                 [ActivityOwnerimageView setTag:[[CommentACtivityDic objectForKey:@"ActivityCreator"] integerValue]];
                 [ActivityOwnerimageView addGestureRecognizer:TapGesture];
                 
@@ -6333,6 +6336,7 @@
             NSArray *arr=[[NSBundle mainBundle] loadNibNamed:@"EtendedDesignView" owner:self options:nil];
             cell.backgroundColor=[UIColor clearColor];
             UIView *mainview=[arr objectAtIndex:15];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             UILabel *Totalteelbl=(UILabel *)[mainview viewWithTag:200];
             Totalteelbl.textColor=[UIColor whiteColor];
             Totalteelbl.font=[UIFont fontWithName:MYRIARDPROSAMIBOLT size:14.0f];
@@ -6358,6 +6362,8 @@
         {
             UITableViewCell *cell=[[UITableViewCell alloc]init];
             cell.backgroundColor=[UIColor clearColor];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            
             NSArray *arr=[[NSBundle mainBundle] loadNibNamed:@"EtendedDesignView" owner:self options:nil];
             UIView *mainview=[arr objectAtIndex:16];
             UILabel *Totalteelbl=(UILabel *)[mainview viewWithTag:100];
@@ -6383,6 +6389,7 @@
                 
             }
             [CommentActivity setBackgroundColor:[UIColor clearColor]];
+            [CommentActivity setSelectionStyle:UITableViewCellSelectionStyleNone];
             UIView *imageback=(UIView *)[CommentActivity.contentView viewWithTag:1001];
             UIImageView *userImage=(UIImageView *)[CommentActivity.contentView viewWithTag:1002];
             [self SetroundborderWithborderWidth:2.0f WithColour:[UIColor whiteColor] ForView:imageback];
@@ -6652,7 +6659,7 @@
         Like=TRUE;
         [MutdicTee setObject:[NSString stringWithFormat:@"%d",LocalLikeCounter-1] forKey:@"ActivityLikeCount"];
         [MutdicTee setObject:@"0" forKey:@"ActivityUserLiked"];
-        TotalteeHenclick.text=[NSString stringWithFormat:@"%d",LocalLikeCounter-1];
+        TotalteeHenclick.text=[NSString stringWithFormat:@"%d Tee'd It",LocalLikeCounter-1];
         [sender setBackgroundImage:[UIImage imageNamed:@"teeballLite"] forState:UIControlStateNormal];
         [sender setBackgroundImage:[UIImage imageNamed:@"teeballLite"] forState:UIControlStateSelected];
         [sender setBackgroundImage:[UIImage imageNamed:@"teeballLite"] forState:UIControlStateHighlighted];
@@ -6663,7 +6670,7 @@
          Like=FALSE;
         [MutdicTee setObject:[NSString stringWithFormat:@"%d",LocalLikeCounter+1] forKey:@"ActivityLikeCount"];
         [MutdicTee setObject:@"1" forKey:@"ActivityUserLiked"];
-        TotalteeHenclick.text=[NSString stringWithFormat:@"%d",LocalLikeCounter+1];
+        TotalteeHenclick.text=[NSString stringWithFormat:@"%d Tee'd It",LocalLikeCounter+1];
         [sender setBackgroundImage:[UIImage imageNamed:@"teeball"] forState:UIControlStateNormal];
         [sender setBackgroundImage:[UIImage imageNamed:@"teeball"] forState:UIControlStateSelected];
         [sender setBackgroundImage:[UIImage imageNamed:@"teeball"] forState:UIControlStateHighlighted];
